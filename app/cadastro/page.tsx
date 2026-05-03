@@ -1,4 +1,5 @@
 import "tailwindcss";
+import Image from 'next/image';
 
 export default function Cadastro() {
   return (
@@ -16,11 +17,21 @@ export default function Cadastro() {
             </div>
 
               //A imagem e o titulo no lado direito
-            <div className="hidden md:flex w-full md:w-[55%] flex-col items-center justify-center">
-
+            <div className="hidden md:flex w-full md:w-[55%] flex-col items-end justify-center">
+              //Imagem da logo no lado direito
+                       <Image 
+                            src="/LogoStock.io.png" 
+                            alt="Logo da Stock.io"
+                            width={421}
+                            height={267}
+                            className="w-full h-auto object-contain "
+                            priority
+                          />
             </div>
 
           </div>
       </div>
   );
 }
+
+
