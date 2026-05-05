@@ -32,7 +32,7 @@ export default function Cadastro() {
                       <input
                         type="text" 
                         placeholder="Nome Completo" 
-                        className ="w-full bg-[#f3f0e1] text-slate-800 placeholder-slate-400 rounded-full px-6 py-4 "
+                        className ="w-full bg-[#f3f0e1] text-slate-800 placeholder-slate-400 rounded-full px-6 py-3 "
                       />
                   </div> 
                     {/*Form para o username*/}
@@ -40,7 +40,7 @@ export default function Cadastro() {
                       <input
                         type="text" 
                         placeholder="Username" 
-                        className ="w-full bg-[#f3f0e1] text-slate-800 placeholder-slate-400 rounded-full px-6 py-4 "
+                        className ="w-full bg-[#f3f0e1] text-slate-800 placeholder-slate-400 rounded-full px-6 py-3 "
                       />
                   </div>
                   {/*Form para o email*/}  
@@ -48,7 +48,7 @@ export default function Cadastro() {
                     <input
                       type="email" 
                       placeholder="Email" 
-                      className ="w-full bg-[#f3f0e1] text-slate-800 placeholder-slate-400 rounded-full px-6 py-4  "
+                      className ="w-full bg-[#f3f0e1] text-slate-800 placeholder-slate-400 rounded-full px-6 py-3 "
                       />                   
                   </div>
                     {/*Form para o senha*/}  
@@ -56,7 +56,7 @@ export default function Cadastro() {
                         <input
                             type={mostrarSenha ? "text" : "password"}
                             placeholder="Senha"
-                            className="bg-[#f3f0e1] text-slate-800 placeholder-gray-400 px-6 py-3 rounded-full w-full outline-none pr-12"
+                            className="bg-[#f3f0e1] text-slate-800 placeholder-slate-400  px-6 py-3 rounded-full w-full outline-none pr-12"
                         />
                         {/*Logica de apertar o olho para exibir ou ocultar a senha*/}  
                         <button
@@ -77,7 +77,7 @@ export default function Cadastro() {
                         <input
                             type={mostrarSenhaConfirmada ? "text" : "password"}
                             placeholder="Confirmar Senha"
-                            className="bg-[#f3f0e1] text-slate-800 placeholder-gray-400 px-6 py-3 rounded-full w-full outline-none pr-12"
+                            className="bg-[#f3f0e1] text-slate-800 placeholder-slate-400 px-6 py-3 rounded-full w-full outline-none pr-12"
                         />
                           {/*Logica de apertar o olho para exibir ou ocultar a senha*/}  
                           <button
@@ -101,6 +101,11 @@ export default function Cadastro() {
                         CRIAR CONTA
                     </button>
                 </form>
+                  {/* Link de Login */}
+                <p className="mt-4 text-slate-300 text-sm text-left pl-2">
+                  Já possui uma conta? 
+                  <a href="login" className="text-[#6a38f3] hover:underline font-semibold"> Login</a>
+                </p>
               </div>
 
               {/*A imagem e o titulo no lado direito*/}
