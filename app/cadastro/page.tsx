@@ -96,15 +96,15 @@ export default function Cadastro() {
                     {/* Botão Principal */}
                     <button 
                         type="button" 
-                        className="mt-4 w-full bg-[#7b42ff] hover:bg-[#6834d4] text-white font-bold text-lg py-3 rounded-full transition-colors tracking-wider"
+                        className="mt-4 w-full bg-[#7b42ff] hover:bg-[#6834d4] text-white font-spartan font-semibold text-lg py-3 rounded-full transition-colors tracking-wider"
                       >
                         CRIAR CONTA
                     </button>
                 </form>
                   {/* Link de Login */}
-                <p className="mt-4 text-slate-300 text-sm text-left pl-2">
+                <p className="mt-4 text-slate-300 text-lg text-left pl-2 font-spartan font-light ">
                   Já possui uma conta? 
-                  <a href="login" className="text-[#6a38f3] hover:underline font-semibold"> Login</a>
+                  <a href="login" className="text-[#6a38f3] hover:underline font-spartan font-medium text-lg"> Login</a>
                 </p>
               </div>
 
