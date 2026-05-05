@@ -2,7 +2,7 @@ export default function Login() {
   return (
     // O 'main' é o fundo da tela. 
     // 'bg-[#F5F5E9]' é a cor bege do fundo da imagem.
-    <main className="flex min-h-screen items-end justify-center bg-[#F6F3E4] font-sans">
+    <main className="flex h-screen w-screen overflow-hidden items-end justify-center bg-[#F6F3E4] font-sans">
       
       {/* Esse div organiza o lado esquerdo (logo/boneco) e o lado direito (card) */}
       <div className="flex w-full max-w-[1440px] h-screen items-start justify-between px-[105px]"> 
@@ -16,8 +16,9 @@ export default function Login() {
           <img 
             src="/personagem.png" 
             alt="Personagem segurando caixa" 
-            className="w-[450px] h-auto mt-[-30px]" 
+            className="w-[380px] h-auto mt-[-100px] ml-[-50px] z-10" 
 />
+/
         </div>
 
         {/* LADO DIREITO: O Card de Login preto */}
