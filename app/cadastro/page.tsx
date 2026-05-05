@@ -93,7 +93,13 @@ export default function Cadastro() {
                             )}
                         </button>
                     </div>
-
+                    {/* Botão Principal */}
+                    <button 
+                        type="button" 
+                        className="mt-4 w-full bg-[#7b42ff] hover:bg-[#6834d4] text-white font-bold text-lg py-3 rounded-full transition-colors tracking-wider"
+                      >
+                        CRIAR CONTA
+                    </button>
                 </form>
               </div>
 
