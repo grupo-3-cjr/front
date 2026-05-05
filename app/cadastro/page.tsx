@@ -12,27 +12,27 @@ export default function Cadastro() {
 
   return (
 
-      <div className="min-h-screen bg-[#f3f0e1] flex px-8 md:px-16 lg:px-24">
+      <div className="min-h-screen bg-[#F6F3E4] flex px-8 md:px-16 lg:px-24">
         
             {/*a div que vai organizar o lado esquerdo com formulario e o lado direito com as imagens*/}
-          <div className="w-full flex flex-col md:flex-row justify-between items-end gap-2 ">
+          <div className="w-full flex flex-col md:flex-row justify-between items-end gap-3 mt-20">
             
 
               {/*O Formulário no lado esquerdo*/} 
-            <div className="w-full md:w-[80%] xl:w-[45%] bg-[#171918] rounded-t-[40px] p-10 lg:p-30 flex flex-col">
+            <div className="w-full md:w-[80%] xl:w-[45%] bg-[#171918] rounded-t-[40px] items-center justify-center p-10 lg:p-31 flex flex-col ml-25">
 
                   {/*O titulo */} 
-                <h1 className="text-[#f3f0e1] text-5xl font-bold text-center mb-12 tracking-wide">
+                <h2 className="text-[#F6F3E4] text-4xl font-spartan font-extrabold text-center mb-12 tracking-wide">
                     CRIE SUA CONTA
-                </h1>
+                </h2>
                   {/*Realização do fomulario*/} 
-                <form className="flex flex-col gap-5">
+                <form className="flex flex-col gap-3 ">
                   {/*Form para o nome*/}
-                  <div className="relative w-full">
+                  <div className="relative w-full ">
                       <input
                         type="text" 
                         placeholder="Nome Completo" 
-                        className ="w-full bg-[#f3f0e1] text-slate-800 placeholder-slate-400 rounded-full px-6 py-3 "
+                        className ="w-full  bg-[#F6F3E4] text-[black] placeholder-[#858585] font-spartan font-light text-xl rounded-full px-6 py-2 "
                       />
                   </div> 
                     {/*Form para o username*/}
@@ -40,7 +40,7 @@ export default function Cadastro() {
                       <input
                         type="text" 
                         placeholder="Username" 
-                        className ="w-full bg-[#f3f0e1] text-slate-800 placeholder-slate-400 rounded-full px-6 py-3 "
+                        className ="w-full bg-[#F6F3E4] text-[black] placeholder-[#858585]  font-spartan font-light text-xl  rounded-full px-6 py-2 "
                       />
                   </div>
                   {/*Form para o email*/}  
@@ -48,7 +48,7 @@ export default function Cadastro() {
                     <input
                       type="email" 
                       placeholder="Email" 
-                      className ="w-full bg-[#f3f0e1] text-slate-800 placeholder-slate-400 rounded-full px-6 py-3 "
+                      className ="w-full bg-[#F6F3E4] text-[black] placeholder-[#858585] font-spartan font-light text-xl  rounded-full px-6 py-2 "
                       />                   
                   </div>
                     {/*Form para o senha*/}  
@@ -56,13 +56,13 @@ export default function Cadastro() {
                         <input
                             type={mostrarSenha ? "text" : "password"}
                             placeholder="Senha"
-                            className="bg-[#f3f0e1] text-slate-800 placeholder-slate-400  px-6 py-3 rounded-full w-full outline-none pr-12"
+                            className="bg-[#F6F3E4] text-[black] placeholder-[#858585] font-spartan font-light text-xl  px-6 py-2 rounded-full w-full outline-none pr-12"
                         />
                         {/*Logica de apertar o olho para exibir ou ocultar a senha*/}  
                         <button
                             type="button"
                             onClick={() => setMostrarSenha(!mostrarSenha)}     
-                            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-800 transition-colors"
+                            className="absolute right-4 top-1/2 -translate-y-1/2 text-[#858585] hover:text-gray-800 transition-colors"
                           >
                             {/* Se mostrarSenha for true, mostra o olho riscado. Se for false, mostra o olho normal */}
                             {mostrarSenha ? (
@@ -77,13 +77,13 @@ export default function Cadastro() {
                         <input
                             type={mostrarSenhaConfirmada ? "text" : "password"}
                             placeholder="Confirmar Senha"
-                            className="bg-[#f3f0e1] text-slate-800 placeholder-slate-400 px-6 py-3 rounded-full w-full outline-none pr-12"
+                            className="bg-[#F6F3E4] text-[black] placeholder-[#858585]  font-spartan font-light text-xl  px-6 py-2 rounded-full w-full outline-none pr-12"
                         />
                           {/*Logica de apertar o olho para exibir ou ocultar a senha*/}  
                           <button
                               type="button"
                               onClick={() => setMostrarSenhaConfirmada(!mostrarSenhaConfirmada)}
-                              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-800 transition-colors"
+                              className="absolute right-4 top-1/2 -translate-y-1/2 text-[#858585] hover:text-gray-800 transition-colors"
                           >
                             {/* Se mostrarSenha for true, mostra o olho riscado. Se for false, mostra o olho normal */}
                             {mostrarSenhaConfirmada ? (
@@ -109,7 +109,7 @@ export default function Cadastro() {
               </div>
 
               {/*A imagem e o titulo no lado direito*/}
-            <div className="hidden md:flex w-full md:w-[75%] flex-col items-end justify-center self-start gap-2.5">
+            <div className="hidden md:flex w-full md:w-[75%] flex-col items-end justify-center self-start gap-2.5 mr-25">
                        {/* Imagem da logo no lado direito */}     
                           <Image 
                             src="/LogoStock.io.png" 
