@@ -8,39 +8,41 @@ export default function Login() {
       <div className="flex w-full max-w-[1440px] h-screen items-start justify-between px-[105px]"> 
         
         {/* LADO ESQUERDO: logo e imagem */}
-        <div className="flex flex-col items-start ml-[105px] mt-[66px]">
-          <h1 className="text-7xl font-black text-black leading-none w-[421px] h-[267px]">
-            STOCK.I<span className="text-[#D4FF00]">O</span>
-          </h1>
-          {/* colocando imagem */}
+        <div className="relative w-1/2 flex items-center justify-center">
+        {/* AQUI ENTRA A LOGO EXPORTADA*/}
+          <img
+          src="/logo.png" 
+          alt="Logo Stock.io" 
+          className="absolute top-[-40px] left-[30px] w-[460px]" 
+  />
           <img 
             src="/personagem.png" 
             alt="Personagem segurando caixa" 
-            className="w-[380px] h-auto mt-[-100px] ml-[-50px] z-10" 
+            className="w-[400px] mt-[200px] ml-[-120px]" 
 />
-/
+
         </div>
 
         {/* LADO DIREITO: O Card de Login preto */}
-        <div className="w-[654px] h-[calc(100vh-111px)] bg-[#1A1A1A] rounded-t-[45px] p-10 text-white shadow-2xl self-end">
+        <div className="w-[600px] h-[calc(100vh-111px)] bg-[#1A1A1A] rounded-t-[45px] p-10 text-white shadow-2xl self-end">
           <h2 className="text-2xl font-bold text-center mb-10 uppercase tracking-widest">
             Bem vindo de volta!
           </h2>
 
-          <form className="flex flex-col space-y-6">
+          <form className="flex flex-col items-center w-full gap-5">
             {/* Campo de Email */}
             <input 
               type="email" 
               placeholder="Email" 
-              className="w-full p-4 rounded-full bg-[#EBE9D4] text-black outline-none placeholder-gray-500"
+              className="w-3/4 h-[48px] p-4 rounded-full bg-[#EBE9D4] text-black outline-none placeholder-gray-500"
             />
             
             {/* Campo de Senha */}
-            <div className="relative">
+            <div className="w-3/4 h-[48px] flex items-center bg-[#EBE9D4] rounded-full p-4">
               <input 
                 type="password" 
                 placeholder="Senha" 
-                className="w-full p-4 rounded-full bg-[#EBE9D4] text-black outline-none placeholder-gray-500"
+                className="w-3/4 h-[48px] p-4 rounded-full bg-[#EBE9D4] text-black outline-none placeholder-gray-500"
               />
               <span className="absolute right-6 top-4 text-gray-600 cursor-pointer">👁️</span>
             </div>
