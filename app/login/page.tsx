@@ -75,8 +75,11 @@ export default function Login() {
 
             </div>
 
-            <button type="button" className="{`${leagueSpartan.className} text-[16px] text-center font-light text-[#FFFFF] hover:underline">
-              Esqueceu sua senha?
+            <button 
+            type="button" 
+            className={`${leagueSpartan.className} underline decoration-1 text-[18px] text-center font-light text-[#FFFFFF] hover:underline`}
+             >
+            Esqueceu sua senha?
             </button>
 
             {/* Botão Roxo */}
