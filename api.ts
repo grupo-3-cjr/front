@@ -13,7 +13,7 @@ export async function postUser (userData: CreateUser) {
     return response.data; 
 }
 
-export const postLogin = async (login: Login) =>  {
+export async function postLogin (login: Login) {
     const response = await axios.post('/login', login);
     return response.data;
 }
