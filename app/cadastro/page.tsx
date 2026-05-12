@@ -1,11 +1,12 @@
 "use client"; // para ter interatividade com olho 
 import { useState } from "react";
-import api from '../services/api';
 import Link  from "next/link";
 import Image from 'next/image';
 import { Eye, EyeOff } from 'lucide-react'; // Para colocar o emoji do olho
 
 export default function Cadastro() {
+
+
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const [mostrarSenhaConfirmada, setMostrarSenhaConfirmada] = useState(false);
 
@@ -13,10 +14,10 @@ export default function Cadastro() {
     <div className="min-h-screen w-full bg-[#F6F3E4] flex justify-center items-end px-4 md:px-8 overflow-hidden">
       
       {/*DIV que divide o formulário e as imagens  */}
-      <div className="w-full max-w-[1500px] flex flex-row items-end justify-between gap-10 lg:gap-20 xl:gap-35">
+      <div className="w-full max-w-375 flex flex-row items-end justify-between gap-10 lg:gap-20 xl:gap-35">
         
         {/* o lado esquerdo que está o Formulário*/}
-        <div className="w-full md:w-[55%] lg:w-[70%] max-w-[750px] bg-[#171918] rounded-t-[40px] pt-30 pb-15 px-10 sm:px-14 lg:px-20 flex flex-col justify-center">
+        <div className="w-full md:w-[55%] lg:w-[70%] max-w-187.5 bg-[#171918] rounded-t-[40px] pt-30 pb-15 px-10 sm:px-14 lg:px-20 flex flex-col justify-center">
           
           <h2 className="text-[#F6F3E4] text-4xl lg:text-5xl font-spartan font-extrabold text-center mb-15 tracking-wide">
             CRIE SUA CONTA
@@ -103,7 +104,7 @@ export default function Cadastro() {
         </div>
 
         {/* Lado direito onde está as imagens */}
-        <div className="hidden md:flex w-[45%] lg:w-[40%] max-w-[750px] flex-col items-center justify-end pb-0">
+        <div className="hidden md:flex w-[45%] lg:w-[40%] max-w-187.5 flex-col items-center justify-end pb-0">
           
           {/* Logo */}
           <div className="w-full flex justify-center mb-8">
