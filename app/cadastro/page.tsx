@@ -1,5 +1,6 @@
 "use client"; // para ter interatividade com olho 
 import { useState } from "react";
+import api from '../services/api';
 import Link  from "next/link";
 import Image from 'next/image';
 import { Eye, EyeOff } from 'lucide-react'; // Para colocar o emoji do olho
