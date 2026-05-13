@@ -1,14 +1,69 @@
-"use client"; // para ter interatividade com olho 
+"use client"; // para ter interatividade com usuário
+
 import { useState } from "react";
 import Link  from "next/link";
 import Image from 'next/image';
 import { Eye, EyeOff } from 'lucide-react'; // Para colocar o emoji do olho
 
+import { useFormik } from 'formik'; // para facilitar na validação do formulário
+import { toast, ToastContainer } from 'react-toastify'; //para realizar notificações eficientes
+import 'react-toastify/dist/ReactToastify.css'; // para exibir a notificação
+import { postUser } from '@/api'; // Importando a função do api.ts
+import * as yup from 'yup';
+
+const passwordRules= /((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/; // Define qual formato da senha
+
+
+const validationSchema = yup.object().shape({ //define as regras de validação dos inputs
+  name: yup.string()
+    .required('O nome é obrigatório'),
+  email: yup.string()
+    .email('Insira um e-mail válido')
+    .required('O e-mail é obrigatório'),
+  password: yup.string()
+    .min(4, 'A senha deve ter no mínimo 4 caracteres')
+    .max(20, 'A senha deve ter no máximo 20 caracteres')
+    .matches(passwordRules, 'Senha muito fraca (use maiúsculas, minúsculas e números/símbolos)')
+    .required('A senha é obrigatória'),
+  confirmPassword: yup.string()
+    .oneOf([yup.ref('password')], 'As senhas não coincidem')
+    .required('Confirme sua senha'),
+  username: yup.string()
+    .optional(), // é opcional
+});
+
+
 export default function Cadastro() {
-
-
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const [mostrarSenhaConfirmada, setMostrarSenhaConfirmada] = useState(false);
+
+ const formik = useFormik({ // Define os valores iniciais do formulário
+    initialValues: {
+      name: '',
+      username: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    },
+    validationSchema,
+
+  onSubmit: async (values, { resetForm }) => {
+    try {
+      const { confirmPassword, ...userData } = values; // remove o campo confirmar Senha antes de enviar para o back
+      await postUser(userData);
+      
+    toast.success("Conta criada com sucesso! 🎉");
+    resetForm(); //limpar o formulário após ter dado certo
+    } catch (error: any) {
+      const messages = error.response?.data?.message;
+      if (Array.isArray(messages)) {
+        messages.forEach((msg: string) => toast.error(msg));
+      } else {
+        toast.error("Erro ao criar conta.");
+      }
+    }
+  },
+});
 
   return (
     <div className="min-h-screen w-full bg-[#F6F3E4] flex justify-center items-end px-4 md:px-8 overflow-hidden">
