@@ -96,9 +96,8 @@ export default function Cadastro() {
 
           {/* Link Login */}
           <p className="mt-8 text-slate-300 text-xl text-left pl-2 font-spartan font-light">
-            Já possui uma conta?  
-            <Link href="/login" className="text-[#8854ff] hover:underline font-spartan font-semibold">
-               Login
+              Já possui uma conta?   <Link href="/login" className="text-[#8854ff] hover:underline font-spartan font-semibold">
+              Login
             </Link>
           </p>
         </div>
