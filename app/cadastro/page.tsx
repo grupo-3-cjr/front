@@ -106,9 +106,12 @@ export default function Cadastro() {
             {/* Input Username */}
             <div className="w-full">
               <input
-                type="text"
-                placeholder="Username"
-                className="w-full bg-[#F6F3E4] text-black placeholder-[#858585] font-spartan font-light text-lg lg:text-xl rounded-full px-8 py-4 outline-none transition-all focus:ring-2 focus:ring-[#7b42ff]"
+                  name="username"
+                  type="text"
+                  placeholder="Username"
+                  onChange={formik.handleChange}
+                  value={formik.values.username}
+                  className="w-full bg-[#F6F3E4] text-black placeholder-[#858585] font-spartan font-light text-lg lg:text-xl rounded-full px-8 py-4 outline-none transition-all focus:ring-2 focus:ring-[#7b42ff]"
               />
             </div>
 
