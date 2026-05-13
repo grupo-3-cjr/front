@@ -138,17 +138,26 @@ export default function Cadastro() {
             {/* Input Senha */}
             <div className="relative w-full">
               <input
-                type={mostrarSenha ? "text" : "password"}
-                placeholder="Senha"
-                className="w-full bg-[#F6F3E4] text-black placeholder-[#858585] font-spartan font-light text-lg lg:text-xl px-8 py-4 rounded-full outline-none pr-14 transition-all focus:ring-2 focus:ring-[#7b42ff]"
+                  name="password"
+                  type={mostrarSenha ? "text" : "password"}
+                  placeholder="Senha"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur} // Importante para ativar o "touched"
+                  value={formik.values.password}
+                  className="w-full bg-[#F6F3E4] text-black placeholder-[#858585] font-spartan font-light text-lg lg:text-xl px-8 py-4 rounded-full outline-none pr-14 transition-all focus:ring-2 focus:ring-[#7b42ff]"
               />
               <button
-                type="button"
-                onClick={() => setMostrarSenha(!mostrarSenha)}
-                className="absolute right-6 top-1/2 -translate-y-1/2 text-[#858585] hover:text-gray-800 transition-colors"
-              >
-                {mostrarSenha ? <EyeOff size={24} /> : <Eye size={24} />}
+                    type="button"
+                    onClick={() => setMostrarSenha(!mostrarSenha)}
+                    className="absolute right-6 top-1/2 -translate-y-1/2 text-[#858585] hover:text-gray-800 transition-colors"
+                >
+                  {mostrarSenha ? <EyeOff size={24} /> : <Eye size={24} />}
               </button>
+                  {formik.touched.password && formik.errors.password && (
+                    <p className="text-red-500 text-sm mt-1 ml-6  font-medium">
+                        {formik.errors.password}
+                    </p>
+                )}
             </div>
 
             {/* Input Confirmar Senha */}
