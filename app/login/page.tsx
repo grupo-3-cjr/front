@@ -2,6 +2,10 @@
 
 import { League_Spartan } from "next/font/google";
 import { useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const leagueSpartan = League_Spartan({
   subsets: ["latin"],
@@ -9,7 +13,25 @@ const leagueSpartan = League_Spartan({
 });
 
 export default function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const id = toast.loading("Verificando credenciais...");
+    try {
+      const response = await axios.post("http://localhost:3000/login", { email, password });
+      toast.update(id, { render: "Login realizado com sucesso!", type: "success", isLoading: false, autoClose: 3000 });
+      localStorage.setItem("token", response.data.token);
+      router.push("/dashboard");
+    } catch (err: any) {
+      const msg = err.response?.data?.message || "Erro ao fazer login";
+      toast.update(id, { render: msg, type: "error", isLoading: false, autoClose: 3000 });
+    }
+  };
+
 
   return (
     <main className="flex min-h-screen w-full bg-[#F6F3E4] font-sans items-center justify-center overflow-hidden">
