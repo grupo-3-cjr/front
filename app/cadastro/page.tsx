@@ -98,6 +98,7 @@ export default function Cadastro() {
                   value={formik.values.name}
                   className="w-full bg-[#F6F3E4] text-black placeholder-[#858585] font-spartan font-light text-lg lg:text-xl rounded-full px-8 py-4 outline-none transition-all focus:ring-2 focus:ring-[#7b42ff]"
               />
+               {/* Mensagem de Erro Visual */}
                 {formik.touched.name && formik.errors.name && (
                   <p className="text-red-500 text-sm mt-1 ml-6 font-medium ">
                       {formik.errors.name}
@@ -136,53 +137,57 @@ export default function Cadastro() {
             </div>
 
             {/* Input Senha */}
-            <div className="relative w-full">
-              <input
-                  name="password"
-                  type={mostrarSenha ? "text" : "password"}
-                  placeholder="Senha"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur} // Importante para ativar o "touched"
-                  value={formik.values.password}
-                  className="w-full bg-[#F6F3E4] text-black placeholder-[#858585] font-spartan font-light text-lg lg:text-xl px-8 py-4 rounded-full outline-none pr-14 transition-all focus:ring-2 focus:ring-[#7b42ff]"
-              />
-              <button
+            <div className="w-full">
+              <div className="w-full bg-[#F6F3E4] rounded-full flex items-center overflow-hidden transition-all focus-within:ring-2 focus-within:ring-[#7b42ff]"> 
+                <input
+                    name="password"
+                    type={mostrarSenha ? "text" : "password"}
+                    placeholder="Senha"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.password}
+                    className="flex-1 bg-transparent text-black placeholder-[#858585] font-spartan font-light text-lg lg:text-xl px-8 py-4 outline-none"
+                 />
+                <button
                     type="button"
                     onClick={() => setMostrarSenha(!mostrarSenha)}
-                    className="absolute right-6 top-1/2 -translate-y-1/2 text-[#858585] hover:text-gray-800 transition-colors"
+                    className="shrink-0 text-[#858585] hover:text-gray-800 transition-colors px-6"
                 >
                   {mostrarSenha ? <EyeOff size={24} /> : <Eye size={24} />}
-              </button>
-                  {formik.touched.password && formik.errors.password && (
-                    <p className="text-red-500 text-sm mt-1 ml-6  font-medium">
-                        {formik.errors.password}
-                    </p>
-                )}
+                </button>
+              </div>
+              {formik.touched.password && formik.errors.password && (
+                <p className="text-red-500 text-sm mt-1 ml-6 font-medium">
+                  {formik.errors.password}
+                </p>
+              )}
             </div>
 
             {/* Input Confirmar Senha */}
-            <div className="relative w-full">
-              <input
-                  name="confirmPassword"
-                  type={mostrarSenhaConfirmada ? "text" : "password"}
-                  placeholder="Confirmar Senha"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.confirmPassword}
-                  className="w-full bg-[#F6F3E4] text-black placeholder-[#858585] font-spartan font-light text-lg lg:text-xl px-8 py-4 rounded-full outline-none pr-14 transition-all focus:ring-2 focus:ring-[#7b42ff]"
-              />
-              <button
-                  type="button"
-                  onClick={() => setMostrarSenhaConfirmada(!mostrarSenhaConfirmada)}
-                  className="absolute right-6 top-1/2 -translate-y-1/2 text-[#858585] hover:text-gray-800 transition-colors"
-              >
-                {mostrarSenhaConfirmada ? <EyeOff size={24} /> : <Eye size={24} />}
-              </button>
-                  {formik.touched.confirmPassword && formik.errors.confirmPassword && (
-                      <p className="text-red-500 text-sm mt-1 ml-6  font-medium">
-                            {formik.errors.confirmPassword}
-                      </p>
-                )}
+            <div className="w-full"> 
+              <div className="w-full bg-[#F6F3E4] rounded-full flex items-center overflow-hidden transition-all focus-within:ring-2 focus-within:ring-[#7b42ff]">
+                <input
+                    name="confirmPassword"
+                    type={mostrarSenhaConfirmada ? "text" : "password"}
+                    placeholder="Confirmar Senha"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.confirmPassword}
+                    className="flex-1 bg-transparent text-black placeholder-[#858585] font-spartan font-light text-lg lg:text-xl px-8 py-4 outline-none"
+                />
+                <button
+                    type="button"
+                    onClick={() => setMostrarSenhaConfirmada(!mostrarSenhaConfirmada)}
+                    className="shrink-0 text-[#858585] hover:text-gray-800 transition-colors px-6"
+                >
+                  {mostrarSenhaConfirmada ? <EyeOff size={24} /> : <Eye size={24} />}
+                </button>
+              </div>
+              {formik.touched.confirmPassword && formik.errors.confirmPassword && (
+                <p className="text-red-500 text-sm mt-1 ml-6  font-medium">
+                    {formik.errors.confirmPassword}
+                </p>
+              )}
             </div>
 
             {/* Botão Principal  */}
