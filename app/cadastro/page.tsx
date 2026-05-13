@@ -187,11 +187,13 @@ export default function Cadastro() {
 
             {/* Botão Principal  */}
             <button
-              type="button"
-              className="mt-10 w-full bg-[#7b42ff] hover:bg-[#6834d4] text-white font-spartan font-bold text-xl py-4 rounded-full transition-all transform hover:scale-[1.02] tracking-wider"
+                type="submit"
+                disabled={formik.isSubmitting || !formik.isValid}
+                className="mt-10 w-full bg-[#7b42ff] hover:bg-[#6834d4] text-white font-spartan font-bold text-xl py-4 rounded-full transition-all transform hover:scale-[1.02] tracking-wider"
             >
-              CRIAR CONTA
+                {formik.isSubmitting ? 'CARREGANDO...' : 'CRIAR CONTA'}
             </button>
+            
           </form>
 
           {/* Link Login */}
