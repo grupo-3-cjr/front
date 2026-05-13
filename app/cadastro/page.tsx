@@ -163,17 +163,26 @@ export default function Cadastro() {
             {/* Input Confirmar Senha */}
             <div className="relative w-full">
               <input
-                type={mostrarSenhaConfirmada ? "text" : "password"}
-                placeholder="Confirmar Senha"
-                className="w-full bg-[#F6F3E4] text-black placeholder-[#858585] font-spartan font-light text-lg lg:text-xl px-8 py-4 rounded-full outline-none pr-14 transition-all focus:ring-2 focus:ring-[#7b42ff]"
+                  name="confirmPassword"
+                  type={mostrarSenhaConfirmada ? "text" : "password"}
+                  placeholder="Confirmar Senha"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.confirmPassword}
+                  className="w-full bg-[#F6F3E4] text-black placeholder-[#858585] font-spartan font-light text-lg lg:text-xl px-8 py-4 rounded-full outline-none pr-14 transition-all focus:ring-2 focus:ring-[#7b42ff]"
               />
               <button
-                type="button"
-                onClick={() => setMostrarSenhaConfirmada(!mostrarSenhaConfirmada)}
-                className="absolute right-6 top-1/2 -translate-y-1/2 text-[#858585] hover:text-gray-800 transition-colors"
+                  type="button"
+                  onClick={() => setMostrarSenhaConfirmada(!mostrarSenhaConfirmada)}
+                  className="absolute right-6 top-1/2 -translate-y-1/2 text-[#858585] hover:text-gray-800 transition-colors"
               >
                 {mostrarSenhaConfirmada ? <EyeOff size={24} /> : <Eye size={24} />}
               </button>
+                  {formik.touched.confirmPassword && formik.errors.confirmPassword && (
+                      <p className="text-red-500 text-sm mt-1 ml-6  font-medium">
+                            {formik.errors.confirmPassword}
+                      </p>
+                )}
             </div>
 
             {/* Botão Principal  */}
