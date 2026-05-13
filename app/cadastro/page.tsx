@@ -99,7 +99,9 @@ export default function Cadastro() {
                   className="w-full bg-[#F6F3E4] text-black placeholder-[#858585] font-spartan font-light text-lg lg:text-xl rounded-full px-8 py-4 outline-none transition-all focus:ring-2 focus:ring-[#7b42ff]"
               />
                 {formik.touched.name && formik.errors.name && (
-                  <span className="text-red-500 text-sm mt-1 ml-6 font-medium">{formik.errors.name}</span>
+                  <p className="text-red-500 text-sm mt-1 ml-6 font-medium ">
+                      {formik.errors.name}
+                  </p>
                 )}
             </div>
 
@@ -112,16 +114,25 @@ export default function Cadastro() {
                   onChange={formik.handleChange}
                   value={formik.values.username}
                   className="w-full bg-[#F6F3E4] text-black placeholder-[#858585] font-spartan font-light text-lg lg:text-xl rounded-full px-8 py-4 outline-none transition-all focus:ring-2 focus:ring-[#7b42ff]"
-              />
+               />
             </div>
 
             {/* Input Email */}
             <div className="w-full">
               <input
-                type="email"
-                placeholder="Email"
-                className="w-full bg-[#F6F3E4] text-black placeholder-[#858585] font-spartan font-light text-lg lg:text-xl rounded-full px-8 py-4 outline-none transition-all focus:ring-2 focus:ring-[#7b42ff]"
+                  name="email"
+                  type="email"
+                  placeholder="Email"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.email}
+                  className="w-full bg-[#F6F3E4] text-black placeholder-[#858585] font-spartan font-light text-lg lg:text-xl rounded-full px-8 py-4 outline-none transition-all focus:ring-2 focus:ring-[#7b42ff]"
               />
+                {formik.touched.email && formik.errors.email && (
+                    <p className="text-red-500 text-sm mt-1 ml-6 font-medium ">
+                      {formik.errors.email}
+                    </p>
+                  )}
             </div>
 
             {/* Input Senha */}
