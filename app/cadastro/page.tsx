@@ -54,6 +54,7 @@ export default function Cadastro() {
       
     toast.success("Conta criada com sucesso! 🎉");
     resetForm(); //limpar o formulário após ter dado certo
+
     } catch (error: any) {
       const messages = error.response?.data?.message;
       if (Array.isArray(messages)) {
@@ -67,7 +68,12 @@ export default function Cadastro() {
 
   return (
     <div className="min-h-screen w-full bg-[#F6F3E4] flex justify-center items-end px-4 md:px-8 overflow-hidden">
-      
+      {/*exibe notificão sobre o cadastro */}
+      <ToastContainer  
+        position="top-right"
+        autoClose={3000}
+        theme="colored" 
+      />
       {/*DIV que divide o formulário e as imagens  */}
       <div className="w-full max-w-375 flex flex-row items-end justify-between gap-10 lg:gap-20 xl:gap-35">
         
@@ -79,15 +85,22 @@ export default function Cadastro() {
           </h2>
 
           {/* Forms onde vão ser inseridas as informações  */}
-          <form className="flex flex-col gap-3 w-full">
+          <form  onSubmit={formik.handleSubmit} className="flex flex-col gap-3 w-full">
             
             {/* Input Nome  */}
             <div className="w-full">
               <input
-                type="text"
-                placeholder="Nome Completo"
-                className="w-full bg-[#F6F3E4] text-black placeholder-[#858585] font-spartan font-light text-lg lg:text-xl rounded-full px-8 py-4 outline-none transition-all focus:ring-2 focus:ring-[#7b42ff]"
+                  name="name"
+                  type="text"
+                  placeholder="Nome Completo"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.name}
+                  className="w-full bg-[#F6F3E4] text-black placeholder-[#858585] font-spartan font-light text-lg lg:text-xl rounded-full px-8 py-4 outline-none transition-all focus:ring-2 focus:ring-[#7b42ff]"
               />
+                {formik.touched.name && formik.errors.name && (
+                  <span className="text-red-500 text-sm mt-1 ml-6 font-medium">{formik.errors.name}</span>
+                )}
             </div>
 
             {/* Input Username */}
