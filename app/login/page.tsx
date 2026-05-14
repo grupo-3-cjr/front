@@ -25,7 +25,6 @@ export default function Login() {
       const response = await axios.post("http://localhost:3000/login", { email, password });
       toast.update(id, { render: "Login realizado com sucesso!", type: "success", isLoading: false, autoClose: 3000 });
       localStorage.setItem("token", response.data.token);
-      router.push("/dashboard");
     } catch (err: any) {
       const msg = err.response?.data?.message || "Erro ao fazer login";
       toast.update(id, { render: msg, type: "error", isLoading: false, autoClose: 3000 });
@@ -35,6 +34,7 @@ export default function Login() {
 
   return (
     <main className="flex min-h-screen w-full bg-[#F6F3E4] font-sans items-center justify-center overflow-hidden">
+      <ToastContainer theme="colored" />
 
       {/* Container principal */}
       <div className="flex w-full max-w-[1440px] h-screen items-center justify-between px-4 md:px-8 xl:px-20 relative gap-6 xl:gap-12">
@@ -68,11 +68,12 @@ export default function Login() {
           </h2>
 
           {/* FORM */}
-          <form className="flex flex-col items-center w-full gap-5">
+          <form onSubmit={handleSubmit} className="flex flex-col items-center w-full gap-5">
 
             {/* EMAIL */}
             <input
               type="email"
+              onChange={(e) => setEmail(e.target.value)} 
               placeholder="Email"
               className="w-full h-[45px] px-6 rounded-full bg-[#EBE9D4] text-black outline-none"
             />
@@ -83,6 +84,7 @@ export default function Login() {
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="Senha"
+                onChange={(e) => setPassword(e.target.value)}
                 className="w-full h-[45px] px-6 pr-14 rounded-full bg-[#EBE9D4] text-black outline-none"
               />
 
@@ -110,7 +112,9 @@ export default function Login() {
             </button>
 
             {/* BOTÃO */}
-            <button className="w-full h-[55px] bg-[#6A38F3] rounded-full font-bold text-base xl:text-lg uppercase">
+            <button className="w-full h-[55px] bg-[#6A38F3] rounded-full font-bold text-base xl:text-lg uppercase"
+              type="submit"
+            >
               Entrar
             </button>
 
