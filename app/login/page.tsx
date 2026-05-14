@@ -22,9 +22,9 @@ export default function Login() {
     e.preventDefault();
     const id = toast.loading("Verificando credenciais...");
     try {
-      const response = await axios.post("http://localhost:3000/login", { email, password });
+      const response = await axios.post("http://localhost:3001/login", { email, password });
       toast.update(id, { render: "Login realizado com sucesso!", type: "success", isLoading: false, autoClose: 3000 });
-      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("token", response.data.access_token);
     } catch (err: any) {
       const msg = err.response?.data?.message || "Erro ao fazer login";
       toast.update(id, { render: msg, type: "error", isLoading: false, autoClose: 3000 });
