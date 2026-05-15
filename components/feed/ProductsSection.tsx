@@ -1,30 +1,23 @@
 import ProductCard from "./ProductCard";
 
-const products = [
-    {
-        name: "Brownie",
-        image: "/brownie.jpg",
-        storeLogo: "/globe.svg"
-    },
-    {
-        name: "Bola",
-        image: "/bola.jpeg",
-        storeLogo: "/globe.svg"
-    },
-        {
-        name: "Quadro",
-        image: "/quadro.jpeg",
-        storeLogo: "/globe.svg"
-    },
-];
+type Product = {
+    name: string;
+    image: string;
+    storeLogo: string;
+}
 
-export default function ProductusSection() {
+type ProductSectionProps = {
+    subtitle: string;
+    products: Product[];
+}
+
+export default function ProductusSection({subtitle, products}: ProductSectionProps) {
     return (
         <section className="mt-9 ml-16">
             <div className="flex items-end justify-between mb-6">
                 <div className="flex items-baseline gap-2">
                     <h2 className="text-3xl text-black font-bold mb-8">Produtos</h2>
-                    <span className="text-[#6A38F3] text-sm font-semibold">melhores avaliados</span>
+                    <span className="text-[#6A38F3] text-sm font-semibold">{subtitle}</span>
                 </div>
             </div>
 
