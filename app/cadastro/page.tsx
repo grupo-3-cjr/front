@@ -47,7 +47,7 @@ export default function Cadastro() {
     },
     validationSchema,
 
-  onSubmit: async (values, { resetForm }) => {
+onSubmit: async (values, { resetForm }) => {
     try {
       const { confirmPassword, ...userData } = values; // remove o campo confirmar Senha antes de enviar para o back
       await postUser(userData);
@@ -56,14 +56,23 @@ export default function Cadastro() {
     resetForm(); //limpar o formulário após ter dado certo
 
     } catch (error: any) {
-      const messages = error.response?.data?.message;
-      if (Array.isArray(messages)) {
-        messages.forEach((msg: string) => toast.error(msg));
-      } else {
+      const apiMessage = error.response?.data?.message;
+
+      if (Array.isArray(apiMessage)) {
+        apiMessage.forEach((msg: string) => toast.error(msg));
+      }
+      if (Array.isArray(apiMessage)) {
+      apiMessage.forEach((msg: string) => toast.error(msg));
+      }
+      else if (typeof apiMessage === 'string') {
+      toast.error(apiMessage);
+      }
+       else {
         toast.error("Erro ao criar conta.");
       }
     }
   },
+  
 });
 
   return (
