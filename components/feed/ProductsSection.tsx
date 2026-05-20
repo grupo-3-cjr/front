@@ -7,7 +7,7 @@ type Product = {
 }
 
 type ProductSectionProps = {
-    subtitle: string;
+    subtitle?: string;
     products: Product[];
 }
 
