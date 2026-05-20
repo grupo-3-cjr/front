@@ -75,7 +75,7 @@ export default function Usuario() {
 
         {/* Avatar sobreposto entre hero e conteúdo */}
         <div className="absolute -bottom-15 left-45 w-50 h-50 rounded-full border-4 border-[#F6F3E4] overflow-hidden">
-         {/* <img src={User.profile_picture} alt={User.name} className="w-full h-full object-cover" />*/}
+        <img src="usuario.jpeg" alt={User.name} className="w-full h-full object-cover" />
         </div>
       </div>
 

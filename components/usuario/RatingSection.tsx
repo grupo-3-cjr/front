@@ -1,20 +1,20 @@
-import StoreCard from "./StoreCard"; 
+import RatingCard from "./RatingCard"; 
 
-type Store = {
-    logo_url: string;
+type Rating = {
+    avatar_url: string;
     name: string;
-    description: string;
+    text: string;
 }
 
-const stores: Store[] = [
+const Ratings: Rating[] = [
     {
-        logo_url: "/next.svg",
-        name: "Next",
-        description: "eletrônicos"
+        avatar_url: "/usuario.jpeg",
+        name: "Endrick",
+        text: "Endrick Moreira"
     },
 ];
 
-export default function StoreFunction() {
+export default function RatingFunction() {
     return (
         <section className="mt-11 ml-16">
             <section className="flex justify-between">
@@ -27,12 +27,13 @@ export default function StoreFunction() {
 
 
             <div className="flex gap-8px overflow-x-auto pb-4 gap-16">
-                {stores.map((store) => (
-                    <StoreCard
-                        key={store.name}
-                        logo_url={store.logo_url}
-                        name={store.name}
-                        description={store.description}
+                 className="w-24 h-24 object-contain rounded-xl"
+                {Ratings.map((rating) => (
+                    <RatingCard
+                        key={rating.name}
+                        avatar_url={rating.avatar_url}
+                        name={rating.name}
+                        text={rating.text}
                     />
                ))}
             </div>
