@@ -1,5 +1,6 @@
 "use client";
 
+import Link  from "next/link";
 import { League_Spartan } from "next/font/google";
 import { useState } from "react";
 import axios from "axios";
@@ -127,8 +128,10 @@ export default function Login() {
             >
               Não possui uma conta?
 
-              <span className="text-[#6336FF] font-medium cursor-pointer ml-2">
-                Cadastre-se
+              <span className="text-[#8854ff] hover:underline font-spartan font-semibold ml-2">
+                <Link href="/cadastro" >
+              Cadastre-se
+            </Link>
               </span>
             </p>
 
