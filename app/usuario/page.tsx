@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { League_Spartan } from "next/font/google";
 import Image from 'next/image';
@@ -32,15 +32,21 @@ const meusprodutos = [
     },
 ]; 
 
-/*const response = await api.get('/me', {
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
-});*/
-
-
-
 export default function Usuario() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+      const token = localStorage.getItem("token");
+
+      fetch("http://localhost:3001/user", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then((res) => res.json())
+        .then((data) => setUser(data));
+    }, []);
+
+    if (!user) return <p>Usuario não encontrado</p>;
+
   return (
     <div className="min-h-screen">
       
@@ -75,17 +81,15 @@ export default function Usuario() {
 
         {/* Avatar sobreposto entre hero e conteúdo */}
         <div className="absolute -bottom-15 left-45 w-50 h-50 rounded-full border-4 border-[#F6F3E4] overflow-hidden">
-        <img src="usuario.jpeg" alt={User.name} className="w-full h-full object-cover" />
+        <img src="usuario.jpeg" alt={user.name} className="w-full h-full object-cover" />
         </div>
       </div>
 
       {/* Conteúdo bege */}
-      <div className="bg-[#F6F3E4] pt-20 px-6">
-       {/* <h1 className="text-3xl font-bold">{user.name}</h1> */}
-        {/* <p className="text-gray-500">@ {User.username}</p> */}
-        {/* <p className="text-gray-500">✉ {User.email}</p> */}
-
-        <h2 className="text-xl font-bold mt-8 mb-4">Produtos</h2>
+      <div className="bg-[#F6F3E4] pt-17 px-6">
+        <h1 className="text-3xl font-bold">{user.name}</h1>
+        <p className="text-gray-500 pl-35 mt-15">@ {user.username}</p>
+        <p className="text-gray-500 pl-35 mt-1">✉ {user.email}</p>
 
         <section className="bg-[#F6F3E4] min-h-screen py-8 pr-24">
             <ProductsSection 
