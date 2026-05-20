@@ -20,14 +20,13 @@ export default function RatingFunction() {
             <section className="flex justify-between">
                 <div className="flex items-end justify-between mb-6">
                     <div className="flex items-baseline gap-2">
-                        <h2 className="text-3xl text-black font-bold mb-8">Lojas</h2>
+                        <h2 className="text-3xl text-black font-bold mb-8">Avaliações</h2>
                     </div>
                 </div>
             </section>
 
 
             <div className="flex gap-8px overflow-x-auto pb-4 gap-16">
-                 className="w-24 h-24 object-contain rounded-xl"
                 {Ratings.map((rating) => (
                     <RatingCard
                         key={rating.name}
