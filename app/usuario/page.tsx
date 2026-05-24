@@ -9,6 +9,7 @@ import ProductsSection from "@/components/feed/ProductsSection";
 import StoreSection from "@/components/usuario/StoreSection";
 import RatingSection from "@/components/usuario/RatingSection";
 import FeedNavbar from "@/components/feed/FeedNavbar";
+import EditarUsuarioCard from "@/components/usuario/EditarUsuarioCard";
 
 const meusprodutos = [
     {
@@ -34,18 +35,6 @@ const meusprodutos = [
 ]; 
 
 export default function Usuario() {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-      const token = localStorage.getItem("token");
-
-      fetch("http://localhost:3001/user", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-        .then((res) => res.json())
-        .then((data) => setUser(data));
-    }, []);
-
 return (
     <div className="min-h-screen">
       
@@ -69,6 +58,9 @@ return (
             <path d="M15 18l-6-6 6-6" />
           </svg>
         </button>
+
+        {/*Botao Editar-Perfil*/}
+          <EditarUsuarioCard/>
 
         {/* Avatar sobreposto entre hero e conteúdo */}
         <div className="absolute -bottom-15 left-45 w-50 h-50 rounded-full border-4 border-[#F6F3E4] overflow-hidden">
