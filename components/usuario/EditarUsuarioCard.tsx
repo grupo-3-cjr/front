@@ -25,18 +25,17 @@ export default function FeedNavbar() {
 
     return (
         <button style={{
-        position: "absolute",
-        top: "300px",
-        left: "1550px",
         backgroundColor: "#6c3cff",
         color: "white",
         border: "none",
         borderRadius: "50px",
-        padding: "10px 90px",
-        fontSize: "15px",
-        cursor: "pointer"
+        padding: "10px 40px",
+        fontSize: "clamp(13px, 1.5vw, 15px)",
+        cursor: "pointer",
+        whiteSpace: "nowrap",
+        width: "clamp(160px, 20vw, 220px)",
         }}>
         Editar Perfil
-    </button>
+        </button>
     )
 }
