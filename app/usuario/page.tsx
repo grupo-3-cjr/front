@@ -8,6 +8,7 @@ import { User } from "lucide-react";
 import ProductsSection from "@/components/feed/ProductsSection";
 import StoreSection from "@/components/usuario/StoreSection";
 import RatingSection from "@/components/usuario/RatingSection";
+import FeedNavbar from "@/components/feed/FeedNavbar";
 
 const meusprodutos = [
     {
@@ -45,25 +46,15 @@ export default function Usuario() {
         .then((data) => setUser(data));
     }, []);
 
-    if (!user) return <p>Usuario não encontrado</p>;
-
-  return (
+return (
     <div className="min-h-screen">
       
-      {/* Hero escuro com navbar */}
-      <div className="relative bg-black h-56">
-        <nav className="absolute top-0 left-0 right-0 flex justify-between items-center px-6 py-4">
-
-          <Image className="flex items-center" width={100} height={40} src="/STOCK.IO.svg" alt="Logo do site" />
+      {/* Navbar */}
+     <div className="relative bg-black h-56">
+        <nav className="absolute top-0 left-0 right-0 flex justify-between items-center px-6 py-4"></nav>
           
-
-          <div className="flex gap-4">
-            <button>LOGIN</button>
-            <button className="bg-purple-600 rounded-full px-5 py-2">CADASTRE-SE</button>
-          </div>
-        </nav>
-
-        <button className="absolute left-20 bottom-0 text-white">
+          <FeedNavbar/>
+          <button className="absolute left-20 bottom-0 text-white">
           <svg 
             xmlns="http://www.w3.org/2000/svg" 
             width="90" 
@@ -81,15 +72,15 @@ export default function Usuario() {
 
         {/* Avatar sobreposto entre hero e conteúdo */}
         <div className="absolute -bottom-15 left-45 w-50 h-50 rounded-full border-4 border-[#F6F3E4] overflow-hidden">
-        <img src="usuario.jpeg" alt={user.name} className="w-full h-full object-cover" />
+        <img src="usuario.jpeg" alt={User.name} className="w-full h-full object-cover" />
         </div>
       </div>
 
       {/* Conteúdo bege */}
       <div className="bg-[#F6F3E4] pt-17 px-6">
-        <h1 className="text-3xl font-bold">{user.name}</h1>
+        {/*<h1 className="text-3xl font-bold">{user.name}</h1>
         <p className="text-gray-500 pl-35 mt-15">@ {user.username}</p>
-        <p className="text-gray-500 pl-35 mt-1">✉ {user.email}</p>
+        <p className="text-gray-500 pl-35 mt-1">✉ {user.email}</p>*/}
 
         <section className="bg-[#F6F3E4] min-h-screen py-8 pr-24">
             <ProductsSection 
