@@ -10,9 +10,21 @@ const Ratings: Rating[] = [
     {
         avatar_url: "/usuario.jpeg",
         name: "Endrick",
-        text: "Endrick Moreira"
+        text: "Vou fazer o gol na copa"
+    },
+    {
+        avatar_url: "/usuario.jpeg",
+        name: "Joao Marcos",
+        text: "Vou fazer o gol na copa"
+    },
+
+        {
+        avatar_url: "/usuario.jpeg",
+        name: "Neymar junior",
+        text: "Vou fazer o gol na copa"
     },
 ];
+
 
 export default function RatingFunction() {
     return (

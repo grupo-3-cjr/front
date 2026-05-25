@@ -22,6 +22,7 @@ export default function ProductCard({name, image, storeLogo}: ProductCardProps) 
             />
 
             <span className="font-semibold text-black text-lg -translate-y-8">{name}</span>
+            
         </article>
     );
 }

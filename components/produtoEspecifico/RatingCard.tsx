@@ -1,3 +1,5 @@
+
+
 type RatingCardProps = {
     avatar_url: string;
     name: string;
@@ -19,7 +21,7 @@ export default function RatingCard({avatar_url, name, text, rating = 5}: RatingC
             {/* Nome e texto no meio */}
             <div className="flex flex-col gap-1 flex-1 items-start pt-2">
                 <span className="text-black font-semibold text-4xl">{name}</span>
-                <span className="text-gray-500 text-sm">{text}</span>
+                <span className=" font-spartan-light text-black text-x">{text}</span>
             </div>
 
             {/* Estrelas e "ver mais" à direita */}
