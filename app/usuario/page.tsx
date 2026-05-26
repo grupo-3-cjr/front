@@ -20,10 +20,24 @@ const meusprodutos = [
 
 export default function Usuario() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [products, setProducts] = useState ([]);
+  const [stores, setStores] = useState([]);
+  const [productsRating, setProductsRating] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userId");
     setIsLoggedIn(!!token);
+  
+  Promise.all([
+    fetch(`/user/${userId}/products`).then(res => res.json()),
+    fetch(`/user/${userId}/stores`).then(res => res.json()),
+    fetch(`/user/${userId}/productsRating`).then(res => res.json()),
+  ]).then(([products, stores, procuctsRating]) => {
+    setProducts(products);
+    setStores(stores);
+    setProductsRating(productsRating);
+  });
   }, []);
 
   return (
@@ -68,8 +82,8 @@ export default function Usuario() {
         )}
 
         <section className="bg-[#F6F3E4] min-h-screen py-8 pr-24">
-          <ProductsSection products={meusprodutos} />
-          <StoreSection />
+          <ProductsSection products={products} />
+          <StoreSection stores={stores}/>
           <RatingSection />
         </section>
 
