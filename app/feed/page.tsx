@@ -1,3 +1,7 @@
+"use client"
+
+import { useEffect, useState } from "react";
+
 import FeedNavbar from "@/components/feed/FeedNavbar";
 import Hero from "@/components/feed/Hero";
 import SearchBar from "@/components/feed/SearchBar"
@@ -5,77 +9,32 @@ import CategoryList from "@/components/feed/CategoryList"
 import ProductsSection from "@/components/feed/ProductsSection"
 import StoreSection from "@/components/feed/StoreSection"
 
-const melhoresAvaliados = [
-    {
-        name: "Brownie",
-        image: "/brownie.jpg",
-        storeLogo: "/globe.svg"
-    },
-    {
-        name: "Bola",
-        image: "/bola.jpeg",
-        storeLogo: "/globe.svg"
-    },
-        {
-        name: "Quadro",
-        image: "/quadro.jpeg",
-        storeLogo: "/globe.svg"
-    },
-    {
-        name: "Brownie",
-        image: "/brownie.jpg",
-        storeLogo: "/globe.svg"
-    },
-    {
-        name: "Bola",
-        image: "/bola.jpeg",
-        storeLogo: "/globe.svg"
-    },
-        {
-        name: "Quadro",
-        image: "/quadro.jpeg",
-        storeLogo: "/globe.svg"
-    },
-];
-
-const maisBaratos = [
-    {
-        name: "Brownie",
-        image: "/brownie.jpg",
-        storeLogo: "/globe.svg"
-    },
-    {
-        name: "Bola",
-        image: "/bola.jpeg",
-        storeLogo: "/globe.svg"
-    },
-        {
-        name: "Quadro",
-        image: "/quadro.jpeg",
-        storeLogo: "/globe.svg"
-    },
-]
-
-const recemAdicionados = [
-    {
-        name: "Brownie",
-        image: "/brownie.jpg",
-        storeLogo: "/globe.svg"
-    },
-    {
-        name: "Bola",
-        image: "/bola.jpeg",
-        storeLogo: "/globe.svg"
-    },
-        {
-        name: "Quadro",
-        image: "/quadro.jpeg",
-        storeLogo: "/globe.svg"
-    },
-]
-
+type Product = {
+    id: number;
+    store_id: number;
+    category_id: number;
+    name: string;
+    description: string;
+    price: string;
+    stock: number;
+    createdAt: string;
+    updatedAt: string;
+}
 
 export default function FeedPage() {
+    const [products, setProducts] = useState<Product[]>([]);
+
+    useEffect(() => {
+        async function loadProducts() {
+            const response = await fetch("http://localhost:3001/produtos");
+            const data = await response.json();
+
+            setProducts(data);
+        }
+
+        loadProducts();
+    }, []);
+
     return (
         <main>
             <FeedNavbar/>
@@ -86,15 +45,15 @@ export default function FeedPage() {
                 <CategoryList />
                 <ProductsSection
                     subtitle="melhores avaliados"
-                    products={melhoresAvaliados}
+                    products={products}
                 />
                 <ProductsSection
                     subtitle="mais baratos"
-                    products={maisBaratos}
+                    products={products}
                 />
                 <ProductsSection
                     subtitle="recém adicionados"
-                    products={recemAdicionados}
+                    products={products}
                 />
                 <StoreSection />
             </section>
