@@ -1,9 +1,20 @@
+"use client"
+
+import { useEffect, useState } from "react";
+
 import FeedNavbar from "@/components/feed/FeedNavbar";
 import Hero from "@/components/feed/Hero";
 import SearchBar from "@/components/feed/SearchBar"
 import CategoryList from "@/components/feed/CategoryList"
 import ProductsSection from "@/components/feed/ProductsSection"
 import StoreSection from "@/components/feed/StoreSection"
+
+type Category = {
+    id: number;
+    name: string;
+    parent_category_id: number | null;
+}
+
 
 const melhoresAvaliados = [
     {
@@ -76,14 +87,30 @@ const recemAdicionados = [
 
 
 export default function FeedPage() {
+    const [categories, setCategories] = useState<Category[]>([]);
+
+    useEffect(() => {
+        async function loadCategories() {
+            const response = await fetch("http://localhost:3001/category")
+            const data = await response.json();
+
+            setCategories(data);
+        }
+
+        loadCategories();
+    }, [])
+
     return (
         <main>
             <FeedNavbar/>
+
             <Hero />
 
             <section className="bg-[#F6F3E4] min-h-screen py-8 pr-24">
                 <SearchBar />
-                <CategoryList />
+
+                <CategoryList categories={categories} />
+
                 <ProductsSection
                     subtitle="melhores avaliados"
                     products={melhoresAvaliados}
