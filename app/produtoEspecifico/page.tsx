@@ -47,8 +47,8 @@ const produtoAtual = {
     storeLogo: "/globe.svg",
     description: {
         subtitle: "Garrafa da copa 1 Litro",
-        text: "garrafa vem com agua",
-        ingredients: "agua, tampa, garrafa, ",
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras felis dolor, sollicitudin vel porttitor at, cursus ac justo. Nulla pharetra vitae sapien at efficitur. Maecenas in lobortis dui. Cras interdum malesuada turpis, quis euismod ex efficitur at. Pellentesque venenatis porta nulla, in interdum mauris tempus ac. Integer a erat metus. Proin lacinia ligula id mauris luctus, a venenatis neque venenatis. Praesent et mauris vel mauris dapibus placerat. Nullam rutrum laoreet ipsum, auctor consequat metus posuere ac. Vestibulum tempor sapien sed lacus semper, ac aliquet nibh blandit. Etiam gravida neque vestibulum tortor pellentesque tristique. Praesent nisi nulla, scelerisque bibendum odio in, auctor molestie libero. Integer ac semper velit. Phasellus ac sodales orci. Nullam egestas arcu sem, et aliquam lacus malesuada eu.",
+        ingredients: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sollicitudin sem erat, at tristique leo rutrum quis. In eu blandit, ",
         allergens: [
             "CONTÉM ÁGUA.",
             "CONTÉM GARRAFA.",
