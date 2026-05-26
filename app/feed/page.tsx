@@ -22,17 +22,17 @@ const melhoresAvaliados = [
         storeLogo: "/globe.svg"
     },
     {
-        name: "Brownie",
+        name: "Brownizinho",
         image: "/brownie.jpg",
         storeLogo: "/globe.svg"
     },
     {
-        name: "Bola",
+        name: "Bolinha",
         image: "/bola.jpeg",
         storeLogo: "/globe.svg"
     },
         {
-        name: "Quadro",
+        name: "Quadrinho",
         image: "/quadro.jpeg",
         storeLogo: "/globe.svg"
     },
