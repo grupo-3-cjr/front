@@ -6,15 +6,15 @@ type Rating = {
     text: string;
 }
 
-const Ratings: Rating[] = [
+{/*const Ratings: Rating[] = [
     {
         avatar_url: "/usuario.jpeg",
         name: "Endrick",
         text: "Endrick Moreira"
     },
-];
+];*/}
 
-export default function RatingFunction() {
+export default function RatingFunction({ ratings }: { ratings: Rating[] }) {
     return (
         <section className="mt-11 ml-16">
             <section className="flex justify-between">
@@ -27,7 +27,7 @@ export default function RatingFunction() {
 
 
             <div className="flex gap-8px overflow-x-auto pb-4 gap-16">
-                {Ratings.map((rating) => (
+                {ratings.map((rating) => (
                     <RatingCard
                         key={rating.name}
                         avatar_url={rating.avatar_url}
