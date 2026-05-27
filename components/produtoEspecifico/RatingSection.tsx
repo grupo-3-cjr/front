@@ -4,13 +4,17 @@ type Rating = {
     avatar_url: string;
     name: string;
     text: string;
+    rating?: number; 
+    isOwner?: boolean; 
 }
 
 const Ratings: Rating[] = [
     {
         avatar_url: "/usuario.jpeg",
         name: "Endrick",
-        text: "Vou fazer o gol na copa"
+        text: "Vou fazer o gol na copa",
+        isOwner: false,
+        rating: 1
     },
     {
         avatar_url: "/usuario.jpeg",
@@ -45,6 +49,8 @@ export default function RatingFunction() {
                         avatar_url={rating.avatar_url}
                         name={rating.name}
                         text={rating.text}
+                        rating={rating.rating}
+                        isOwner={rating.isOwner}
                     />
                ))}
             </div>
