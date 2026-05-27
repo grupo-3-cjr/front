@@ -21,10 +21,24 @@ type Product = {
     updatedAt: string;
 }
 
+type Category = {
+    id: number;
+    name: string;
+    parent_category_id: number | null;
+}
+
 export default function FeedPage() {
     const [products, setProducts] = useState<Product[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
 
     useEffect(() => {
+        async function loadCategories() {
+            const response = await fetch("http://localhost:3001/category")
+            const data = await response.json();
+
+            setCategories(data);
+        }
+      
         async function loadProducts() {
             const response = await fetch("http://localhost:3001/produtos");
             const data = await response.json();
@@ -33,16 +47,20 @@ export default function FeedPage() {
         }
 
         loadProducts();
+        loadCategories();
     }, []);
 
     return (
         <main>
             <FeedNavbar/>
+
             <Hero />
 
             <section className="bg-[#F6F3E4] min-h-screen py-8 pr-24">
                 <SearchBar />
-                <CategoryList />
+
+                <CategoryList categories={categories} />
+
                 <ProductsSection
                     subtitle="melhores avaliados"
                     products={products}
