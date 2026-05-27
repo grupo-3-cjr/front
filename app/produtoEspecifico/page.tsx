@@ -1,8 +1,15 @@
+"use client";
+import { useEffect, useState } from "react";
 import FeedNavbar from "@/components/feed/FeedNavbar";
 import ProductusSection from "@/components/produtoEspecifico/ProductsSection";
 import ProductDetailsSection from "@/components/produtoEspecifico/ProductDetailsSection";
 import RatingSection from "@/components/produtoEspecifico/RatingSection";
  
+
+
+
+
+
  const ProdutosLoja = [
     {
         name: "Brownie",
@@ -44,6 +51,8 @@ const produtoAtual = {
         "/bola.jpeg",
         "/globe.svg"
     ],
+    isOwner: true,
+    isLoggedIn: true,
     storeLogo: "/globe.svg",
     description: {
         subtitle: "Garrafa da copa 1 Litro",
@@ -55,12 +64,21 @@ const produtoAtual = {
             "ALÉRGICOS: CONTÉM OVO."
         ]
     }
+
 };
 
+
  export default function produtoEspecifico() {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        setIsLoggedIn(!!token);
+    }, []);
+
      return (
          <main>
-             <FeedNavbar/>
+             <FeedNavbar />
              <section className="bg-[#F6F3E4] min-h-screen py-8 pr-24">
 
             <ProductDetailsSection 
@@ -73,9 +91,11 @@ const produtoAtual = {
                     images={produtoAtual.images}
                     storeLogo={produtoAtual.storeLogo}
                     description={produtoAtual.description}
+                    isOwner = {false}
+                    isLoggedIn = {isLoggedIn}
                 />
                 
-                <RatingSection />
+                <RatingSection  />
 
                 <ProductusSection
                     subtitle="Da mesma loja"
