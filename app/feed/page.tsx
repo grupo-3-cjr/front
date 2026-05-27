@@ -88,6 +88,7 @@ const recemAdicionados = [
 
 export default function FeedPage() {
     const [categories, setCategories] = useState<Category[]>([]);
+    const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
         async function loadCategories() {
@@ -100,6 +101,10 @@ export default function FeedPage() {
         loadCategories();
     }, [])
 
+    const filteredCategories = categories.filter((category) => 
+        category.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     return (
         <main>
             <FeedNavbar/>
@@ -107,9 +112,9 @@ export default function FeedPage() {
             <Hero />
 
             <section className="bg-[#F6F3E4] min-h-screen py-8 pr-24">
-                <SearchBar />
+                <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
-                <CategoryList categories={categories} />
+                <CategoryList categories={filteredCategories} />
 
                 <ProductsSection
                     subtitle="melhores avaliados"
