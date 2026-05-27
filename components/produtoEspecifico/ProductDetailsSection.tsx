@@ -1,6 +1,7 @@
 "use client"; 
 
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { Pen, Star } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 type DescriptionData = {
@@ -20,6 +21,8 @@ type ProductDetailsProps = {
     images: string[];
     storeLogo: string;
     description: DescriptionData;
+    isLoggedIn: boolean; 
+    isOwner: boolean;
 };
 
 export default function ProductDetailsSection({
@@ -31,7 +34,9 @@ export default function ProductDetailsSection({
     price,
     images,
     storeLogo,
-    description
+    description,
+    isLoggedIn,
+    isOwner,
 }: ProductDetailsProps) {
 
     const [mainImage, setMainImage] = useState(images[0]);
@@ -63,11 +68,11 @@ export default function ProductDetailsSection({
                         </div>
                     ))}
                 </div>
-                {/* Imagem maior(selecionada)*/}
+                {/* Imagem maior*/}
                 <div className="bg-white rounded-3xl flex-1 min-h-150 flex items-center justify-center p-8 relative shadow-sm">
                     
                     <img src={mainImage} alt={title} className="w-full max-w-sm object-contain" />
-                    {/*miniatua da logo */}
+                    {/*miniatura da logo */}
                     <img 
                         src={storeLogo} 
                         alt="Logo da Loja" 
@@ -79,7 +84,23 @@ export default function ProductDetailsSection({
             {/* Lado Direito do texto */}
             <div className="flex flex-col w-full lg:w-[60%] py-4">
                 
-                <h1 className="text-4xl font-bold text-black mb-2">{title}</h1>
+                <div className="flex items-center gap-3 mb-4">
+                    <h1 className="text-5xl font-bold text-black">{title}</h1>
+                    
+                    {/* Renderiza o botão de Editar se for o dono */}
+                    {isLoggedIn && isOwner && (
+                        <button className="w-10 h-10 bg-[#6A38F3] rounded-full flex items-center justify-center text-white hover:bg-purple-800 transition-colors shadow-sm" title="Editar Produto">
+                                <Pen className="w-6 h-6" />
+                        </button>
+                    )}
+
+                    {/* Renderiza o botão de Avaliar  se estiver logado mas não for o dono */}
+                    {isLoggedIn && !isOwner && (
+                        <button className="w-10 h-10 bg-[#C6E700] rounded-full flex items-center justify-center text-white hover:bg-[#a2cf18] transition-colors shadow-sm" title="Avaliar Produto">
+                                <Star className="w-7 h-7" fill="currentColor" />
+                        </button>
+                    )}
+                </div>
                 
                 <div className="flex items-center gap-4 text-sm1 mb-5">
                     <span className="flex items-center text-yellow-500">
