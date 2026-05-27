@@ -9,84 +9,26 @@ import CategoryList from "@/components/feed/CategoryList"
 import ProductsSection from "@/components/feed/ProductsSection"
 import StoreSection from "@/components/feed/StoreSection"
 
+type Product = {
+    id: number;
+    store_id: number;
+    category_id: number;
+    name: string;
+    description: string;
+    price: string;
+    stock: number;
+    createdAt: string;
+    updatedAt: string;
+}
+
 type Category = {
     id: number;
     name: string;
     parent_category_id: number | null;
 }
 
-
-const melhoresAvaliados = [
-    {
-        name: "Brownie",
-        image: "/brownie.jpg",
-        storeLogo: "/globe.svg"
-    },
-    {
-        name: "Bola",
-        image: "/bola.jpeg",
-        storeLogo: "/globe.svg"
-    },
-        {
-        name: "Quadro",
-        image: "/quadro.jpeg",
-        storeLogo: "/globe.svg"
-    },
-    {
-        name: "Brownie",
-        image: "/brownie.jpg",
-        storeLogo: "/globe.svg"
-    },
-    {
-        name: "Bola",
-        image: "/bola.jpeg",
-        storeLogo: "/globe.svg"
-    },
-        {
-        name: "Quadro",
-        image: "/quadro.jpeg",
-        storeLogo: "/globe.svg"
-    },
-];
-
-const maisBaratos = [
-    {
-        name: "Brownie",
-        image: "/brownie.jpg",
-        storeLogo: "/globe.svg"
-    },
-    {
-        name: "Bola",
-        image: "/bola.jpeg",
-        storeLogo: "/globe.svg"
-    },
-        {
-        name: "Quadro",
-        image: "/quadro.jpeg",
-        storeLogo: "/globe.svg"
-    },
-]
-
-const recemAdicionados = [
-    {
-        name: "Brownie",
-        image: "/brownie.jpg",
-        storeLogo: "/globe.svg"
-    },
-    {
-        name: "Bola",
-        image: "/bola.jpeg",
-        storeLogo: "/globe.svg"
-    },
-        {
-        name: "Quadro",
-        image: "/quadro.jpeg",
-        storeLogo: "/globe.svg"
-    },
-]
-
-
 export default function FeedPage() {
+    const [products, setProducts] = useState<Product[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
 
     useEffect(() => {
@@ -96,9 +38,17 @@ export default function FeedPage() {
 
             setCategories(data);
         }
+      
+        async function loadProducts() {
+            const response = await fetch("http://localhost:3001/produtos");
+            const data = await response.json();
 
+            setProducts(data);
+        }
+
+        loadProducts();
         loadCategories();
-    }, [])
+    }, []);
 
     return (
         <main>
@@ -113,15 +63,15 @@ export default function FeedPage() {
 
                 <ProductsSection
                     subtitle="melhores avaliados"
-                    products={melhoresAvaliados}
+                    products={products}
                 />
                 <ProductsSection
                     subtitle="mais baratos"
-                    products={maisBaratos}
+                    products={products}
                 />
                 <ProductsSection
                     subtitle="recém adicionados"
-                    products={recemAdicionados}
+                    products={products}
                 />
                 <StoreSection />
             </section>
