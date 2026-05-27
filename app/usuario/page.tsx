@@ -11,18 +11,11 @@ import RatingSection from "@/components/usuario/RatingSection";
 import FeedNavbar from "@/components/feed/FeedNavbar";
 import EditarUsuarioCard from "@/components/usuario/EditarUsuarioCard";
 
-const meusprodutos = [
-    { name: "Brownie", image: "/brownie.jpg", storeLogo: "/globe.svg" },
-    { name: "Bola", image: "/bola.jpeg", storeLogo: "/globe.svg" },
-    { name: "Quadro", image: "/quadro.jpeg", storeLogo: "/globe.svg" },
-    { name: "Brownie", image: "/brownie.jpg", storeLogo: "/globe.svg" },
-];
-
 export default function Usuario() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [products, setProducts] = useState ([]);
   const [stores, setStores] = useState([]);
-  const [productsRating, setProductsRating] = useState([]);
+  const [ratingComments, setRatingComments] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -32,11 +25,11 @@ export default function Usuario() {
   Promise.all([
     fetch(`/user/${userId}/products`).then(res => res.json()),
     fetch(`/user/${userId}/stores`).then(res => res.json()),
-    fetch(`/user/${userId}/productsRating`).then(res => res.json()),
-  ]).then(([products, stores, procuctsRating]) => {
+    fetch(`/user/${userId}/ratingComments`).then(res => res.json()),
+  ]).then(([products, stores, ratingComments]) => {
     setProducts(products);
     setStores(stores);
-    setProductsRating(productsRating);
+    setRatingComments(ratingComments);
   });
   }, []);
 
@@ -84,7 +77,7 @@ export default function Usuario() {
         <section className="bg-[#F6F3E4] min-h-screen py-8 pr-24">
           <ProductsSection products={products} />
           <StoreSection stores={stores}/>
-          <RatingSection />
+          <RatingSection ratingComments={ratingComments}/>
         </section>
 
       </div>
