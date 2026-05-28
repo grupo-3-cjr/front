@@ -1,7 +1,12 @@
 "use client";
 
+import Link  from "next/link";
 import { League_Spartan } from "next/font/google";
 import { useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const leagueSpartan = League_Spartan({
   subsets: ["latin"],
@@ -9,11 +14,29 @@ const leagueSpartan = League_Spartan({
 });
 
 export default function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const id = toast.loading("Verificando credenciais...");
+    try {
+      const response = await axios.post("http://localhost:3001/login", { email, password });
+      toast.update(id, { render: "Login realizado com sucesso!", type: "success", isLoading: false, autoClose: 3000 });
+      localStorage.setItem("token", response.data.access_token);
+      router.push("/feed")
+    } catch (err: any) {
+      const msg = err.response?.data?.message || "Erro ao fazer login";
+      toast.update(id, { render: msg, type: "error", isLoading: false, autoClose: 3000 });
+    }
+  };
+
 
   return (
    <main className="min-h-screen w-full flex justify-center lg:justify-start lg:flex-row bg-[#F6F3E4]">
+    <ToastContainer theme="colored" />
 
       {/* Container principal */}
       <div className="flex w-full max-w-360 h-screen items-center justify-between px-4 md:px-8 xl:px-20 relative gap-6 xl:gap-12">
@@ -52,11 +75,12 @@ export default function Login() {
 
           
           {/* FORM */}
-          <form className="flex flex-col items-center w-full gap-5">
+          <form onSubmit={handleSubmit} className="flex flex-col items-center w-full gap-5">
 
             {/* EMAIL */}
             <input
               type="email"
+              onChange={(e) => setEmail(e.target.value)} 
               placeholder="Email"
               className="w-full h-11.25 px-6 rounded-full bg-[#EBE9D4] text-black outline-none"
             />
@@ -67,6 +91,7 @@ export default function Login() {
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="Senha"
+                onChange={(e) => setPassword(e.target.value)}
                 className="w-full h-11.25 px-6 pr-14 rounded-full bg-[#EBE9D4] text-black outline-none"
               />
 
@@ -104,8 +129,10 @@ export default function Login() {
             >
               Não possui uma conta?
 
-              <span className="text-[#6336FF] font-medium cursor-pointer ml-2">
-                Cadastre-se
+              <span className="text-[#8854ff] hover:underline font-spartan font-semibold ml-2">
+                <Link href="/cadastro" >
+              Cadastre-se
+            </Link>
               </span>
             </p>
 

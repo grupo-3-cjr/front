@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link  from "next/link";
 import Image from 'next/image';
 import { Eye, EyeOff } from 'lucide-react'; // Para colocar o emoji do olho
+import { useRouter } from "next/navigation";
 
 import { useFormik } from 'formik'; // para facilitar na validação do formulário
 import { toast, ToastContainer } from 'react-toastify'; //para realizar notificações eficientes
@@ -36,7 +37,7 @@ const validationSchema = yup.object().shape({ //define as regras de validação 
 export default function Cadastro() {
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const [mostrarSenhaConfirmada, setMostrarSenhaConfirmada] = useState(false);
-
+  const router = useRouter();
  const formik = useFormik({ // Define os valores iniciais do formulário
     initialValues: {
       name: '',
@@ -47,23 +48,33 @@ export default function Cadastro() {
     },
     validationSchema,
 
-  onSubmit: async (values, { resetForm }) => {
+onSubmit: async (values, { resetForm }) => {
     try {
       const { confirmPassword, ...userData } = values; // remove o campo confirmar Senha antes de enviar para o back
       await postUser(userData);
       
     toast.success("Conta criada com sucesso! 🎉");
     resetForm(); //limpar o formulário após ter dado certo
+    router.push("/login")
 
     } catch (error: any) {
-      const messages = error.response?.data?.message;
-      if (Array.isArray(messages)) {
-        messages.forEach((msg: string) => toast.error(msg));
-      } else {
+      const apiMessage = error.response?.data?.message;
+
+      if (Array.isArray(apiMessage)) {
+        apiMessage.forEach((msg: string) => toast.error(msg));
+      }
+      if (Array.isArray(apiMessage)) {
+      apiMessage.forEach((msg: string) => toast.error(msg));
+      }
+      else if (typeof apiMessage === 'string') {
+      toast.error(apiMessage);
+      }
+       else {
         toast.error("Erro ao criar conta.");
       }
     }
   },
+  
 });
 
   return (
