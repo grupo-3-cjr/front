@@ -9,24 +9,6 @@ import CategoryList from "@/components/feed/CategoryList"
 import ProductsSection from "@/components/feed/ProductsSection"
 import StoreSection from "@/components/feed/StoreSection"
 
-type Product = {
-    id: number;
-    store_id: number;
-    category_id: number;
-    name: string;
-    description: string;
-    price: string;
-    stock: number;
-    createdAt: string;
-    updatedAt: string;
-}
-
-type Category = {
-    id: number;
-    name: string;
-    parent_category_id: number | null;
-}
-
 export default function FeedPage() {
     const [products, setProducts] = useState<Product[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
