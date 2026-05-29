@@ -42,21 +42,27 @@ export default function FeedPage() {
 
     useEffect(() => {
         async function loadCategories() {
-            const response = await fetch("http://localhost:3001/category")
+            const response = await fetch(
+                `http://localhost:3001/category?search=${searchTerm}`
+            );
             const data = await response.json();
 
             setCategories(data);
         }
       
         async function loadProducts() {
-            const response = await fetch("http://localhost:3001/produtos");
+            const response = await fetch(
+                `http://localhost:3001/produtos?search=${searchTerm}`
+            );
             const data = await response.json();
 
             setProducts(data);
         }
 
         async function loadStores() {
-            const response = await fetch("http://localhost:3001/store");
+            const response = await fetch(
+                `http://localhost:3001/store?search=${searchTerm}`
+            );
             const data = await response.json();
 
             setStores(data);
@@ -65,18 +71,16 @@ export default function FeedPage() {
         loadProducts();
         loadCategories();
         loadStores();
-    }, []);
+    }, [searchTerm]);
 
-    const filteredCategories = categories.filter((category) => 
-        category.name.toLowerCase().includes(searchTerm.toLowerCase())
+    const produtosMelhoresAvaliados = [...products];
+
+    const produtosMaisBaratos = [...products].sort(
+        (a, b) => Number(a.price) - Number(b.price)
     );
 
-    const filteredProducts = products.filter((product) =>
-        product.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
-    const filteredStores = stores.filter((store) =>
-        store.name.toLowerCase().includes(searchTerm.toLowerCase())
+    const produtosRecemAdicionados = [...products].sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
 
     return (
@@ -86,23 +90,28 @@ export default function FeedPage() {
             <Hero />
 
             <section className="bg-[#F6F3E4] min-h-screen py-8 pr-24">
+                
                 <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
-                <CategoryList categories={filteredCategories} />
+                <CategoryList categories={categories} />
 
                 <ProductsSection
                     subtitle="melhores avaliados"
-                    products={filteredProducts}
+                    products={produtosMelhoresAvaliados}
                 />
+
                 <ProductsSection
                     subtitle="mais baratos"
-                    products={filteredProducts}
+                    products={produtosMaisBaratos}
                 />
+
                 <ProductsSection
                     subtitle="recém adicionados"
-                    products={filteredProducts}
+                    products={produtosRecemAdicionados}
                 />
-                <StoreSection stores={filteredStores} />
+
+                <StoreSection stores={stores} />
+
             </section>
         </main>
     );
