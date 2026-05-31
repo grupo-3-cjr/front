@@ -6,15 +6,15 @@ type Store = {
     description: string;
 }
 
-const stores: Store[] = [
+{/*const stores: Store[] = [
     {
         logo_url: "/next.svg",
         name: "Next",
         description: "eletrônicos"
     },
-];
+];*/}
 
-export default function StoreFunction() {
+export default function StoreFunction({ stores }: { stores: Store[] }) {
     return (
         <section className="mt-11 ml-16">
             <section className="flex justify-between">
