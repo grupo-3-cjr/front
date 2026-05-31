@@ -11,9 +11,15 @@ import RatingSection from "@/components/usuario/RatingSection";
 import FeedNavbar from "@/components/feed/FeedNavbar";
 import EditarUsuarioCard from "@/components/usuario/EditarUsuarioCard";
 
+interface UserData {
+  name: string;
+  avatar?: string;
+}
+
 export default function Usuario() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [products, setProducts] = useState ([]);
+  const [user, setUser] = useState<UserData | null>(null);
+  const [products, setProducts] = useState([]);
   const [stores, setStores] = useState([]);
   const [ratingComments, setRatingComments] = useState([]);
 
@@ -21,16 +27,31 @@ export default function Usuario() {
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("userId");
     setIsLoggedIn(!!token);
-  
-  Promise.all([
-    fetch(`/user/${userId}/products`).then(res => res.json()),
-    fetch(`/user/${userId}/stores`).then(res => res.json()),
-    fetch(`/user/${userId}/ratingComments`).then(res => res.json()),
-  ]).then(([products, stores, ratingComments]) => {
-    setProducts(products);
-    setStores(stores);
-    setRatingComments(ratingComments);
-  });
+
+    Promise.all([
+      fetch(`http://localhost:3001/user/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      }).then(res => res.json()),
+      fetch(`http://localhost:3001/produtos`, {
+        headers: { Authorization: `Bearer ${token}` }
+      }).then(res => res.json()),
+      fetch(`http://localhost:3001/store`, {
+        headers: { Authorization: `Bearer ${token}` }
+      }).then(res => res.json()),
+      fetch(`http://localhost:3001/comments`, {
+        headers: { Authorization: `Bearer ${token}` }
+      }).then(res => res.json()),
+]).then(([userData, productsData, storesData, commentsData]) => {
+      console.log("userData:", userData);
+      console.log("productsData:", productsData);
+      console.log("storesData:", storesData);
+      console.log("commentsData:", commentsData);
+
+      setUser(userData);
+      setProducts(Array.isArray(productsData) ? productsData : []);
+      setStores(Array.isArray(storesData) ? storesData : []);
+      setRatingComments(Array.isArray(commentsData) ? commentsData : []);
+    });
   }, []);
 
   return (
@@ -59,9 +80,11 @@ export default function Usuario() {
         </button>
 
         {/* Avatar sobreposto entre hero e conteúdo */}
-        <div className="absolute -bottom-15 left-45 w-50 h-50 rounded-full border-4 border-[#F6F3E4] overflow-hidden">
-          <img src="usuario.jpeg" alt={User.name} className="w-full h-full object-cover" />
-        </div>
+        {user && (
+          <div className="absolute -bottom-15 left-45 w-50 h-50 rounded-full border-4 border-[#F6F3E4] overflow-hidden">
+            <img src="usuario.jpeg" alt={user.name} className="w-full h-full object-cover" />
+          </div>
+        )}
       </div>
 
       {/* Conteúdo bege */}
@@ -77,7 +100,7 @@ export default function Usuario() {
         <section className="bg-[#F6F3E4] min-h-screen py-8 pr-24">
           <ProductsSection products={products} />
           <StoreSection stores={stores}/>
-          <RatingSection ratingComments={ratingComments}/>
+          {/*<RatingSection ratingComments={ratingComments}/>*/}
         </section>
 
       </div>

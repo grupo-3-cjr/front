@@ -11,9 +11,9 @@ type ProductSectionProps = {
     products: Product[];
 }
 
-export default function ProductusSection({subtitle, products}: ProductSectionProps) {
+export default function ProductusSection({subtitle, products = []}: ProductSectionProps) {
     return (
-        <section className="mt-9 ml-16">
+        <section className="mt-9 ml-16">        
             <div className="flex items-end justify-between mb-6">
                 <div className="flex items-baseline gap-2">
                     <h2 className="text-3xl text-black font-bold mb-8">Produtos</h2>
