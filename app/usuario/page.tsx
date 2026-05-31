@@ -31,8 +31,6 @@ export default function Usuario() {
     const payload = JSON.parse(atob(token.split('.')[1]));
     const userIdNumber = payload.sub;
     setIsLoggedIn(!!token);
-    console.log("userIdNumber:", userIdNumber);
-    console.log("token:", token);
 
     Promise.all([
       fetch(`http://localhost:3001/user/${userIdNumber}`, {
@@ -48,10 +46,6 @@ export default function Usuario() {
         headers: { Authorization: `Bearer ${token}` }
       }).then(res => res.json()),
 ]).then(([userData, productsData, storesData, commentsData]) => {
-      console.log("userData:", userData);
-      console.log("productsData:", productsData);
-      console.log("storesData:", storesData);
-      console.log("commentsData:", commentsData);
 
       setUser(userData);
       setProducts(Array.isArray(productsData) ? productsData : []);
