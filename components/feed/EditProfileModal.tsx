@@ -4,6 +4,7 @@ import { League_Spartan } from "next/font/google";
 import { useState, useRef, useEffect } from "react";
 import api from "@/app/services/api";
 import { toast, ToastContainer } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const leagueSpartan = League_Spartan({
   subsets: ["latin"],
@@ -27,6 +28,7 @@ export default function EditProfileModal({
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [userId, setUserId] = useState< number | null> (null);
+  const router = useRouter();
 
   useEffect(() => {
   // Pega o id do usuário e busca os dados do perfil
@@ -84,7 +86,8 @@ export default function EditProfileModal({
       { headers: { Authorization: `Bearer ${token}` } }
     );
     toast.success("Conta deletada com sucesso!");
-    onClose();
+    localStorage.removeItem("token");
+    router.push("/login");
   } catch (error: any) {
     const msg = error.response?.data?.message || "Erro ao deletar conta";
     toast.error(msg);
