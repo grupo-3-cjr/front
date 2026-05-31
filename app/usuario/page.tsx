@@ -12,8 +12,11 @@ import FeedNavbar from "@/components/feed/FeedNavbar";
 import EditarUsuarioCard from "@/components/usuario/EditarUsuarioCard";
 
 interface UserData {
+  id: number;
   name: string;
-  avatar?: string;
+  username: string;
+  email: string;
+  profile_picture_url?: string;
 }
 
 export default function Usuario() {
@@ -25,11 +28,14 @@ export default function Usuario() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    const userId = localStorage.getItem("userId");
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const userIdNumber = payload.sub;
     setIsLoggedIn(!!token);
+    console.log("userIdNumber:", userIdNumber);
+    console.log("token:", token);
 
     Promise.all([
-      fetch(`http://localhost:3001/user/${userId}`, {
+      fetch(`http://localhost:3001/user/${userIdNumber}`, {
         headers: { Authorization: `Bearer ${token}` }
       }).then(res => res.json()),
       fetch(`http://localhost:3001/produtos`, {
@@ -82,13 +88,25 @@ export default function Usuario() {
         {/* Avatar sobreposto entre hero e conteúdo */}
         {user && (
           <div className="absolute -bottom-15 left-45 w-50 h-50 rounded-full border-4 border-[#F6F3E4] overflow-hidden">
-            <img src="usuario.jpeg" alt={user.name} className="w-full h-full object-cover" />
+            <img 
+              src={user.profile_picture_url || "/usuario.jpeg"}
+              alt={user.name} 
+              className="w-full h-full object-cover" 
+            />
           </div>
         )}
       </div>
 
       {/* Conteúdo bege */}
       <div className="bg-[#F6F3E4] pt-17 px-6">
+
+        {user && (
+          <div className="ml-16 pt-20 pb-4">
+            <h1 className="text-3xl font-bold text-black">{user.name}</h1>
+            <p className="text-gray-500 text-sm mt-1">@ {user.username}</p>
+            <p className="text-gray-500 text-sm mt-1">✉ {user.email}</p>
+          </div>
+        )}  
 
         {/* Botão Editar Perfil — só aparece se logado */}
         {isLoggedIn && (
