@@ -45,27 +45,45 @@ export default function FeedPage() {
             const response = await fetch(
                 `http://localhost:3001/category?search=${searchTerm}`
             );
+
+            if (!response.ok) {
+                setCategories([]);
+                return;
+            }
+
             const data = await response.json();
 
-            setCategories(data);
+            setCategories(Array.isArray(data) ? data : []);
         }
       
         async function loadProducts() {
             const response = await fetch(
                 `http://localhost:3001/produtos?search=${searchTerm}`
             );
+
+            if (!response.ok) {
+                setProducts([]);
+                return;
+            }
+
             const data = await response.json();
 
-            setProducts(data);
+            setProducts(Array.isArray(data) ? data : []);
         }
 
         async function loadStores() {
             const response = await fetch(
                 `http://localhost:3001/store?search=${searchTerm}`
             );
+
+            if (!response.ok) {
+                setStores([]);
+                return;
+            }
+
             const data = await response.json();
 
-            setStores(data);
+            setStores(Array.isArray(data) ? data : []);
         }
 
         loadProducts();
