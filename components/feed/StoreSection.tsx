@@ -1,32 +1,19 @@
 import StoreCard from "./StoreCard"; 
-import { Search } from "lucide-react";
 
 type Store = {
+    id: number;
     logo_url: string;
     name: string;
     description: string;
 }
 
-const stores: Store[] = [
-    {
-        logo_url: "/next.svg",
-        name: "Next",
-        description: "eletrônicos"
-    },
-    {
-        logo_url: "/globe.svg",
-        name: "Globe",
-        description: "eletrônicos"
-    },
-    {
-        logo_url: "/file.svg",
-        name: "Vercel",
-        description: "eletrônicos"
-    },
+type StoreSectionProps = {
+    stores: Store[];
+}
 
-];
-
-export default function StoreFunction() {
+export default function StoreSection({
+    stores
+}:StoreSectionProps) {
     return (
         <section className="mt-11 ml-16">
             <section className="flex justify-between">
@@ -46,10 +33,10 @@ export default function StoreFunction() {
             </section>
 
 
-            <div className="flex gap-8px overflow-x-auto pb-4 gap-16">
+            <div className="flex overflow-x-auto pb-4 gap-16">
                 {stores.map((store) => (
                     <StoreCard
-                        key={store.name}
+                        key={store.id}
                         logo_url={store.logo_url}
                         name={store.name}
                         description={store.description}
