@@ -1,7 +1,9 @@
 "use client";
 
 import { League_Spartan } from "next/font/google";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import api from "@/app/services/api";
 
 const leagueSpartan = League_Spartan({
   subsets: ["latin"],
@@ -22,19 +24,58 @@ export default function ChangePasswordModal({
   const [senhaAtual, setSenhaAtual] = useState("");
   const [novaSenha, setNovaSenha] = useState("");
   const [confirmarSenha, setConfirmarSenha] = useState("");
+  const [userId, setUserId]= useState<number | null>(null);
+
+  useEffect(()=>{
+    const token = localStorage.getItem("token");
+  if (token) {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    setUserId(payload.sub);
+  }
+}, []);
+  
 
   if (!isOpen) return null;
 
   const handleSalvar = async () => {
-    // TODO: integrar com API
-    console.log({ senhaAtual, novaSenha, confirmarSenha });
-  };
+  if (!userId) return;
+  // Valida se a nova senha é diferente da senha atual
+  if (novaSenha === senhaAtual) {
+    toast.error("A nova senha não pode ser igual à senha atual!");
+    return;
+  }
+ // Valida se a nova senha e a confirmação são iguais
+  if (novaSenha !== confirmarSenha) {
+    toast.error("As senhas não coincidem!");
+    return;
+  }
+  try {
+    // Pega o token do localStorage
+    const token = localStorage.getItem("token");
+
+    // Manda a nova senha pro backend
+    await api.patch(`/user/${userId}`,
+      { password: novaSenha },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    //se der certo
+    toast.success("Senha alterada com sucesso!");
+    onClose();
+  
+  } catch (error: any) {
+    //se der erro
+    const msg = error.response?.data?.message || "Erro ao alterar senha";
+    toast.error(msg);
+  }
+};
 
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
       onClick={onClose}
     >
+      <ToastContainer theme="colored"/>
+
       <div
         className="relative bg-[#EDEDED] rounded-[40px] w-130 mx-4 h-160 px-8 py-10 flex flex-col items-center gap-4 shadow-2xl"
         onClick={(e) => e.stopPropagation()}

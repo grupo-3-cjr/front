@@ -5,11 +5,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import EditProfileModal from "./EditProfileModal";
+import ChangePasswordModal from "./ChangePasswordModal";
 
 export default function FeedNavbar() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [mounted, setMounted] = useState(false); 
     const router = useRouter();
+    const [openEdit, setOpenEdit] = useState(false);
+    const [openPassword, setOpenPassword] = useState(false);
 
     useEffect(() => {
         setMounted(true);
@@ -38,9 +42,12 @@ export default function FeedNavbar() {
                     isLoggedIn ? (              
                         <>
                             {/* logo User */}
-                            <Link href="/usuario" className="transition-colors hover:text-purple-600">
+                            <button 
+                            onClick={() => setOpenEdit(true)}
+                             className="transition-colors hover:text-purple-600">
                                 <User />
-                            </Link>
+                            </button>
+                            
                             {/* deslogar */}
                             <button
                                 className="group cursor-pointer transition-colors hover:text-red-600"
@@ -64,6 +71,23 @@ export default function FeedNavbar() {
                     )
                 )}
             </div>
+            <EditProfileModal
+            isOpen= {openEdit}
+            onClose={() => setOpenEdit(false)}
+            onChangePassword={()=> {
+                setOpenEdit(false);
+                setOpenPassword(true);
+            }}
+            />
+
+            <ChangePasswordModal
+            isOpen = {openPassword}
+            onClose={() => setOpenPassword(false)}
+            onBack={() => {
+                setOpenPassword(false);
+                setOpenEdit(true);
+            }}
+            />
         </nav>
     );
 

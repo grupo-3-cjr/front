@@ -1,7 +1,9 @@
 "use client";
 
 import { League_Spartan } from "next/font/google";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import api from "@/app/services/api";
+import { toast, ToastContainer } from "react-toastify";
 
 const leagueSpartan = League_Spartan({
   subsets: ["latin"],
@@ -24,6 +26,26 @@ export default function EditProfileModal({
   const [email, setEmail] = useState("");
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [userId, setUserId] = useState< number | null> (null);
+
+  useEffect(() => {
+  // Pega o id do usuário e busca os dados do perfil
+  const token = localStorage.getItem("token");
+  if (token) {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    setUserId(payload.sub);
+    api.get(`/user/${payload.sub}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    }).then((res) => {
+      setNome(res.data.name);
+      setUsername(res.data.username);
+      setEmail(res.data.email);
+    }).catch(() => {
+      toast.error("Erro ao carregar dados do perfil");
+    });
+  }
+}, []);
+  
 
   if (!isOpen) return null;
 
@@ -37,20 +59,44 @@ export default function EditProfileModal({
   };
 
   const handleSalvar = async () => {
-    // TODO: integrar com API
-    console.log({ nome, username, email, avatarPreview });
-  };
+  if (!userId) return;
+  try {
+    const token = localStorage.getItem("token");
+    await api.patch(`/user/${userId}`, 
+      { name: nome, username, email },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    toast.success("Perfil atualizado com sucesso!");
+    onClose();
+  } catch (error: any) {
+    const msg = error.response?.data?.message || "Erro ao atualizar perfil";
+    toast.error(msg);
+  }
+};
+    
+  
 
   const handleDeletarConta = async () => {
-    // TODO: integrar com API
-    console.log("Deletar conta");
-  };
+  if (!userId) return;
+  try {
+    const token = localStorage.getItem("token");
+    await api.delete(`/user/${userId}`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    toast.success("Conta deletada com sucesso!");
+    onClose();
+  } catch (error: any) {
+    const msg = error.response?.data?.message || "Erro ao deletar conta";
+    toast.error(msg);
+  }
+};
 
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
       onClick={onClose}
     >
+     <ToastContainer theme="colored"/>
       <div
         className="relative bg-[#EDEDED] rounded-[40px] w-130 mx-4 h-160 px-8 py-10 flex flex-col items-center gap-4 shadow-2xl"
         onClick={(e) => e.stopPropagation()}
