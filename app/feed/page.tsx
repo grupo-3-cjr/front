@@ -9,6 +9,8 @@ import CategoryList from "@/components/feed/CategoryList"
 import ProductsSection from "@/components/feed/ProductsSection"
 import StoreSection from "@/components/feed/StoreSection"
 
+import CriarLojaModal from "@/components/loja/CriarLojaModal";
+
 type Category = {
     id: number;
     name: string;
@@ -129,6 +131,8 @@ export default function FeedPage() {
                 />
 
                 <StoreSection stores={stores} />
+
+                <CriarLojaModal />
 
             </section>
         </main>
