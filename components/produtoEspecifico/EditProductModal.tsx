@@ -1,6 +1,6 @@
 "use client";
 
-import { X, Camera, Plus } from "lucide-react";
+import { X, Camera, Plus, Minus} from "lucide-react";
 import { useState } from "react";
 
 type EditProductModalProps = {
@@ -151,11 +151,10 @@ export default function EditProductModal({ isOpen, onClose, initialData }: EditP
                 {/* Seletor de Quantidade */}
                 <div className="flex items-center justify-center gap-8 my-6">
                     <button 
-                        // Impede que o botão + passe do limite máximo
-                        onClick={() => setStock(Math.min(stock + 1, MAX_STOCK))}
+                        onClick={() => setStock(Math.max(stock - 1, 0))}
                         className="w-12 h-12 rounded-full border border-[#6A38F3] flex items-center justify-center text-[#6A38F3] hover:bg-purple-100 transition"
                     >
-                        <Plus size={24} />
+                        <Minus size={24} />
                     </button>
                     
                     <input 
@@ -164,13 +163,16 @@ export default function EditProductModal({ isOpen, onClose, initialData }: EditP
                         onChange={handleStockChange}
                         className="text-5xl font-light text-[#6A38F3] w-28 text-center bg-transparent outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                     />
-                    
                     <button 
-                        onClick={() => setStock(stock + 1)}
+                        
+                        // Impede que o botão + passe do limite máximo
+                        onClick={() => setStock(Math.min(stock + 1, MAX_STOCK))}
                         className="w-12 h-12 rounded-full border border-[#6A38F3] flex items-center justify-center text-[#6A38F3] hover:bg-purple-100 transition"
                     >
+
                         <Plus size={24} />
                     </button>
+
                 </div>
 
                 {/* Botão Salvar */}
