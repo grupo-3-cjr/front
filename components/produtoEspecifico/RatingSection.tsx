@@ -13,7 +13,7 @@ const Ratings: Rating[] = [
         avatar_url: "/usuario.jpeg",
         name: "Endrick",
         text: "Vou fazer o gol na copa",
-        isOwner: false,
+        isOwner: true,
         rating: 1
     },
     {

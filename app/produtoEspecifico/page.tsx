@@ -91,7 +91,7 @@ const produtoAtual = {
                     images={produtoAtual.images}
                     storeLogo={produtoAtual.storeLogo}
                     description={produtoAtual.description}
-                    isOwner = {false}
+                    isOwner = {true}
                     isLoggedIn = {isLoggedIn}
                 />
                 
