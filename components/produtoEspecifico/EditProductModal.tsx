@@ -1,6 +1,6 @@
 "use client";
 
-import { X, Camera, Plus, Minus} from "lucide-react";
+import { X, Camera, Plus, Minus, ChevronDown } from "lucide-react";
 import { useState } from "react";
 
 type EditProductModalProps = {
@@ -22,29 +22,30 @@ export default function EditProductModal({ isOpen, onClose, initialData }: EditP
     const [category, setCategory] = useState(initialData.category);
     const [description, setDescription] = useState(initialData.description);
     const [price, setPrice] = useState(initialData.price);
+    //dados estoque
     const [stock, setStock] = useState(initialData.stock);
     const MAX_STOCK = 999;
 
-    // 1. Estado para guardar as pré-visualizações das imagens (1 principal + 3 secundárias)
+    // Subcategorias disponíveis
+    const subcategorias = ["Doce", "Salgado", "Bebida"];
+    const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+
     const [previews, setPreviews] = useState<string[]>(['', '', '', '']);
 
-    // Se o modal não estiver aberto, não renderiza nada
     if (!isOpen) return null;
     // Função para lidar com a digitação no input de estoque
     const handleStockChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = parseInt(e.target.value);
         
-        // Se o usuário apagar tudo, seta como 0. 
-        // Caso contrário, usa Math.min para barrar no teto e Math.max para barrar negativos.
         setStock(isNaN(value) ? 0 : Math.min(Math.max(0, value), MAX_STOCK));
     };
-    // 2. Função que gera o link temporário e guarda no estado certo
+    // Função que gera o link temporário e guarda no estado certo
     const handleImageChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
             const tempUrl = URL.createObjectURL(file);
             const newPreviews = [...previews];
-            newPreviews[index] = tempUrl; // Coloca a URL na posição correta (0, 1, 2 ou 3)
+            newPreviews[index] = tempUrl; 
             setPreviews(newPreviews);
         }
     };
@@ -70,7 +71,7 @@ export default function EditProductModal({ isOpen, onClose, initialData }: EditP
                     <label className="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-[#6A38F3] rounded-2xl bg-transparent hover:bg-purple-50 transition text-[#6A38F3] relative group cursor-pointer overflow-hidden">
                         <input type="file" accept="image/*" className="hidden" onChange={(e) => handleImageChange(0, e)} />
                         
-                        {/* 3. Se tiver preview, mostra a imagem. Se não, mostra a Câmera */}
+                        {/* Se tiver preview, mostra a imagem. Se não, mostra a Câmera */}
                         {previews[0] ? (
                             <img src={previews[0]} alt="Preview Principal" className="w-full h-full object-cover" />
                         ) : (
@@ -117,15 +118,48 @@ export default function EditProductModal({ isOpen, onClose, initialData }: EditP
                         placeholder="Nome do produto"
                     />
 
-                    <select 
-                        value={category}
-                        onChange={(e) => setCategory(e.target.value)}
-                        className="w-full bg-white text-gray-800 px-5 py-3 rounded-2xl outline-none appearance-none focus:ring-2 focus:ring-[#6A38F3]"
-                    >
-                        <option value="Doce">Doce</option>
-                        <option value="Salgado">Salgado</option>
-                        <option value="Bebida">Bebida</option>
-                    </select>
+                     {/* select da subcategoria */}
+                    <div className="relative w-full bg-white rounded-2xl flex flex-col focus-within:ring-2 focus-within:ring-[#6A38F3]">
+                        {/* antes de clickar */}
+                        <button
+                            type="button"
+                            onClick={() => setIsCategoryOpen(!isCategoryOpen)}
+                            className="w-full flex justify-between items-center px-5 py-3 outline-none rounded-2xl"
+                        >
+                            <span className={category ? "text-gray-800" : "text-gray-500"}>
+                                {isCategoryOpen ? "Subcategoria" : (category || "Subcategoria")}
+                            </span>
+                            <ChevronDown 
+                                size={20} 
+                                className={`text-gray-500 transition-transform ${isCategoryOpen ? "rotate-180" : ""}`} 
+                            />
+                        </button>
+
+                        {/* lista as Opções da subcategoria*/}
+                        {isCategoryOpen && (
+                            <div className="flex flex-col px-5 pb-4 gap-2">
+                                {subcategorias.map((sub) => (
+                                    <button
+                                        key={sub}
+                                        type="button"
+                                        onClick={() => {
+                                            setCategory(sub);
+                                            setIsCategoryOpen(false); 
+                                        }}
+                                        className="flex items-center gap-2 text-[#6A38F3] hover:opacity-80 transition-opacity"
+                                    >
+                                        {/* Bolinha dentro  */}
+                                        <div className="w-4 h-4 rounded-full border border-[#6A38F3] flex items-center justify-center">
+                                            {category === sub && (
+                                                <div className="w-2 h-2 rounded-full bg-[#6A38F3]" />
+                                            )}
+                                        </div>
+                                        <span className="font-light">{sub}</span>
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+                    </div>
 
                     <textarea 
                         value={description}
