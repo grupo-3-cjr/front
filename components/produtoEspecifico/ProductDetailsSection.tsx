@@ -1,14 +1,14 @@
 "use client"; 
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Pen, Star } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 type DescriptionData = {
     subtitle: string;
     text: string;
-    ingredients: string;
-    allergens: string[];
+    ingredients?: string; 
+    allergens?: string[]; 
 };
 
 type ProductDetailsProps = {
@@ -32,15 +32,21 @@ export default function ProductDetailsSection({
     category,
     stock,
     price,
-    images,
+    images = [],
     storeLogo,
     description,
     isLoggedIn,
     isOwner,
 }: ProductDetailsProps) {
 
-    const [mainImage, setMainImage] = useState(images[0]);
+    const [mainImage, setMainImage] = useState(images.length > 0 ? images[0] : "/globe.svg");
     
+    useEffect(() => {
+        if (images.length > 0) {
+            setMainImage(images[0]);
+        }
+    }, [images]);
+
     const router = useRouter();
 
     return (
