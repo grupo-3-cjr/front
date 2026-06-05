@@ -3,6 +3,7 @@
 import { League_Spartan } from "next/font/google";
 import { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import api from "@/app/services/api";
 
 const leagueSpartan = League_Spartan({

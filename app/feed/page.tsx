@@ -8,6 +8,7 @@ import SearchBar from "@/components/feed/SearchBar"
 import CategoryList from "@/components/feed/CategoryList"
 import ProductsSection from "@/components/feed/ProductsSection"
 import StoreSection from "@/components/feed/StoreSection"
+import CriarLoja from "@/components/loja/CriarLoja";
 
 import CriarLojaModal from "@/components/loja/CriarLojaModal";
 
@@ -124,6 +125,10 @@ export default function FeedPage() {
             <Hero />
 
             <section className="bg-[#F6F3E4] min-h-screen py-8 pr-24">
+
+                <button onClick={() => setIsModalOpen(true)}>
+                    Abrir modal
+                </button>
                 
                 <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 

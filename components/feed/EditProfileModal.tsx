@@ -4,6 +4,7 @@ import { League_Spartan } from "next/font/google";
 import { useState, useRef, useEffect } from "react";
 import api from "@/app/services/api";
 import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/navigation";
 
 const leagueSpartan = League_Spartan({
