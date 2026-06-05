@@ -1,10 +1,11 @@
 import { Pencil } from 'lucide-react';
 
+
 type RatingCardProps = {
     avatar_url: string;
     name: string;
     text: string;
-    rating?: number; // de 1 a 5
+    rating?: number; 
     isOwner?: boolean; 
 }
 
@@ -22,11 +23,13 @@ export default function RatingCard({avatar_url, name, text, rating = 5, isOwner 
             {/* Nome e texto no meio */}
              <div className="flex flex-col gap-1 flex-1 items-start pt-2">
                 <div className="flex items-center gap-3">
-                    <span className="text-black font-semibold text-4xl">{name}</span>
+                    <span className="text-black font-semibold text-3xl line-clamp-2">{name}</span>
 
                 </div>
                 
-                <span className="font-spartan-light text-black text-base">{text}</span> {/* Corrigi "text-x" para "text-base" ou o tamanho que preferir */}
+               <p className="font-spartan-light text-black text-base line-clamp-4">
+                    {text}
+                </p> 
             </div>
 
             {/* Estrelas e "ver mais" à direita */}
@@ -35,7 +38,7 @@ export default function RatingCard({avatar_url, name, text, rating = 5, isOwner 
                     {Array.from({length: 5}).map((_, i) => (
                         <span key={i} className={i < rating ? "text-2xl text-yellow-400" : "text-2xl text-gray-300"}>★</span>
                     ))}
-                    {/* Renderiza o botão de editar apenas se for o dono da avaliação */}
+                    {/* mostra o botão de editar apenas se for o dono da avaliação */}
                     {isOwner && (
                         <button className="w-8 h-8 bg-[#6B46C1] rounded-full flex items-center justify-center text-white hover:bg-purple-800 transition-colors shadow-sm" title="Editar sua avaliação">
                             <Pencil className="w-4 h-4" />
