@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react';
 import { Pen, Star } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import CreateProductModal from './createProductModal'; 
+
+import EditProductModal from './editProductModal';
 
 type DescriptionData = {
     subtitle: string;
@@ -147,7 +148,17 @@ export default function ProductDetailsSection({
                 </div>
 
             </div>
-
+                <EditProductModal 
+                isOpen={isEditModalOpen} 
+                onClose={() => setIsEditModalOpen(false)}
+                initialData={{
+                    title: title,
+                    category: category,
+                    description: description.text, // Adapte conforme os campos do seu backend
+                    price: price,
+                    stock: stock
+                }}
+            />
         </>
 
         
