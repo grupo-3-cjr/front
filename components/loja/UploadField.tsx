@@ -11,7 +11,7 @@ export default function UploadField({ label }: UploadFieldProps) {
         size={36}
         className="text-[#6A38F3]"
       />
-      <label>{label}</label>
+      <label className="text-black">{label}</label>
       <input type="file" className="hidden"></input>
     </form>
   );
