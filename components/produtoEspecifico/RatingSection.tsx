@@ -1,36 +1,18 @@
 import RatingCard from "./RatingCard"; 
 
-type Rating = {
+export type Rating = {
+    id?: string | number; 
     avatar_url: string;
     name: string;
     text: string;
     rating?: number; 
     isOwner?: boolean; 
 }
+type RatingSectionProps = {
+    ratingComments: Rating[];
+}
 
-const Ratings: Rating[] = [
-    {
-        avatar_url: "/usuario.jpeg",
-        name: "Endrick",
-        text: "Vou fazer o gol na copa",
-        isOwner: false,
-        rating: 1
-    },
-    {
-        avatar_url: "/usuario.jpeg",
-        name: "Joao Marcos",
-        text: "Vou fazer o gol na copa"
-    },
-
-        {
-        avatar_url: "/usuario.jpeg",
-        name: "Neymar junior",
-        text: "Vou fazer o gol na copa"
-    },
-];
-
-
-export default function RatingFunction() {
+export default function RatingSection({ ratingComments }: RatingSectionProps) {
     return (
         <section className="mt-11 ml-16">
             <section className="flex justify-between">
@@ -43,16 +25,22 @@ export default function RatingFunction() {
 
 
             <div className="flex gap-8px overflow-x-auto pb-4 gap-16">
-                {Ratings.map((rating) => (
-                    <RatingCard
-                        key={rating.name}
-                        avatar_url={rating.avatar_url}
-                        name={rating.name}
-                        text={rating.text}
-                        rating={rating.rating}
-                        isOwner={rating.isOwner}
-                    />
-               ))}
+                {ratingComments && ratingComments.length > 0 ? (
+                    ratingComments.map((rating, index) => (
+                        <RatingCard
+                            key={rating.id || index} 
+                            avatar_url={rating.avatar_url}
+                            name={rating.name}
+                            text={rating.text}
+                            rating={rating.rating}
+                            isOwner={rating.isOwner}
+                        />
+                    ))
+                ) : (
+                    <p className="text-gray-500 font-light text-lg">
+                        Nenhuma avaliação para este produto ainda.
+                    </p>
+                )}
             </div>
         </section>
     );
