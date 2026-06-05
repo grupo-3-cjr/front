@@ -1,11 +1,13 @@
+import { Pencil } from 'lucide-react';
 type RatingCardProps = {
     avatar_url: string;
     name: string;
     text: string;
     rating?: number; // de 1 a 5
+    isOwner?: boolean;
 }
 
-export default function RatingCard({avatar_url, name, text, rating = 5}: RatingCardProps) {
+export default function RatingCard({avatar_url, name, text, rating = 5,isOwner=false}: RatingCardProps) {
     return(
         <article className="bg-white rounded-[28px] w-[700px] h-[220px] flex items-start px-8 gap-6 relative pt-8">
             
@@ -28,6 +30,11 @@ export default function RatingCard({avatar_url, name, text, rating = 5}: RatingC
                     {Array.from({length: 5}).map((_, i) => (
                         <span key={i} className={i < rating ? "text-2xl text-yellow-400" : "text-gray-300"}>★</span>
                     ))}
+                    {isOwner && (
+    <button className="w-8 h-8 bg-[#6B46C1] rounded-full flex items-center justify-center text-white hover:bg-purple-800 transition-colors shadow-sm">
+        <Pencil className="w-4 h-4" />
+    </button>
+)}
                 </div>
                 <span className="text-[#6A38F3] text-sm cursor-pointer">ver mais</span>
             </div>
