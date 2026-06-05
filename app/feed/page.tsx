@@ -93,6 +93,18 @@ export default function FeedPage() {
         loadStores();
     }, [searchTerm]);
 
+    async function loadStores() {
+        const response = await fetch(`http://localhost:3001/store?search=${searchTerm}`);
+
+        if (!response.ok) {
+            setStores([]);
+            return;
+        }
+
+        const data = await response.json();
+        setStores(Array.isArray(data) ? data : []);
+    }
+
     const produtosMelhoresAvaliados = [...products];
 
     const produtosMaisBaratos = [...products].sort(
@@ -102,6 +114,8 @@ export default function FeedPage() {
     const produtosRecemAdicionados = [...products].sort(
         (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
+
+    const [openModal, setOpenModal] = useState(false);
 
     return (
         <main>
@@ -132,7 +146,16 @@ export default function FeedPage() {
 
                 <StoreSection stores={stores} />
 
-                <CriarLojaModal />
+                <button className="bg-[#6A38F3] text-white rounded-full px-6 py-2" onClick={() => setOpenModal(true)}>
+                    Criar Loja
+                </button>
+
+                {openModal && (
+                    <CriarLojaModal
+                        onClose={() => setOpenModal(false)}
+                        onStoreCreated={loadStores}
+                    />
+                )}
 
             </section>
         </main>
