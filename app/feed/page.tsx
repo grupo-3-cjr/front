@@ -11,6 +11,7 @@ import StoreSection from "@/components/feed/StoreSection"
 import CriarLoja from "@/components/loja/CriarLoja";
 
 import CriarLojaModal from "@/components/loja/CriarLojaModal";
+import EditarLoja from "@/components/loja/EditarLojaModal";
 
 type Category = {
     id: number;
@@ -117,6 +118,7 @@ export default function FeedPage() {
     );
 
     const [openModal, setOpenModal] = useState(false);
+    const [editingStore, setEditingStore] = useState<Store | null>(null);
 
     return (
         <main>
@@ -159,6 +161,21 @@ export default function FeedPage() {
                     <CriarLojaModal
                         onClose={() => setOpenModal(false)}
                         onStoreCreated={loadStores}
+                    />
+                )}
+
+                <button
+                    onClick={() => setEditingStore(stores[0])}
+                    className="bg-black text-white rounded-full px-6 py-2"
+                >
+                    Testar editar loja
+                </button>
+
+                {editingStore && (
+                    <EditarLoja
+                        store={editingStore}
+                        onClose={() => setEditingStore(null)}
+                        onStoreUpdated={loadStores}
                     />
                 )}
 
