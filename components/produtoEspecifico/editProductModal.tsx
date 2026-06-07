@@ -6,6 +6,7 @@ import { useState } from "react";
 type EditProductModalProps = {
     isOpen: boolean;
     onClose: () => void;
+    productId: number;
     // Recebendo os dados iniciais para preencher o form
     initialData: {
         title: string;
@@ -16,7 +17,7 @@ type EditProductModalProps = {
     };
 };
 
-export default function EditProductModal({ isOpen, onClose, initialData }: EditProductModalProps) {
+export default function EditProductModal({ isOpen, onClose, productId, initialData }: EditProductModalProps) {
     // Estados locais para controlar o formulário
     const [title, setTitle] = useState(initialData.title);
     const [category, setCategory] = useState(initialData.category);
@@ -25,6 +26,48 @@ export default function EditProductModal({ isOpen, onClose, initialData }: EditP
     //dados estoque
     const [stock, setStock] = useState(initialData.stock);
     const MAX_STOCK = 999;
+
+    const handleSave = async () => {
+        try {
+            const token = localStorage.getItem("token");
+            const headers = {
+                "Content-Type": "application/json",
+                ...(token ? { Authorization: `Bearer ${token}` } : {})
+            };
+
+            // Como o preço no input pode ter "R$ " ou vírgulas, limpamos isso para mandar só o número pro banco
+            const precoLimpo = price.toString().replace(/[^0-9.,]/g, '').replace(',', '.');
+
+            // Montamos o pacote com os dados novos (ajuste as chaves se o seu NestJS pedir nomes diferentes)
+            const payload = {
+                name: title,
+                description: description,
+                price: parseFloat(precoLimpo),
+                stock: stock,
+                // category: category // Dependendo de como seu backend recebe, pode precisar de ajuste aqui
+            };
+
+            // Faz a requisição de atualização (Geralmente no NestJS é PATCH)
+            const response = await fetch(`http://localhost:3001/produtos/${productId}`, {
+                method: 'PATCH', 
+                headers,
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                alert("Produto atualizado com sucesso!");
+                onClose(); // Fecha o modal
+                window.location.reload(); // Recarrega a página para puxar os dados fresquinhos do banco
+            } else {
+                const erro = await response.text();
+                alert(`Erro ao salvar: ${erro}`);
+            }
+
+        } catch (error) {
+            console.error("Erro ao atualizar:", error);
+            alert("Ocorreu um erro ao tentar salvar.");
+        }
+    };
 
     // Subcategorias disponíveis
     const subcategorias = ["Doce", "Salgado", "Bebida"];
@@ -210,7 +253,9 @@ export default function EditProductModal({ isOpen, onClose, initialData }: EditP
                 </div>
 
                 {/* Botão Salvar */}
-                <button className="bg-[#6B46C1] text-white font-medium py-3 px-16 rounded-full mx-auto hover:bg-purple-800 transition">
+                <button className="bg-[#6B46C1] text-white font-medium py-3 px-16 rounded-full mx-auto hover:bg-purple-800 transition"
+                 onClick={handleSave}
+                >
                     Salvar
                 </button>
 
