@@ -1,7 +1,8 @@
 "use client";
 
 import { X, Camera, Plus, Minus, ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 type EditProductModalProps = {
     isOpen: boolean;
@@ -26,6 +27,60 @@ export default function EditProductModal({ isOpen, onClose, productId, initialDa
     //dados estoque
     const [stock, setStock] = useState(initialData.stock);
     const MAX_STOCK = 999;
+    const router = useRouter();
+
+    const handleDelete = async () => {
+        // Pede confirmação antes de fazer qualquer coisa
+        const confirmacao = window.confirm("Tem certeza que deseja deletar este produto?");
+        if (!confirmacao) return;
+
+        try {
+            const token = localStorage.getItem("token");
+            const headers = {
+                "Content-Type": "application/json",
+                ...(token ? { Authorization: `Bearer ${token}` } : {})
+            };
+
+            const response = await fetch(`http://localhost:3001/produtos/${productId}`, {
+                method: 'DELETE', 
+                headers,
+            });
+
+            if (response.ok) {
+                alert("Produto deletado com sucesso!");
+                onClose(); 
+                
+                router.push("/feed"); 
+            } else {
+                const erro = await response.text();
+                alert(`Erro ao deletar: ${erro}`);
+            }
+
+        } catch (error) {
+            console.error("Erro ao deletar:", error);
+            alert("Ocorreu um erro de conexão ao tentar deletar.");
+        }
+    };
+    const [subcategorias, setSubcategorias] = useState<{id: number, name: string}[]>([]);
+    useEffect(() => {
+        const fetchCategorias = async () => {
+            try {
+                const response = await fetch("http://localhost:3001/category"); 
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    setSubcategorias(data);
+                }
+            } catch (error) {
+                console.error("Erro ao buscar categorias:", error);
+            }
+        };
+
+        if (isOpen) {
+            fetchCategorias();
+        }
+    }, [isOpen]);
 
     const handleSave = async () => {
         try {
@@ -35,19 +90,20 @@ export default function EditProductModal({ isOpen, onClose, productId, initialDa
                 ...(token ? { Authorization: `Bearer ${token}` } : {})
             };
 
-            // Como o preço no input pode ter "R$ " ou vírgulas, limpamos isso para mandar só o número pro banco
+            // Limpa os dados antes de enviar, ou seja, só manda numero para o back
             const precoLimpo = price.toString().replace(/[^0-9.,]/g, '').replace(',', '.');
 
-            // Montamos o pacote com os dados novos (ajuste as chaves se o seu NestJS pedir nomes diferentes)
+            const categoriaEscolhida = subcategorias.find(sub => sub.name === category);
+            // Mona o pacote com os dados
             const payload = {
                 name: title,
                 description: description,
                 price: parseFloat(precoLimpo),
                 stock: stock,
-                // category: category // Dependendo de como seu backend recebe, pode precisar de ajuste aqui
+                category_id: categoriaEscolhida ? categoriaEscolhida.id : undefined
+            
             };
-
-            // Faz a requisição de atualização (Geralmente no NestJS é PATCH)
+            // Faz a requisição de atualização
             const response = await fetch(`http://localhost:3001/produtos/${productId}`, {
                 method: 'PATCH', 
                 headers,
@@ -69,8 +125,7 @@ export default function EditProductModal({ isOpen, onClose, productId, initialDa
         }
     };
 
-    // Subcategorias disponíveis
-    const subcategorias = ["Doce", "Salgado", "Bebida"];
+
     const [isCategoryOpen, setIsCategoryOpen] = useState(false);
 
     const [previews, setPreviews] = useState<string[]>(['', '', '', '']);
@@ -183,21 +238,21 @@ export default function EditProductModal({ isOpen, onClose, productId, initialDa
                             <div className="flex flex-col px-5 pb-4 gap-2">
                                 {subcategorias.map((sub) => (
                                     <button
-                                        key={sub}
+                                        key={sub.id}
                                         type="button"
                                         onClick={() => {
-                                            setCategory(sub);
+                                            setCategory(sub.name);
                                             setIsCategoryOpen(false); 
                                         }}
                                         className="flex items-center gap-2 text-[#6A38F3] hover:opacity-80 transition-opacity"
                                     >
                                         {/* Bolinha dentro  */}
                                         <div className="w-4 h-4 rounded-full border border-[#6A38F3] flex items-center justify-center">
-                                            {category === sub && (
+                                            {category === sub.name && (
                                                 <div className="w-2 h-2 rounded-full bg-[#6A38F3]" />
                                             )}
                                         </div>
-                                        <span className="font-light">{sub}</span>
+                                        <span className="font-light">{sub.name}</span>
                                     </button>
                                 ))}
                             </div>
@@ -221,7 +276,9 @@ export default function EditProductModal({ isOpen, onClose, productId, initialDa
                 </div>
 
                 {/* Botão Deletar */}
-                <button className="w-full bg-[#FF0000] text-white font-bold py-3 rounded-2xl mt-4 hover:bg-red-700 transition">
+                <button 
+                    onClick={handleDelete}
+                    className="w-full bg-[#FF0000] text-white font-bold py-3 rounded-2xl mt-4 hover:bg-red-700 transition">
                     DELETAR
                 </button>
 
