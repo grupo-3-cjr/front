@@ -36,7 +36,7 @@ type Rating = {
   user_id: number;
 };
 
-const PRODUCTS_PER_PAGE = 10;
+const PRODUCTS_PER_PAGE = 15;
 
 export default function LojaPage() {
   const params = useParams();
@@ -79,16 +79,13 @@ export default function LojaPage() {
         const storeRatings = ratingsRes.data.filter((r: any) => r.store_id === storeId);
         setRatings(storeRatings);
 
-        // Busca categoria e dono
-        const [categoryRes, ownerRes] = await Promise.all([
-        api.get(`/category/${storeRes.data.category_id}`),
-        api.get(`/user/${storeRes.data.user_id}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-        }),
-        ]);
+        // Busca categoria
+        const categoryRes = await api.get(`/category/${storeRes.data.category_id}`);
         setCategoryName(categoryRes.data.name);
-        setOwnerName(ownerRes.data.name);
 
+        // Busca dono
+        const ownerRes = await api.get(`/user/${storeRes.data.user_id}`);
+        setOwnerName(ownerRes.data.name);
 
         // TODO: buscar ratings quando rota estiver disponível
         // const ratingsRes = await api.get(`/store/${storeId}/ratings`);

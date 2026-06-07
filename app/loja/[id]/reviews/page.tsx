@@ -60,13 +60,12 @@ export default function ReviewsPage() {
         const storeRes = await api.get(`/store/${storeId}`);
         setStore(storeRes.data);
 
-        const [categoryRes, ownerRes] = await Promise.all([
-          api.get(`/category/${storeRes.data.category_id}`),
-          api.get(`/user/${storeRes.data.user_id}`, {
-            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-          }),
-        ]);
+        // Busca categoria
+        const categoryRes = await api.get(`/category/${storeRes.data.category_id}`);
         setCategoryName(categoryRes.data.name);
+
+        // Busca dono
+        const ownerRes = await api.get(`/user/${storeRes.data.user_id}`);
         setOwnerName(ownerRes.data.name);
 
         const ratingsRes = await api.get(`/store-ratings`);
