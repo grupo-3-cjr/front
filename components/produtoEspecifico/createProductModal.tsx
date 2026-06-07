@@ -1,25 +1,103 @@
 "use client";
 
 import { X, Camera, Plus, Minus, ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react"; 
 
 type AddProductModalProps = {
     isOpen: boolean;
     onClose: () => void;
+    storeId: number;
 };
 
-export default function AddProductModal({ isOpen, onClose }: AddProductModalProps) {
+export default function AddProductModal({ isOpen, onClose, storeId }: AddProductModalProps) {
     const [title, setTitle] = useState("");
     const [category, setCategory] = useState("");
     const [description, setDescription] = useState("");
-    const [price, setPrice] = useState("");
-    
+    const [price, setPrice] = useState("R$");
     const [stock, setStock] = useState(0);
     const MAX_STOCK = 999;
 
     const [previews, setPreviews] = useState<string[]>(['', '', '', '']);
-    
     const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+
+    //  para buscar as categorias do banco
+    const [subcategorias, setSubcategorias] = useState<{id: number, name: string}[]>([]);
+
+    useEffect(() => {
+        const fetchCategorias = async () => {
+            try {
+                const response = await fetch("http://localhost:3001/category"); 
+                if (response.ok) {
+                    const data = await response.json();
+                    setSubcategorias(data);
+                }
+            } catch (error) {
+                console.error("Erro ao buscar categorias:", error);
+            }
+        };
+
+        if (isOpen) {
+            fetchCategorias();
+        }
+    }, [isOpen]);
+
+    // Função para Criar o Produto
+    const handleCreate = async () => {
+        try {
+            const token = localStorage.getItem("token");
+            const headers = {
+                "Content-Type": "application/json",
+                ...(token ? { Authorization: `Bearer ${token}` } : {})
+            };
+
+            // Limpa a formatação do preço
+            const precoLimpo = price.toString().replace(/[^0-9.,]/g, '').replace(',', '.');
+
+            // Encontra o ID da categoria escolhida
+            const categoriaEscolhida = subcategorias.find(sub => sub.name === category);
+
+            if (!categoriaEscolhida) {
+                alert("Por favor, selecione uma subcategoria válida.");
+                return; 
+            }
+
+            // Monta o payload 
+            const payload = {
+                name: title,
+                description: description,
+                price: parseFloat(precoLimpo),
+                stock: stock,
+                category_id: categoriaEscolhida.id,
+                store_id: storeId
+            };
+            const response = await fetch(`http://localhost:3001/produtos`, {
+                method: 'POST', 
+                headers,
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                alert("Produto criado com sucesso!");
+                onClose(); 
+                
+                // Limpa os campos para o próximo produto que for criar
+                setTitle("");
+                setDescription("");
+                setPrice("R$");
+                setStock(0);
+                setCategory("");
+                
+                window.location.reload(); 
+            } else {
+                const erro = await response.text();
+                alert(`Erro ao criar: ${erro}`);
+            }
+
+        } catch (error) {
+            console.error("Erro ao criar produto:", error);
+            alert("Ocorreu um erro de conexão ao tentar criar o produto.");
+        }
+    };
 
     if (!isOpen) return null;
 
@@ -38,15 +116,10 @@ export default function AddProductModal({ isOpen, onClose }: AddProductModalProp
         }
     };
 
-    // Subcategorias disponíveis
-    const subcategorias = ["Doce", "Salgado", "Bebida"];
-
     return (
-        //efeito para ofuscar o fundo
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-            
-            <div className="relative w-full max-w-162.5 bg-[#EDEDED] rounded-3xl p-8 shadow-2xl flex flex-col max-h-[85vh] overflow-y-auto">
-                {/* Botão fechar */}
+            <div className="relative w-full max-w-[750px] bg-[#EDEDED] rounded-3xl p-8 shadow-2xl flex flex-col max-h-[90vh] overflow-y-auto">
+                
                 <button onClick={onClose} className="absolute top-6 right-6 text-black hover:text-gray-600 transition">
                     <X size={32} />
                 </button>
@@ -55,7 +128,7 @@ export default function AddProductModal({ isOpen, onClose }: AddProductModalProp
                     Adicionar Produto
                 </h2>
 
-                {/* Área de Upload de Fotos  */}
+                {/* Área de Upload de Fotos */}
                 <div className="flex flex-col gap-3 mb-6">
                     <label className="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-[#6A38F3] rounded-2xl bg-transparent hover:bg-purple-50 transition text-[#6A38F3] relative group cursor-pointer overflow-hidden">
                         <input type="file" accept="image/*" className="hidden" onChange={(e) => handleImageChange(0, e)} />
@@ -103,9 +176,8 @@ export default function AddProductModal({ isOpen, onClose }: AddProductModalProp
                         placeholder="Nome do produto"
                     />
 
-                    {/* select da subcategoria */}
+                    {/* Select da Subcategoria */}
                     <div className="relative w-full bg-white rounded-2xl flex flex-col focus-within:ring-2 focus-within:ring-[#6A38F3]">
-                        {/* antes de clickar */}
                         <button
                             type="button"
                             onClick={() => setIsCategoryOpen(!isCategoryOpen)}
@@ -114,45 +186,40 @@ export default function AddProductModal({ isOpen, onClose }: AddProductModalProp
                             <span className={category ? "text-gray-800" : "text-gray-500"}>
                                 {isCategoryOpen ? "Subcategoria" : (category || "Subcategoria")}
                             </span>
-                            <ChevronDown 
-                                size={20} 
-                                className={`text-gray-500 transition-transform ${isCategoryOpen ? "rotate-180" : ""}`} 
-                            />
+                            <ChevronDown size={20} className={`text-gray-500 transition-transform ${isCategoryOpen ? "rotate-180" : ""}`} />
                         </button>
 
-                        {/* lista as Opções da subcategoria*/}
                         {isCategoryOpen && (
                             <div className="flex flex-col px-5 pb-4 gap-2">
                                 {subcategorias.map((sub) => (
                                     <button
-                                        key={sub}
+                                        key={sub.id} 
                                         type="button"
                                         onClick={() => {
-                                            setCategory(sub);
+                                            setCategory(sub.name); 
                                             setIsCategoryOpen(false); 
                                         }}
-                                        className="flex items-center gap-2 text-[#6A38F3] hover:opacity-80 transition-opacity"
+                                        className="flex items-center gap-2 text-[#6A38F3] hover:opacity-80 transition-opacity text-left"
                                     >
-                                        {/* Bolinha dentro  */}
                                         <div className="w-4 h-4 rounded-full border border-[#6A38F3] flex items-center justify-center">
-                                            {category === sub && (
+                                            {category === sub.name && (
                                                 <div className="w-2 h-2 rounded-full bg-[#6A38F3]" />
                                             )}
                                         </div>
-                                        <span className="font-light">{sub}</span>
+                                        <span className="font-light">{sub.name}</span>
                                     </button>
                                 ))}
                             </div>
                         )}
                     </div>
-                    {/* descrição*/}
+
                     <textarea 
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         className="w-full bg-white text-gray-800 px-5 py-3 rounded-2xl h-24 resize-none outline-none focus:ring-2 focus:ring-[#6A38F3]"
                         placeholder="Descrição do produto"
                     />
-                    {/* preço */}
+
                     <input 
                         type="text" 
                         value={price}
@@ -162,7 +229,6 @@ export default function AddProductModal({ isOpen, onClose }: AddProductModalProp
                     />
                 </div>
 
-                {/* Seletor de Quantidade */}
                 <div className="flex items-center justify-center gap-8 my-6">
                     <button 
                         onClick={() => setStock(Math.max(stock - 1, 0))}
@@ -185,8 +251,12 @@ export default function AddProductModal({ isOpen, onClose }: AddProductModalProp
                         <Plus size={24} />
                     </button>
                 </div>
-                 {/* botão adicionar*/}
-                <button className="bg-[#6A38F3] shadow-md shadow-[#6A38F3]/30 text-white font-medium py-3 px-16 rounded-full mx-auto hover:bg-[#5a2ed1] transition">
+
+                {/* Botão Adicionar  */}
+                <button 
+                    onClick={handleCreate} 
+                    className="bg-[#6A38F3] shadow-md shadow-[#6A38F3]/30 text-white font-medium py-3 px-16 rounded-full mx-auto hover:bg-[#5a2ed1] transition"
+                >
                     Adicionar
                 </button>
 
