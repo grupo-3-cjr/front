@@ -1,11 +1,13 @@
 import ProductCard from "./ProductCard";
 
 type Product = {
+    id: number;
     name: string;
+    description: string;
+    price: string;
+    stock: number;
     image: string;
-    storeLogo: string;
 }
-
 type ProductSectionProps = {
     subtitle?: string;
     products: Product[];
@@ -23,10 +25,12 @@ export default function ProductusSection({subtitle, products}: ProductSectionPro
             <div className="flex gap-8 overflow-x-auto pb-4">
                 {products.map((product) => (
                     <ProductCard
-                        key={product.name}
+                        key={product.id}
+                        id={product.id} 
                         name={product.name}
+                        description={product.description}
+                        price={product.price} 
                         image={product.image}
-                        storeLogo={product.storeLogo}
                     />
                 ))}
             </div>

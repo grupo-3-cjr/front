@@ -8,6 +8,10 @@ import SearchBar from "@/components/feed/SearchBar"
 import CategoryList from "@/components/feed/CategoryList"
 import ProductsSection from "@/components/feed/ProductsSection"
 import StoreSection from "@/components/feed/StoreSection"
+import CriarLoja from "@/components/loja/CriarLoja";
+
+import CriarLojaModal from "@/components/loja/CriarLojaModal";
+import EditarLoja from "@/components/loja/EditarLojaModal";
 
 type Category = {
     id: number;
@@ -45,33 +49,63 @@ export default function FeedPage() {
             const response = await fetch(
                 `http://localhost:3001/category?search=${searchTerm}`
             );
+
+            if (!response.ok) {
+                setCategories([]);
+                return;
+            }
+
             const data = await response.json();
 
-            setCategories(data);
+            setCategories(Array.isArray(data) ? data : []);
         }
       
         async function loadProducts() {
             const response = await fetch(
                 `http://localhost:3001/produtos?search=${searchTerm}`
             );
+
+            if (!response.ok) {
+                setProducts([]);
+                return;
+            }
+
             const data = await response.json();
 
-            setProducts(data);
+            setProducts(Array.isArray(data) ? data : []);
         }
 
         async function loadStores() {
             const response = await fetch(
                 `http://localhost:3001/store?search=${searchTerm}`
             );
+
+            if (!response.ok) {
+                setStores([]);
+                return;
+            }
+
             const data = await response.json();
 
-            setStores(data);
+            setStores(Array.isArray(data) ? data : []);
         }
 
         loadProducts();
         loadCategories();
         loadStores();
     }, [searchTerm]);
+
+    async function loadStores() {
+        const response = await fetch(`http://localhost:3001/store?search=${searchTerm}`);
+
+        if (!response.ok) {
+            setStores([]);
+            return;
+        }
+
+        const data = await response.json();
+        setStores(Array.isArray(data) ? data : []);
+    }
 
     const produtosMelhoresAvaliados = [...products];
 
@@ -83,6 +117,9 @@ export default function FeedPage() {
         (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
 
+    const [openModal, setOpenModal] = useState(false);
+    const [editingStore, setEditingStore] = useState<Store | null>(null);
+
     return (
         <main>
             <FeedNavbar/>
@@ -90,6 +127,10 @@ export default function FeedPage() {
             <Hero />
 
             <section className="bg-[#F6F3E4] min-h-screen py-8 pr-24">
+
+                <button onClick={() => setIsModalOpen(true)}>
+                    Abrir modal
+                </button>
                 
                 <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
@@ -111,6 +152,32 @@ export default function FeedPage() {
                 />
 
                 <StoreSection stores={stores} />
+
+                <button className="bg-[#6A38F3] text-white rounded-full px-6 py-2" onClick={() => setOpenModal(true)}>
+                    Criar Loja
+                </button>
+
+                {openModal && (
+                    <CriarLojaModal
+                        onClose={() => setOpenModal(false)}
+                        onStoreCreated={loadStores}
+                    />
+                )}
+
+                <button
+                    onClick={() => setEditingStore(stores[0])}
+                    className="bg-black text-white rounded-full px-6 py-2"
+                >
+                    Testar editar loja
+                </button>
+
+                {editingStore && (
+                    <EditarLoja
+                        store={editingStore}
+                        onClose={() => setEditingStore(null)}
+                        onStoreUpdated={loadStores}
+                    />
+                )}
 
             </section>
         </main>

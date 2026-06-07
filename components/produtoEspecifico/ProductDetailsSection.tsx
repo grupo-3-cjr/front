@@ -1,17 +1,20 @@
 "use client"; 
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Pen, Star } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
+import EditProductModal from './editProductModal';
+import CreateProductModal from './createProductModal';
 type DescriptionData = {
     subtitle: string;
     text: string;
-    ingredients: string;
-    allergens: string[];
+    ingredients?: string; 
+    allergens?: string[]; 
 };
 
 type ProductDetailsProps = {
+    id: number;
     title: string;
     rating: number;
     reviewsCount: number;
@@ -26,112 +29,149 @@ type ProductDetailsProps = {
 };
 
 export default function ProductDetailsSection({
+    id,
     title,
     rating,
     reviewsCount,
     category,
     stock,
     price,
-    images,
+    images = [],
     storeLogo,
     description,
     isLoggedIn,
     isOwner,
 }: ProductDetailsProps) {
 
-    const [mainImage, setMainImage] = useState(images[0]);
+    const [mainImage, setMainImage] = useState(images.length > 0 ? images[0] : "/globe.svg");
     
+    useEffect(() => {
+        if (images.length > 0) {
+            setMainImage(images[0]);
+        }
+    }, [images]);
+
     const router = useRouter();
 
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     return (
-        <div className="relative flex flex-col lg:flex-row gap-10 w-full max-w-8xl mx-auto pl-8 mb-12 ml-20 mr-0">
-             
-              {/* Botão para voltar */}
-            <button 
-                onClick={() => router.back()}
-                className="absolute -left-10 top-2 text-7xl font-bold text-black hover:text-gray-600 transition"
-            >
-                &lt;
-            </button>
-
-            {/*Lado esquerdo das imagens */}
-            <div className="flex gap-5 w-full lg:w-[50%]"> 
-                <div className="flex flex-col gap-5">
-                    {/*Miniaturas imagens */}
-                    {images.map((imgUrl, index) => (
-                        <div 
-                            key={index} 
-                            onClick={() => setMainImage(imgUrl)}
-                            className={`bg-white rounded-2xl p-2 w-30 h-38 flex items-center justify-center shadow-sm cursor-pointer transition-all hover:ring-2 hover:ring-purple-500 ${mainImage === imgUrl ? 'ring-2 ring-purple-600' : ''}`}
-                        >
-                            <img src={imgUrl} alt={`Miniatura ${index + 1}`} className="object-contain max-h-full" />
-                        </div>
-                    ))}
-                </div>
-                {/* Imagem maior*/}
-                <div className="bg-white rounded-3xl flex-1 min-h-150 flex items-center justify-center p-8 relative shadow-sm">
-                    
-                    <img src={mainImage} alt={title} className="w-full max-w-sm object-contain" />
-                    {/*miniatura da logo */}
-                    <img 
-                        src={storeLogo} 
-                        alt="Logo da Loja" 
-                        className="absolute top-6 right-6 w-16 h-16 rounded-full object-cover shadow-md z-10 bg-white"
-                    />
-                </div>
-            </div>
-
-            {/* Lado Direito do texto */}
-            <div className="flex flex-col w-full lg:w-[60%] py-4">
+        <>
+            <div className="relative flex flex-col lg:flex-row gap-10 w-full max-w-8xl mx-auto pl-8 mb-12 ml-20 mr-0">
                 
-                <div className="flex items-center gap-3 mb-4">
-                    <h1 className="text-5xl font-bold text-black">{title}</h1>
-                    
-                    {/* Renderiza o botão de Editar se for o dono */}
-                    {isLoggedIn && isOwner && (
-                        <button className="w-10 h-10 bg-[#6A38F3] rounded-full flex items-center justify-center text-white hover:bg-purple-800 transition-colors shadow-sm" title="Editar Produto">
-                                <Pen className="w-6 h-6" />
-                        </button>
-                    )}
+                {/* Botão para voltar */}
+                <button 
+                    onClick={() => router.back()}
+                    className="absolute -left-10 top-2 text-7xl font-bold text-black hover:text-gray-600 transition"
+                >
+                    &lt;
+                </button>
 
-                    {/* Renderiza o botão de Avaliar  se estiver logado mas não for o dono */}
-                    {isLoggedIn && !isOwner && (
-                        <button className="w-10 h-10 bg-[#C6E700] rounded-full flex items-center justify-center text-white hover:bg-[#a2cf18] transition-colors shadow-sm" title="Avaliar Produto">
-                                <Star className="w-7 h-7" fill="currentColor" />
-                        </button>
-                    )}
-                </div>
-                
-                <div className="flex items-center gap-4 text-sm1 mb-5">
-                    <span className="flex items-center text-yellow-500">
-                        ★ <span className="text-gray-600 ml-1">{rating} | {reviewsCount} reviews</span>
-                    </span>
-                    <span className="text-purple-600 font-medium">{category}</span>
-                    <span className="text-purple-600 font-medium">{stock} disponíveis</span>
-                </div>
-
-                <div className=" text-black text-5xl font-semibold mb-5">
-                    {price}
-                </div>
-
-                <div className="text-black">
-                    <h3 className="font-bold text-xl mb-2">Descrição</h3>
-                    <p className="text-lg font-semibold text-gray-500 mb-2 uppercase">{description.subtitle}</p>
-                    
-                    <div className="text-base space-y-4 text-gray-800 leading-relaxed">
-                        <p>{description.text}</p>
-                        <p className=" text-lg font-semibold text-gray-500 mb-2 uppercase">Ingredientes</p>
-                        <p>{description.ingredients}</p>
-                        <div className="pt-2 text-sm text-gray-500">
-                            {description.allergens.map((allergen, index) => (
-                                <p key={index}>{allergen}</p>
-                            ))}
-                        </div>
+                {/*Lado esquerdo das imagens */}
+                <div className="flex gap-5 w-full lg:w-[50%]"> 
+                    <div className="flex flex-col gap-5">
+                        {/*Miniaturas imagens */}
+                        {images.map((imgUrl, index) => (
+                            <div 
+                                key={index} 
+                                onClick={() => setMainImage(imgUrl)}
+                                className={`bg-white rounded-2xl p-2 w-30 h-38 flex items-center justify-center shadow-sm cursor-pointer transition-all hover:ring-2 hover:ring-purple-500 ${mainImage === imgUrl ? 'ring-2 ring-purple-600' : ''}`}
+                            >
+                                <img src={imgUrl} alt={`Miniatura ${index + 1}`} className="object-contain max-h-full" />
+                            </div>
+                        ))}
+                    </div>
+                    {/* Imagem maior*/}
+                    <div className="bg-white rounded-3xl flex-1 min-h-150 flex items-center justify-center p-8 relative shadow-sm">
+                        
+                        <img src={mainImage} alt={title} className="w-full max-w-sm object-contain" />
+                        {/*miniatura da logo */}
+                        <img 
+                            src={storeLogo} 
+                            alt="Logo da Loja" 
+                            className="absolute top-6 right-6 w-16 h-16 rounded-full object-cover shadow-md z-10 bg-white"
+                        />
                     </div>
                 </div>
 
-            </div>
+                {/* Lado Direito do texto */}
+                <div className="flex flex-col w-full lg:w-[60%] py-4">
+                    
+                    <div className="flex items-center gap-3 mb-4">
+                        <h1 className="text-5xl font-bold text-black">{title}</h1>
+                        
+                        {/* Renderiza o botão de Editar se for o dono */}
+                        {isLoggedIn && isOwner && (
+                            <button
+                                onClick={() => setIsEditModalOpen(true)} 
+                                className="w-10 h-10 bg-[#6A38F3] rounded-full flex items-center justify-center text-white hover:bg-purple-800 transition-colors shadow-sm" 
+                                title="Editar Produto"
+                                > 
+                                    <Pen className="w-6 h-6" />
+                            </button>
+                        )}
 
-        </div>
+                        {/* Renderiza o botão de Avaliar se estiver logado mas não for o dono */}
+                        {isLoggedIn && !isOwner && (
+                            <button
+                             onClick={() => setIsCreateModalOpen(true)} 
+                            className="w-10 h-10 bg-[#C6E700] rounded-full flex items-center justify-center text-white hover:bg-[#a2cf18] transition-colors shadow-sm" title="Avaliar Produto">
+                                    <Star className="w-7 h-7" fill="currentColor" />
+                            </button>
+                        )}
+                    </div>
+                    
+                    <div className="flex items-center gap-4 text-sm1 mb-5">
+                        <span className="flex items-center text-yellow-500">
+                            ★ <span className="text-gray-600 ml-1">{rating} | {reviewsCount} reviews</span>
+                        </span>
+                        <span className="text-purple-600 font-medium">{category}</span>
+                        <span className="text-purple-600 font-medium">{stock} disponíveis</span>
+                    </div>
+
+                    <div className=" text-black text-5xl font-semibold mb-5">
+                        {price}
+                    </div>
+
+                    <div className="text-black">
+                        <h3 className="font-bold text-xl mb-2">Descrição</h3>
+                        <p className="text-lg font-semibold text-gray-500 mb-2 uppercase">{description.subtitle}</p>
+                        
+                        <div className="text-base space-y-4 text-gray-800 leading-relaxed">
+                            <p>{description.text}</p>
+                            <p className=" text-lg font-semibold text-gray-500 mb-2 uppercase">Ingredientes</p>
+                            <p>{description.ingredients}</p>
+                            <div className="pt-2 text-sm text-gray-500">
+                                {description.allergens.map((allergen, index) => (
+                                    <p key={index}>{allergen}</p>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+                <EditProductModal 
+                isOpen={isEditModalOpen} 
+                onClose={() => setIsEditModalOpen(false)}
+                productId={id}
+                initialData={{
+                    title: title,
+                    category: category,
+                    description: description.text, 
+                    price: price,
+                    stock: stock
+                }}
+            />
+                <CreateProductModal
+                isOpen={isCreateModalOpen} 
+                onClose={() => setIsCreateModalOpen(false)}
+                storeId={2}
+            />
+        </>
+
+        
     );
 }
