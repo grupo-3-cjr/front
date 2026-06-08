@@ -7,9 +7,10 @@ type AddProductModalProps = {
     isOpen: boolean;
     onClose: () => void;
     storeId: number;
+    parentCategoryId: number;
 };
 
-export default function AddProductModal({ isOpen, onClose, storeId }: AddProductModalProps) {
+export default function AddProductModal({ isOpen, onClose, storeId, parentCategoryId}: AddProductModalProps) {
     const [title, setTitle] = useState("");
     const [category, setCategory] = useState("");
     const [description, setDescription] = useState("");
@@ -29,17 +30,24 @@ export default function AddProductModal({ isOpen, onClose, storeId }: AddProduct
                 const response = await fetch("http://localhost:3001/category"); 
                 if (response.ok) {
                     const data = await response.json();
-                    setSubcategorias(data);
+
+                    console.log("ID da Categoria Pai que chegou no Modal:", parentCategoryId);
+                    
+                const subcategoriasF = data.filter(
+                        (cat: any) => Number(cat.parent_category_id) === Number(parentCategoryId)
+                    );
+                    
+                    setSubcategorias(subcategoriasF);
                 }
             } catch (error) {
-                console.error("Erro ao buscar categorias:", error);
+                console.error("Erro ao buscar subcategorias:", error);
             }
         };
 
         if (isOpen) {
             fetchCategorias();
         }
-    }, [isOpen]);
+    }, [isOpen, parentCategoryId]);
 
     // Função para Criar o Produto
     const handleCreate = async () => {
@@ -118,7 +126,7 @@ export default function AddProductModal({ isOpen, onClose, storeId }: AddProduct
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-            <div className="relative w-full max-w-[750px] bg-[#EDEDED] rounded-3xl p-8 shadow-2xl flex flex-col max-h-[90vh] overflow-y-auto">
+            <div className="relative w-full max-w-187.5 bg-[#EDEDED] rounded-3xl p-8 shadow-2xl flex flex-col max-h-[90vh] overflow-y-auto">
                 
                 <button onClick={onClose} className="absolute top-6 right-6 text-black hover:text-gray-600 transition">
                     <X size={32} />

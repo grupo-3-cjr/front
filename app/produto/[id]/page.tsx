@@ -66,7 +66,7 @@ export default function ProdutoEspecifico(){
                         images: produtoPrisma.productImage?.map(img => img.image_url) || [],
                         storeLogo: produtoPrisma.store?.logo_url || "/globe.svg",
                         isOwner: loggedUserId === produtoPrisma.store?.user_id,
-                        
+                        parentCategoryId: produtoPrisma.store?.category_id,
                         // descrição
                         description: {
                             subtitle: produtoPrisma.name,
@@ -135,6 +135,7 @@ export default function ProdutoEspecifico(){
                     rating={produtoAtual.rating}
                     reviewsCount={produtoAtual.reviewsCount}
                     category={produtoAtual.category}
+                    parentCategoryId={produtoAtual.parentCategoryId}
                     stock={produtoAtual.stock}
                     price={produtoAtual.price}
                     images={produtoAtual.images}

@@ -19,6 +19,7 @@ type ProductDetailsProps = {
     rating: number;
     reviewsCount: number;
     category: string;
+    parentCategoryId: number;
     stock: number;
     price: string;
     images: string[];
@@ -34,6 +35,7 @@ export default function ProductDetailsSection({
     rating,
     reviewsCount,
     category,
+    parentCategoryId,
     stock,
     price,
     images = [],
@@ -157,6 +159,7 @@ export default function ProductDetailsSection({
                 isOpen={isEditModalOpen} 
                 onClose={() => setIsEditModalOpen(false)}
                 productId={id}
+                parentCategoryId={parentCategoryId}
                 initialData={{
                     title: title,
                     category: category,
@@ -169,6 +172,8 @@ export default function ProductDetailsSection({
                 isOpen={isCreateModalOpen} 
                 onClose={() => setIsCreateModalOpen(false)}
                 storeId={2}
+                parentCategoryId={parentCategoryId}
+
             />
         </>
 

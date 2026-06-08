@@ -8,6 +8,7 @@ type EditProductModalProps = {
     isOpen: boolean;
     onClose: () => void;
     productId: number;
+    parentCategoryId: number;
     // Recebendo os dados iniciais para preencher o form
     initialData: {
         title: string;
@@ -18,7 +19,7 @@ type EditProductModalProps = {
     };
 };
 
-export default function EditProductModal({ isOpen, onClose, productId, initialData }: EditProductModalProps) {
+export default function EditProductModal({ isOpen, onClose, productId, initialData, parentCategoryId}: EditProductModalProps) {
     // Estados locais para controlar o formulário
     const [title, setTitle] = useState(initialData.title);
     const [category, setCategory] = useState(initialData.category);
@@ -69,8 +70,11 @@ export default function EditProductModal({ isOpen, onClose, productId, initialDa
                 
                 if (response.ok) {
                     const data = await response.json();
-                    
-                    setSubcategorias(data);
+
+                    const subcategoriasFil = data.filter(
+                        (cat: any) => Number(cat.parent_category_id) === Number(parentCategoryId)
+                    );
+                    setSubcategorias(subcategoriasFil);
                 }
             } catch (error) {
                 console.error("Erro ao buscar categorias:", error);
@@ -80,7 +84,7 @@ export default function EditProductModal({ isOpen, onClose, productId, initialDa
         if (isOpen) {
             fetchCategorias();
         }
-    }, [isOpen]);
+    }, [isOpen, parentCategoryId]);
 
     const handleSave = async () => {
         try {
@@ -94,13 +98,13 @@ export default function EditProductModal({ isOpen, onClose, productId, initialDa
             const precoLimpo = price.toString().replace(/[^0-9.,]/g, '').replace(',', '.');
 
             const categoriaEscolhida = subcategorias.find(sub => sub.name === category);
-            // Mona o pacote com os dados
+            // Monta o pacote com os dados
             const payload = {
                 name: title,
                 description: description,
                 price: parseFloat(precoLimpo),
                 stock: stock,
-                category_id: categoriaEscolhida ? categoriaEscolhida.id : undefined
+               ...(categoriaEscolhida && { category_id: categoriaEscolhida.id })
             
             };
             // Faz a requisição de atualização
@@ -112,8 +116,8 @@ export default function EditProductModal({ isOpen, onClose, productId, initialDa
 
             if (response.ok) {
                 alert("Produto atualizado com sucesso!");
-                onClose(); // Fecha o modal
-                window.location.reload(); // Recarrega a página para puxar os dados fresquinhos do banco
+                onClose(); 
+                window.location.reload(); // Recarrega a página
             } else {
                 const erro = await response.text();
                 alert(`Erro ao salvar: ${erro}`);
