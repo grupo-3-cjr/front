@@ -96,7 +96,7 @@ export default function CriarLojaModal({ onClose, onStoreCreated }: CriarLojaMod
             <div className="relative flex flex-col items-center z-50 bg-[#EDEDED] w-[550px] max-w-[90vw] min-h-[650px] gap-4 rounded-xl">
                 <h1 className="text-black font-League Spartan font-bold text-2xl pt-4">Adicionar Loja</h1>
 
-                <button onClick={onClose} className="absolute top-4 right-6">
+                <button onClick={onClose} className="absolute top-4 right-6 cursor-pointer">
                     <img src="/x.png" alt="Fechar modal" className="text-black w-6 h-6"></img>
                 </button>
 
@@ -104,7 +104,7 @@ export default function CriarLojaModal({ onClose, onStoreCreated }: CriarLojaMod
                     value={name} onChange={(e) => setName(e.target.value)}
                 />
 
-                <select className="bg-white rounded-full px-5 h-8 text-xs outline-none w-96 pr-2 text-black"
+                <select className="bg-white rounded-full px-5 h-8 text-xs outline-none w-96 pr-2 text-black cursor-pointer"
                     value={categoryId} onChange={(e) => setCategoryId(e.target.value)}     
                 >
                     <option value="">Categoria</option>
@@ -122,7 +122,7 @@ export default function CriarLojaModal({ onClose, onStoreCreated }: CriarLojaMod
 
                 <UploadField label="Anexe o banner de sua loja" />
 
-                <button onClick={handleCreateStore} className="bg-[#6A38F3] text-white rounded-full w-64 h-8 mt-2">
+                <button onClick={handleCreateStore} className="bg-[#6A38F3] text-white rounded-full w-64 h-8 mt-2 cursor-pointer">
                     Adicionar
                 </button>
             </div>
