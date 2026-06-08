@@ -111,7 +111,7 @@ export default function Usuario() {
 
         <section className="bg-[#F6F3E4] min-h-screen py-8 pr-24">
           <ProductsSection products={products} />
-          <StoreSection stores={stores}/>
+          <StoreSection stores={stores} showAddButton={true} />
           {/*<RatingSection ratingComments={ratingComments}/>*/}
         </section>
 
