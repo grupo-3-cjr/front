@@ -140,6 +140,7 @@ export default function ProdutoEspecifico(){
                     description={produtoAtual.description}
                     isOwner={produtoAtual.isOwner} 
                     isLoggedIn={isLoggedIn}
+                    productId={productId}
                 />
                 
                 <RatingSection ratingComments={produtoAtual.ratings} />
