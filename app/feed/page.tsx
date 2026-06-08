@@ -8,10 +8,8 @@ import SearchBar from "@/components/feed/SearchBar"
 import CategoryList from "@/components/feed/CategoryList"
 import ProductsSection from "@/components/feed/ProductsSection"
 import StoreSection from "@/components/feed/StoreSection"
-import CriarLoja from "@/components/loja/CriarLoja";
 
 import CriarLojaModal from "@/components/loja/CriarLojaModal";
-import EditarLoja from "@/components/loja/EditarLojaModal";
 
 type Category = {
     id: number;
@@ -43,6 +41,7 @@ export default function FeedPage() {
     const [categories, setCategories] = useState<Category[]>([]);
     const [stores, setStores] = useState<Store[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const [openComentarioModal, setOpenComentarioModal] = useState(false);
 
     useEffect(() => {
         async function loadCategories() {
@@ -161,21 +160,6 @@ export default function FeedPage() {
                     <CriarLojaModal
                         onClose={() => setOpenModal(false)}
                         onStoreCreated={loadStores}
-                    />
-                )}
-
-                <button
-                    onClick={() => setEditingStore(stores[0])}
-                    className="bg-black text-white rounded-full px-6 py-2"
-                >
-                    Testar editar loja
-                </button>
-
-                {editingStore && (
-                    <EditarLoja
-                        store={editingStore}
-                        onClose={() => setEditingStore(null)}
-                        onStoreUpdated={loadStores}
                     />
                 )}
 
