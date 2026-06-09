@@ -5,7 +5,7 @@ import { Pen, Star } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 import EditProductModal from './editProductModal';
-import CreateProductModal from './createProductModal';
+
 type DescriptionData = {
     subtitle: string;
     text: string;
@@ -57,7 +57,6 @@ export default function ProductDetailsSection({
 
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     return (
         <>
             <div className="relative flex flex-col lg:flex-row gap-10 w-full max-w-8xl mx-auto pl-8 mb-12 ml-20 mr-0">
@@ -117,7 +116,7 @@ export default function ProductDetailsSection({
                         {/* Renderiza o botão de Avaliar se estiver logado mas não for o dono */}
                         {isLoggedIn && !isOwner && (
                             <button
-                             onClick={() => setIsCreateModalOpen(true)} 
+
                             className="w-10 h-10 bg-[#C6E700] rounded-full flex items-center justify-center text-white hover:bg-[#a2cf18] transition-colors shadow-sm" title="Avaliar Produto">
                                     <Star className="w-7 h-7" fill="currentColor" />
                             </button>
@@ -167,13 +166,6 @@ export default function ProductDetailsSection({
                     price: price,
                     stock: stock
                 }}
-            />
-                <CreateProductModal
-                isOpen={isCreateModalOpen} 
-                onClose={() => setIsCreateModalOpen(false)}
-                storeId={2}
-                parentCategoryId={parentCategoryId}
-
             />
         </>
 
