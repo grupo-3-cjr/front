@@ -1,7 +1,8 @@
 "use client";
-
+import { toast } from 'react-toastify';
 import { X, Camera, Plus, Minus, ChevronDown } from "lucide-react";
 import { useState, useEffect } from "react"; 
+
 
 type AddProductModalProps = {
     isOpen: boolean;
@@ -31,8 +32,6 @@ export default function AddProductModal({ isOpen, onClose, storeId, parentCatego
                 if (response.ok) {
                     const data = await response.json();
 
-                    console.log("ID da Categoria Pai que chegou no Modal:", parentCategoryId);
-                    
                 const subcategoriasF = data.filter(
                         (cat: any) => Number(cat.parent_category_id) === Number(parentCategoryId)
                     );
@@ -65,7 +64,7 @@ export default function AddProductModal({ isOpen, onClose, storeId, parentCatego
             const categoriaEscolhida = subcategorias.find(sub => sub.name === category);
 
             if (!categoriaEscolhida) {
-                alert("Por favor, selecione uma subcategoria válida.");
+                toast.warn("Por favor, selecione uma subcategoria válida.");
                 return; 
             }
 
@@ -85,9 +84,13 @@ export default function AddProductModal({ isOpen, onClose, storeId, parentCatego
             });
 
             if (response.ok) {
-                alert("Produto criado com sucesso!");
+                toast.success("Produto criado com sucesso! ");
                 onClose(); 
-                
+                setTimeout(() => {
+                    window.location.reload(); 
+                }, 2500);
+
+
                 // Limpa os campos para o próximo produto que for criar
                 setTitle("");
                 setDescription("");
@@ -95,15 +98,14 @@ export default function AddProductModal({ isOpen, onClose, storeId, parentCatego
                 setStock(0);
                 setCategory("");
                 
-                window.location.reload(); 
             } else {
                 const erro = await response.text();
-                alert(`Erro ao criar: ${erro}`);
+                toast.error(`Erro ao criar produto: ${erro}`);
             }
 
         } catch (error) {
             console.error("Erro ao criar produto:", error);
-            alert("Ocorreu um erro de conexão ao tentar criar o produto.");
+            toast.error("Ocorreu um erro de conexão ao tentar criar o produto.");
         }
     };
 
@@ -125,9 +127,10 @@ export default function AddProductModal({ isOpen, onClose, storeId, parentCatego
     };
 
     return (
+        
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
             <div className="relative w-full max-w-187.5 bg-[#EDEDED] rounded-3xl p-8 shadow-2xl flex flex-col max-h-[90vh] overflow-y-auto">
-                
+
                 <button onClick={onClose} className="absolute top-6 right-6 text-black hover:text-gray-600 transition">
                     <X size={32} />
                 </button>

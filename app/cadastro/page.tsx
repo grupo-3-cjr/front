@@ -7,8 +7,7 @@ import { Eye, EyeOff } from 'lucide-react'; // Para colocar o emoji do olho
 import { useRouter } from "next/navigation";
 
 import { useFormik } from 'formik'; // para facilitar na validação do formulário
-import { toast, ToastContainer } from 'react-toastify'; //para realizar notificações eficientes
-import 'react-toastify/dist/ReactToastify.css'; // para exibir a notificação
+import { toast } from 'react-toastify'; //para realizar notificações eficientes
 import { postUser } from '@/api'; // Importando a função do api.ts
 import * as yup from 'yup';
 
@@ -55,7 +54,10 @@ onSubmit: async (values, { resetForm }) => {
       
     toast.success("Conta criada com sucesso! 🎉");
     resetForm(); //limpar o formulário após ter dado certo
-    router.push("/login")
+    setTimeout(() => {
+          router.push("/login")
+    }, 1500);
+    
 
     } catch (error: any) {
       const apiMessage = error.response?.data?.message;
@@ -79,12 +81,6 @@ onSubmit: async (values, { resetForm }) => {
 
   return (
     <div className="min-h-screen w-full bg-[#F6F3E4] flex justify-center items-end px-4 md:px-8 overflow-hidden">
-      {/*exibe notificão sobre o cadastro */}
-      <ToastContainer  
-        position="top-right"
-        autoClose={3000}
-        theme="colored" 
-      />
       {/*DIV que divide o formulário e as imagens  */}
       <div className="w-full max-w-375 flex flex-row items-end justify-between gap-10 lg:gap-20 xl:gap-35">
         

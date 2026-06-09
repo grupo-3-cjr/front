@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from 'react-toastify';
 import { X, Camera, Plus, Minus, ChevronDown } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -48,18 +49,18 @@ export default function EditProductModal({ isOpen, onClose, productId, initialDa
             });
 
             if (response.ok) {
-                alert("Produto deletado com sucesso!");
+                toast.success("Produto deletado com sucesso!");
                 onClose(); 
                 
                 router.push("/feed"); 
             } else {
                 const erro = await response.text();
-                alert(`Erro ao deletar: ${erro}`);
+                toast.error(`Erro ao deletar: ${erro}`);
             }
 
         } catch (error) {
             console.error("Erro ao deletar:", error);
-            alert("Ocorreu um erro de conexão ao tentar deletar.");
+            toast.error("Ocorreu um erro de conexão ao tentar deletar.");
         }
     };
     const [subcategorias, setSubcategorias] = useState<{id: number, name: string}[]>([]);
@@ -77,7 +78,7 @@ export default function EditProductModal({ isOpen, onClose, productId, initialDa
                     setSubcategorias(subcategoriasFil);
                 }
             } catch (error) {
-                console.error("Erro ao buscar categorias:", error);
+                toast.error("Erro ao buscar categorias:", error);
             }
         };
 
@@ -115,17 +116,20 @@ export default function EditProductModal({ isOpen, onClose, productId, initialDa
             });
 
             if (response.ok) {
-                alert("Produto atualizado com sucesso!");
+                toast.success("Produto atualizado com sucesso!");
                 onClose(); 
-                window.location.reload(); // Recarrega a página
+                setTimeout(() => {
+                    window.location.reload(); 
+                }, 2500);
+                
             } else {
                 const erro = await response.text();
-                alert(`Erro ao salvar: ${erro}`);
+                toast.error(`Erro ao salvar: ${erro}`);
             }
 
         } catch (error) {
             console.error("Erro ao atualizar:", error);
-            alert("Ocorreu um erro ao tentar salvar.");
+            toast.error("Ocorreu um erro ao tentar salvar.");
         }
     };
 
