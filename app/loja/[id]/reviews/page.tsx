@@ -228,6 +228,7 @@ export default function ReviewsPage() {
                 text={rating.comment}
                 rating={rating.rating}
                 isOwner={userId === rating.user_id}
+                ratingId={rating.id}
               />
             ))
           )}
