@@ -3,10 +3,11 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import FeedNavbar from "@/components/feed/FeedNavbar";
-import RatingCard from "@/components/produtoEspecifico/RatingCard";
+import RatingCard from "@/components/loja/RatingCard";
 import api from "@/app/services/api";
 import Link from "next/link";
 import { Pencil, Plus } from "lucide-react";
+import AvaliacaoLoja from "@/app/modais/AvaliacaoLoja"
 
 type Store = {
   id: number;
@@ -38,6 +39,7 @@ export default function ReviewsPage() {
   const [categoryName, setCategoryName] = useState<string>("");
   const [ownerName, setOwnerName] = useState<string>("");
   const [loading, setLoading] = useState(true);
+  const [modalAberto, setModalAberto] = useState(false);
 
   const isOwner = userId !== null && store !== null && userId === store.user_id;
 
@@ -93,6 +95,26 @@ export default function ReviewsPage() {
       </div>
     );
   }
+
+  const handleAvaliar = async (rating: number, texto: string) => {
+        const token = localStorage.getItem("token");
+        const payload = JSON.parse(atob(token!.split('.')[1]));
+        const userId = payload.sub; 
+        await fetch(`http://localhost:3001/store-ratings`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ 
+                user_id: userId,
+                store_id: store?.id,
+                rating,
+                comment: texto,
+            }),
+        });
+        setModalAberto(false);
+    };
 
   return (
     <div className="min-h-screen bg-black">
@@ -177,9 +199,19 @@ export default function ReviewsPage() {
         {/* Botão Adicionar Review — só aparece se logado */}
         {isLoggedIn && (
           <div className="flex justify-center mb-10">
-            <button className="w-full max-w-2xl h-14 bg-[#6A38F3] rounded-full text-white text-xl font-semibold hover:opacity-90 transition-opacity">
+          <>
+            <button onClick={() => setModalAberto(true)} className="w-full max-w-2xl h-14 bg-[#6A38F3] rounded-full text-white text-xl font-semibold hover:opacity-90 transition-opacity">
               Adicionar Review
             </button>
+            {modalAberto && (
+            <AvaliacaoLoja 
+              storeName={store?.name ?? "Carregando..."}
+              storeId={store?.id ?? 0}
+              onClose={() => setModalAberto(false)}
+              onSubmit={handleAvaliar}
+            />
+            )}
+          </>
           </div>
         )}
 
