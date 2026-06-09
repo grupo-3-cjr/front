@@ -127,10 +127,6 @@ export default function FeedPage() {
             <Hero />
 
             <section className="bg-[#F6F3E4] min-h-screen py-8 pr-24">
-
-                <button onClick={() => setIsModalOpen(true)}>
-                    Abrir modal
-                </button>
                 
                 <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
@@ -161,21 +157,6 @@ export default function FeedPage() {
                     <CriarLojaModal
                         onClose={() => setOpenModal(false)}
                         onStoreCreated={loadStores}
-                    />
-                )}
-
-                <button
-                    onClick={() => setEditingStore(stores[0])}
-                    className="bg-black text-white rounded-full px-6 py-2"
-                >
-                    Testar editar loja
-                </button>
-
-                {editingStore && (
-                    <EditarLoja
-                        store={editingStore}
-                        onClose={() => setEditingStore(null)}
-                        onStoreUpdated={loadStores}
                     />
                 )}
 
