@@ -9,18 +9,31 @@ type Store = {
 
 type StoreSectionProps = {
     stores: Store[];
+    showAddButton?: boolean;
 }
 
 export default function StoreSection({
-    stores
+    stores,
+    showAddButton = false,
 }:StoreSectionProps) {
     return (
         <section className="mt-11 ml-16">
-            <section className="flex justify-between">
-                <div className="flex items-end justify-between mb-6">
+            <section className="flex justify-between items-center mb-6">
+                <div className="flex items-end gap-4">
                     <div className="flex items-baseline gap-2">
                         <h2 className="text-3xl text-black font-bold mb-8">Lojas</h2>
+
+                        <p className="text-red-500">
+                    showAddButton = {String(showAddButton)}
+                    </p>
                     </div>
+
+                    
+                    {showAddButton && (
+                        <button className="text-purple-400 text-sm font-medium">
+                            + Adicionar Loja
+                        </button>
+                    )}
                 </div>
 
                 <div className="flex justify-end">

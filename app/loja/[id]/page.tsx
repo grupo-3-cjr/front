@@ -8,6 +8,7 @@ import CreateProductModal from '@/components/produtoEspecifico/createProductModa
 import api from "@/app/services/api";
 import { Pencil, Plus } from "lucide-react";
 import Link from "next/link";
+import EditarLoja from "@/components/loja/EditarLojaModal";
 
 // Tipos
 type Store = {
@@ -51,6 +52,7 @@ export default function LojaPage() {
   const [loading, setLoading] = useState(true);
   const [categoryName, setCategoryName] = useState<string>("");
   const [ownerName, setOwnerName] = useState<string>("");
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
@@ -159,6 +161,18 @@ export default function LojaPage() {
               onClick={() => setIsCreateModalOpen(true)} 
               className="w-12 h-12 bg-[#6A38F3] rounded-full flex items-center justify-center text-white hover:opacity-90 transition-opacity shadow-lg cursor-pointer">
               <Plus className="w-8 h-8" /> {/* Reduzi de w-12 para w-8 para o ícone caber bem no botão */}
+          <div className="absolute top-15 right-15 flex flex-col gap-3 z-30">
+            <button className="w-12 h-12 bg-[#6A38F3] rounded-full flex items-center justify-center text-white hover:opacity-90 transition-opacity shadow-lg cursor-pointer"
+              onClick={() => {
+                console.log("botão clicado");
+                setIsEditModalOpen(true);
+              }}
+              >
+              <Pencil className="w-8 h-8" />
+            </button>
+  
+            <button className="w-12 h-12 bg-[#6A38F3] rounded-full flex items-center justify-center text-white hover:opacity-90 transition-opacity shadow-lg">
+              <Plus className="w-12 h-12" />
             </button>
           </div>
         )}
@@ -325,5 +339,18 @@ export default function LojaPage() {
         parentCategoryId={store.category_id}
     />
     </>
+
+    {isEditModalOpen && store && (
+      <EditarLoja
+        store={store}
+        onClose={() => setIsEditModalOpen(false)}
+        onStoreUpdated={async () => {
+          const response = await api.get(`/store/${storeId}`);
+          setStore(response.data);
+          setIsEditModalOpen(false);
+        }}
+      />
+    )};
+   </> 
   );
 }
