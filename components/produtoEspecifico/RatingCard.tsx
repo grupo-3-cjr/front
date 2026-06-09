@@ -8,7 +8,6 @@ type RatingCardProps = {
     name: string;
     text: string;
     rating?: number;
-    rating?: number; 
     isOwner?: boolean; 
     ratingId?: number;
 }
@@ -47,7 +46,7 @@ export default function RatingCard({avatar_url, name, text, rating = 5, isOwner 
     }
 
     return(
-        <article className="bg-[#F6F3E4] rounded-[28px] w-[700px] h-[220px] flex items-start px-8 gap-6 relative pt-8">
+        <article className="bg-[#FFFF] rounded-[28px] w-[700px] h-[220px] flex items-start px-8 gap-6 relative pt-8">
             
             {/* Foto à esquerda */}
             <img
