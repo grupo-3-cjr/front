@@ -56,6 +56,7 @@ export default function ProdutoEspecifico(){
 
                     // transformando no formato que a tela pede
                     const produtoFormatado = {
+                        id: produtoPrisma.id,
                         title: produtoPrisma.name,
                         rating: Number(mediaRating),
                         reviewsCount: totalRatings,
@@ -130,6 +131,7 @@ export default function ProdutoEspecifico(){
              <section className="bg-[#F6F3E4] min-h-screen py-8 pr-24">
 
             <ProductDetailsSection 
+                    id ={produtoAtual.id}
                     title={produtoAtual.title} 
                     rating={produtoAtual.rating}
                     reviewsCount={produtoAtual.reviewsCount}
