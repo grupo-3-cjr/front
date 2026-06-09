@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import AvaliacaoProduto from "@/app/modais/AvaliacaoProduto"
 
 import EditProductModal from './editProductModal';
-import CreateProductModal from './createProductModal';
+
 type DescriptionData = {
     subtitle: string;
     text: string;
@@ -20,6 +20,7 @@ type ProductDetailsProps = {
     rating: number;
     reviewsCount: number;
     category: string;
+    parentCategoryId: number;
     stock: number;
     price: string;
     images: string[];
@@ -36,6 +37,7 @@ export default function ProductDetailsSection({
     rating,
     reviewsCount,
     category,
+    parentCategoryId,
     stock,
     price,
     images = [],
@@ -199,6 +201,7 @@ export default function ProductDetailsSection({
                 isOpen={isEditModalOpen} 
                 onClose={() => setIsEditModalOpen(false)}
                 productId={id}
+                parentCategoryId={parentCategoryId}
                 initialData={{
                     title: title,
                     category: category,
@@ -206,11 +209,6 @@ export default function ProductDetailsSection({
                     price: price,
                     stock: stock
                 }}
-            />
-                <CreateProductModal
-                isOpen={isCreateModalOpen} 
-                onClose={() => setIsCreateModalOpen(false)}
-                storeId={2}
             />
         </>
 

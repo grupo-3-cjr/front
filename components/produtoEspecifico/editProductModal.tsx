@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from 'react-toastify';
 import { X, Camera, Plus, Minus, ChevronDown } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -8,6 +9,7 @@ type EditProductModalProps = {
     isOpen: boolean;
     onClose: () => void;
     productId: number;
+    parentCategoryId: number;
     // Recebendo os dados iniciais para preencher o form
     initialData: {
         title: string;
@@ -18,7 +20,7 @@ type EditProductModalProps = {
     };
 };
 
-export default function EditProductModal({ isOpen, onClose, productId, initialData }: EditProductModalProps) {
+export default function EditProductModal({ isOpen, onClose, productId, initialData, parentCategoryId}: EditProductModalProps) {
     // Estados locais para controlar o formulário
     const [title, setTitle] = useState(initialData.title);
     const [category, setCategory] = useState(initialData.category);
@@ -47,18 +49,18 @@ export default function EditProductModal({ isOpen, onClose, productId, initialDa
             });
 
             if (response.ok) {
-                alert("Produto deletado com sucesso!");
+                toast.success("Produto deletado com sucesso!");
                 onClose(); 
                 
                 router.push("/feed"); 
             } else {
                 const erro = await response.text();
-                alert(`Erro ao deletar: ${erro}`);
+                toast.error(`Erro ao deletar: ${erro}`);
             }
 
         } catch (error) {
             console.error("Erro ao deletar:", error);
-            alert("Ocorreu um erro de conexão ao tentar deletar.");
+            toast.error("Ocorreu um erro de conexão ao tentar deletar.");
         }
     };
     const [subcategorias, setSubcategorias] = useState<{id: number, name: string}[]>([]);
@@ -69,18 +71,21 @@ export default function EditProductModal({ isOpen, onClose, productId, initialDa
                 
                 if (response.ok) {
                     const data = await response.json();
-                    
-                    setSubcategorias(data);
+
+                    const subcategoriasFil = data.filter(
+                        (cat: any) => Number(cat.parent_category_id) === Number(parentCategoryId)
+                    );
+                    setSubcategorias(subcategoriasFil);
                 }
             } catch (error) {
-                console.error("Erro ao buscar categorias:", error);
+                toast.error("Erro ao buscar categorias:", error);
             }
         };
 
         if (isOpen) {
             fetchCategorias();
         }
-    }, [isOpen]);
+    }, [isOpen, parentCategoryId]);
 
     const handleSave = async () => {
         try {
@@ -94,13 +99,13 @@ export default function EditProductModal({ isOpen, onClose, productId, initialDa
             const precoLimpo = price.toString().replace(/[^0-9.,]/g, '').replace(',', '.');
 
             const categoriaEscolhida = subcategorias.find(sub => sub.name === category);
-            // Mona o pacote com os dados
+            // Monta o pacote com os dados
             const payload = {
                 name: title,
                 description: description,
                 price: parseFloat(precoLimpo),
                 stock: stock,
-                category_id: categoriaEscolhida ? categoriaEscolhida.id : undefined
+               ...(categoriaEscolhida && { category_id: categoriaEscolhida.id })
             
             };
             // Faz a requisição de atualização
@@ -111,17 +116,20 @@ export default function EditProductModal({ isOpen, onClose, productId, initialDa
             });
 
             if (response.ok) {
-                alert("Produto atualizado com sucesso!");
-                onClose(); // Fecha o modal
-                window.location.reload(); // Recarrega a página para puxar os dados fresquinhos do banco
+                toast.success("Produto atualizado com sucesso!");
+                onClose(); 
+                setTimeout(() => {
+                    window.location.reload(); 
+                }, 2500);
+                
             } else {
                 const erro = await response.text();
-                alert(`Erro ao salvar: ${erro}`);
+                toast.error(`Erro ao salvar: ${erro}`);
             }
 
         } catch (error) {
             console.error("Erro ao atualizar:", error);
-            alert("Ocorreu um erro ao tentar salvar.");
+            toast.error("Ocorreu um erro ao tentar salvar.");
         }
     };
 

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import FeedNavbar from "@/components/feed/FeedNavbar";
 import RatingCard from "@/components/produtoEspecifico/RatingCard";
+import CreateProductModal from '@/components/produtoEspecifico/createProductModal'
 import api from "@/app/services/api";
 import { Pencil, Plus } from "lucide-react";
 import Link from "next/link";
@@ -53,6 +54,8 @@ export default function LojaPage() {
   const [ownerName, setOwnerName] = useState<string>("");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
   const isOwner = userId !== null && store !== null && userId === store.user_id;
 
   // Pega o userId do token
@@ -60,7 +63,7 @@ export default function LojaPage() {
     const token = localStorage.getItem("token");
     if (token) {
       const payload = JSON.parse(atob(token.split(".")[1]));
-      setUserId(payload.sub);
+      setUserId(Number(payload.sub));
     }
   }, []);
 
@@ -132,7 +135,7 @@ export default function LojaPage() {
   }
 
   return (
-   <>
+    <>
     <div className="min-h-screen bg-[#F6F3E4]">
       <FeedNavbar />
 
@@ -150,6 +153,14 @@ export default function LojaPage() {
 
         {/* Botões do dono */}
         {isOwner && (
+          <div className="absolute top-16 right-16 flex flex-col gap-3 z-20">
+            <button className="w-12 h-12 bg-[#6A38F3] rounded-full flex items-center justify-center text-white hover:opacity-90 transition-opacity shadow-lg">
+              <Pencil className="w-8 h-8" />
+            </button>
+            <button 
+              onClick={() => setIsCreateModalOpen(true)} 
+              className="w-12 h-12 bg-[#6A38F3] rounded-full flex items-center justify-center text-white hover:opacity-90 transition-opacity shadow-lg cursor-pointer">
+              <Plus className="w-8 h-8" /> {/* Reduzi de w-12 para w-8 para o ícone caber bem no botão */}
           <div className="absolute top-15 right-15 flex flex-col gap-3 z-30">
             <button className="w-12 h-12 bg-[#6A38F3] rounded-full flex items-center justify-center text-white hover:opacity-90 transition-opacity shadow-lg cursor-pointer"
               onClick={() => {
@@ -321,6 +332,13 @@ export default function LojaPage() {
         )}
       </div>
     </div>
+      <CreateProductModal
+        isOpen={isCreateModalOpen} 
+        onClose={() => setIsCreateModalOpen(false)}
+        storeId={store.id}
+        parentCategoryId={store.category_id}
+    />
+    </>
 
     {isEditModalOpen && store && (
       <EditarLoja
