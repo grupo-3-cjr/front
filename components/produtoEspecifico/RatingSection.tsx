@@ -6,13 +6,15 @@ export type Rating = {
     name: string;
     text: string;
     rating?: number; 
-    isOwner?: boolean; 
+    isOwner?: boolean;
 }
 type RatingSectionProps = {
     ratingComments: Rating[];
+    productId: number,
+    ratingId?: number,
 }
 
-export default function RatingSection({ ratingComments }: RatingSectionProps) {
+export default function RatingSection({ ratingComments, productId }: RatingSectionProps) {
     return (
         <section className="mt-11 ml-16">
             <section className="flex justify-between">
@@ -34,6 +36,8 @@ export default function RatingSection({ ratingComments }: RatingSectionProps) {
                             text={rating.text}
                             rating={rating.rating}
                             isOwner={rating.isOwner}
+                            productId={productId}
+                            ratingId={rating.id} 
                         />
                     ))
                 ) : (

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Pen, Star } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import AvaliacaoProduto from "@/app/modais/AvaliacaoProduto"
 
 import EditProductModal from './editProductModal';
 import CreateProductModal from './createProductModal';
@@ -26,6 +27,7 @@ type ProductDetailsProps = {
     description: DescriptionData;
     isLoggedIn: boolean; 
     isOwner: boolean;
+    productId: number;
 };
 
 export default function ProductDetailsSection({
@@ -41,9 +43,22 @@ export default function ProductDetailsSection({
     description,
     isLoggedIn,
     isOwner,
+    productId,
 }: ProductDetailsProps) {
 
     const [mainImage, setMainImage] = useState(images.length > 0 ? images[0] : "/globe.svg");
+    const [modalAberto, setModalAberto] = useState(false);
+    const [produto, setProduto] = useState<{ id: number; name: string } | null>(null);
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        fetch(`http://localhost:3001/produtos/${productId}`, {
+            headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            setProduto(data)});
+    }, [productId]);
     
     useEffect(() => {
         if (images.length > 0) {
@@ -55,7 +70,26 @@ export default function ProductDetailsSection({
 
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+    const handleAvaliar = async (rating: number, texto: string) => {
+        const token = localStorage.getItem("token");
+        const payload = JSON.parse(atob(token!.split('.')[1]));
+        const userId = payload.sub; 
+        await fetch(`http://localhost:3001/product-ratings`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ 
+                user_id: userId,
+                product_id: produto?.id,
+                rating,
+                comment: texto,
+            }),
+        });
+        setModalAberto(false);
+    };
+
     return (
         <>
             <div className="relative flex flex-col lg:flex-row gap-10 w-full max-w-8xl mx-auto pl-8 mb-12 ml-20 mr-0">
@@ -114,11 +148,19 @@ export default function ProductDetailsSection({
 
                         {/* Renderiza o botão de Avaliar se estiver logado mas não for o dono */}
                         {isLoggedIn && !isOwner && (
-                            <button
-                             onClick={() => setIsCreateModalOpen(true)} 
-                            className="w-10 h-10 bg-[#C6E700] rounded-full flex items-center justify-center text-white hover:bg-[#a2cf18] transition-colors shadow-sm" title="Avaliar Produto">
+                            <>
+                            <button onClick={() => setModalAberto(true)} className="w-10 h-10 bg-[#C6E700] rounded-full flex items-center justify-center text-white hover:bg-[#a2cf18] transition-colors shadow-sm" title="Avaliar Produto">
                                     <Star className="w-7 h-7" fill="currentColor" />
                             </button>
+                        {modalAberto && (
+                            <AvaliacaoProduto
+                            productName={produto?.name ?? "Carregando..."}
+                            productId={produto?.id ?? 0}
+                            onClose={() => setModalAberto(false)}
+                            onSubmit={handleAvaliar}
+                            />
+                            )}
+                            </>
                         )}
                     </div>
                     
