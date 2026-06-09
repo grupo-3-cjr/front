@@ -19,6 +19,8 @@ type Store = {
   logo_url: string;
   banner_url: string;
   category_id: number;
+  sticker_url: string;
+  created_url: string;
 };
 
 type Product = {
@@ -152,30 +154,22 @@ export default function LojaPage() {
         )}
 
         {/* Botões do dono */}
-        {isOwner && (
-          <div className="absolute top-16 right-16 flex flex-col gap-3 z-20">
-            <button className="w-12 h-12 bg-[#6A38F3] rounded-full flex items-center justify-center text-white hover:opacity-90 transition-opacity shadow-lg">
-              <Pencil className="w-8 h-8" />
-            </button>
-            <button 
-              onClick={() => setIsCreateModalOpen(true)} 
-              className="w-12 h-12 bg-[#6A38F3] rounded-full flex items-center justify-center text-white hover:opacity-90 transition-opacity shadow-lg cursor-pointer">
-              <Plus className="w-8 h-8" /> {/* Reduzi de w-12 para w-8 para o ícone caber bem no botão */}
-          <div className="absolute top-15 right-15 flex flex-col gap-3 z-30">
-            <button className="w-12 h-12 bg-[#6A38F3] rounded-full flex items-center justify-center text-white hover:opacity-90 transition-opacity shadow-lg cursor-pointer"
-              onClick={() => {
-                console.log("botão clicado");
-                setIsEditModalOpen(true);
-              }}
-              >
-              <Pencil className="w-8 h-8" />
-            </button>
-  
-            <button className="w-12 h-12 bg-[#6A38F3] rounded-full flex items-center justify-center text-white hover:opacity-90 transition-opacity shadow-lg">
-              <Plus className="w-12 h-12" />
-            </button>
-          </div>
-        )}
+      {isOwner && (
+      <div className="absolute top-16 right-16 flex flex-col gap-3 z-20">
+      <button
+      onClick={() => setIsEditModalOpen(true)}
+      className="w-12 h-12 bg-[#6A38F3] rounded-full flex items-center justify-center text-white hover:opacity-90 transition-opacity shadow-lg"
+    >
+      <Pencil className="w-8 h-8" />
+     </button>
+      <button
+      onClick={() => setIsCreateModalOpen(true)}
+      className="w-12 h-12 bg-[#6A38F3] rounded-full flex items-center justify-center text-white hover:opacity-90 transition-opacity shadow-lg"
+      >
+      <Plus className="w-8 h-8" />
+    </button>
+  </div>
+)}
 
         {/* Info da loja */}
         <div className="absolute inset-0 flex flex-col items-center justify-center text-[#F6F3E4] z-10">
@@ -337,20 +331,18 @@ export default function LojaPage() {
         onClose={() => setIsCreateModalOpen(false)}
         storeId={store.id}
         parentCategoryId={store.category_id}
-    />
-    </>
-
-    {isEditModalOpen && store && (
-      <EditarLoja
-        store={store}
-        onClose={() => setIsEditModalOpen(false)}
-        onStoreUpdated={async () => {
-          const response = await api.get(`/store/${storeId}`);
-          setStore(response.data);
-          setIsEditModalOpen(false);
-        }}
       />
-    )};
-   </> 
+      {isEditModalOpen && (
+        <EditarLoja
+          store={store}
+          onClose={() => setIsEditModalOpen(false)}
+          onStoreUpdated={async () => {
+            const response = await api.get(`/store/${storeId}`);
+            setStore(response.data);
+            setIsEditModalOpen(false);
+          }}
+        />
+      )}
+    </>
   );
 }
