@@ -96,7 +96,7 @@ export default function ReviewModal({
           position: relative;
           background: #f0eef5;
           border-radius: 12px;
-          padding: 16px;
+          padding: 35px;
           width: 376px; /* 344 content + 16*2 padding */
           box-sizing: border-box;
           display: flex;
@@ -162,8 +162,8 @@ export default function ReviewModal({
         }
 
         .star-btn.filled svg path {
-          fill: #7c5cbf;
-          stroke: #7c5cbf;
+          fill: #ffd900;
+          stroke: #ffd900;
         }
 
         .review-textarea {

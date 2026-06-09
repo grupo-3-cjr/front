@@ -104,8 +104,8 @@ export default function ReviewModal({
           position: relative;
           background: #f0eef5;
           border-radius: 12px;
-          padding: 16px;
-          width: 376px;
+          padding: 35px;
+          width: 376px; /* 344 content + 16*2 padding */
           box-sizing: border-box;
           display: flex;
           flex-direction: column;

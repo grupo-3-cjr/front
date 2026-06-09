@@ -14,7 +14,8 @@ export default function TesteModal() {
 
     return (
         <main className="min-h-screen flex items-center justify-center bg-gray-200">
-           <EditProfileModal
+            <AvaliacaoLoja />
+           {/*<EditProfileModal
                 isOpen={openEdit}
                 onClose={() => setOpenEdit(false)}
                 onChangePassword={() => {
@@ -30,7 +31,7 @@ export default function TesteModal() {
                     setOpenPassword(false);
                     setOpenEdit(true);
                 }}
-            />
+            />*/}
         </main>
     );
 }

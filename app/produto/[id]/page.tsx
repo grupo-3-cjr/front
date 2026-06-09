@@ -66,6 +66,7 @@ export default function ProdutoEspecifico(){
                         storeLogo: produtoPrisma.store?.logo_url || "/globe.svg",
                         isOwner: loggedUserId === produtoPrisma.store?.user_id,
                         
+                        
                         // descrição
                         description: {
                             subtitle: produtoPrisma.name,
@@ -143,7 +144,10 @@ export default function ProdutoEspecifico(){
                     productId={productId}
                 />
                 
-                <RatingSection ratingComments={produtoAtual.ratings} />
+                <RatingSection 
+                ratingComments={produtoAtual.ratings} 
+                productId={productId}
+                />
 
                 <ProductusSection
                     subtitle="Da mesma loja"

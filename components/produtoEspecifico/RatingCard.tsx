@@ -1,4 +1,6 @@
 import { Pencil } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import EditarAvaliacaoProduto from "@/app/modais/EditarAvaliacaoProduto"
 
 
 type RatingCardProps = {
@@ -7,9 +9,42 @@ type RatingCardProps = {
     text: string;
     rating?: number; 
     isOwner?: boolean; 
+    ratingId?: number;
 }
 
-export default function RatingCard({avatar_url, name, text, rating = 5, isOwner = false}: RatingCardProps) {
+export default function RatingCard({avatar_url, name, text, rating = 5, isOwner = false, ratingId}: RatingCardProps) {
+
+    const [modalAberto, setModalAberto] = useState(false);
+
+    const handleAvaliar = async (rating: number, texto: string) => {
+        const token = localStorage.getItem("token");
+        const payload = JSON.parse(atob(token!.split('.')[1]));
+        const userId = payload.sub; 
+        await fetch(`http://localhost:3001/product-ratings/${ratingId}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({comment: texto, rating}),
+        });
+        setModalAberto(false);
+    };
+
+    const deleteAvaliar = async () => {
+        const token = localStorage.getItem("token");
+        const payload = JSON.parse(atob(token!.split('.')[1]));
+        const userId = payload.sub;
+        await fetch(`http://localhost:3001/product-ratings/${ratingId}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        setModalAberto(false);
+    }
+
     return(
         <article className="bg-white rounded-[28px] w-[700px] h-[220px] flex items-start px-8 gap-6 relative pt-8">
             
@@ -40,10 +75,19 @@ export default function RatingCard({avatar_url, name, text, rating = 5, isOwner 
                     ))}
                     {/* mostra o botão de editar apenas se for o dono da avaliação */}
                     {isOwner && (
-                        <button className="w-8 h-8 bg-[#6B46C1] rounded-full flex items-center justify-center text-white hover:bg-purple-800 transition-colors shadow-sm" title="Editar sua avaliação">
+                        <>
+                        <button onClick={() => setModalAberto(true)} className="w-8 h-8 bg-[#6B46C1] rounded-full flex items-center justify-center text-white hover:bg-purple-800 transition-colors shadow-sm" title="Editar sua avaliação">
                             <Pencil className="w-4 h-4" />
                         </button>
-                    )}
+                        {modalAberto && (
+                            <EditarAvaliacaoProduto 
+                             onClose={() => setModalAberto(false)}
+                             onSubmit={handleAvaliar}
+                             onDelete={deleteAvaliar}
+                            />
+                            )}
+                            </>
+                        )}
                 </div>
                 <span className="text-[#6A38F3] text-sm cursor-pointer">ver mais</span>
             </div>
