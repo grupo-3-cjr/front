@@ -9,8 +9,6 @@ import CategoryList from "@/components/feed/CategoryList"
 import ProductsSection from "@/components/feed/ProductsSection"
 import StoreSection from "@/components/feed/StoreSection"
 
-import CriarLojaModal from "@/components/loja/CriarLojaModal";
-
 type Category = {
     id: number;
     name: string;
@@ -41,7 +39,6 @@ export default function FeedPage() {
     const [categories, setCategories] = useState<Category[]>([]);
     const [stores, setStores] = useState<Store[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
-    const [openComentarioModal, setOpenComentarioModal] = useState(false);
 
     useEffect(() => {
         async function loadCategories() {
@@ -116,9 +113,6 @@ export default function FeedPage() {
         (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
 
-    const [openModal, setOpenModal] = useState(false);
-    const [editingStore, setEditingStore] = useState<Store | null>(null);
-
     return (
         <main>
             <FeedNavbar/>
@@ -147,17 +141,6 @@ export default function FeedPage() {
                 />
 
                 <StoreSection stores={stores} />
-
-                <button className="bg-[#6A38F3] text-white rounded-full px-6 py-2" onClick={() => setOpenModal(true)}>
-                    Criar Loja
-                </button>
-
-                {openModal && (
-                    <CriarLojaModal
-                        onClose={() => setOpenModal(false)}
-                        onStoreCreated={loadStores}
-                    />
-                )}
 
             </section>
         </main>
