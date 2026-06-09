@@ -17,6 +17,8 @@ const passwordRules= /((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/; /
 const validationSchema = yup.object().shape({ //define as regras de validação dos inputs
   name: yup.string()
     .required('O nome é obrigatório'),
+   username: yup.string()
+    .required('O username é obrigatório'), 
   email: yup.string()
     .email('Insira um e-mail válido')
     .required('O e-mail é obrigatório'),
@@ -27,9 +29,7 @@ const validationSchema = yup.object().shape({ //define as regras de validação 
     .required('A senha é obrigatória'),
   confirmPassword: yup.string()
     .oneOf([yup.ref('password')], 'As senhas não coincidem')
-    .required('Confirme sua senha'),
-  username: yup.string()
-    .optional(), // é opcional
+    .required('Confirme sua senha')
 });
 
 
@@ -120,9 +120,15 @@ onSubmit: async (values, { resetForm }) => {
                   type="text"
                   placeholder="Username"
                   onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                   value={formik.values.username}
                   className="w-full bg-[#F6F3E4] text-black placeholder-[#858585] font-spartan font-light text-lg lg:text-xl rounded-full px-8 py-4 outline-none transition-all focus:ring-2 focus:ring-[#7b42ff]"
                />
+               {formik.touched.username && formik.errors.username && (
+                <p className="text-red-500 text-sm mt-1 ml-6 font-medium ">
+                    {formik.errors.username}
+                </p>
+              )}
             </div>
 
             {/* Input Email */}
