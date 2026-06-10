@@ -37,6 +37,7 @@ export default function StoreSection({
                 {stores.map((store) => (
                     <StoreCard
                         key={store.id}
+                        id={store.id}
                         logo_url={store.logo_url}
                         name={store.name}
                         description={store.description}
