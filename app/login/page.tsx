@@ -7,6 +7,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import AlterarSenhaModal from "@/components/cadastro/AlterarSenhaModal";
 
 const leagueSpartan = League_Spartan({
   subsets: ["latin"],
@@ -18,6 +19,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  const [openModal, setOpenModal] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -113,7 +115,8 @@ export default function Login() {
             {/* ESQUECEU SENHA */}
             <button
               type="button"
-              className={`${leagueSpartan.className} underline text-[15px] xl:text-base font-light text-white`}
+              className={`${leagueSpartan.className} underline text-[15px] xl:text-base font-light text-white cursor-pointer hover:text-[#8854ff] transition-colors duration-200`}
+              onClick={() => setOpenModal(true)}
             >
               Esqueceu sua senha?
             </button>
@@ -140,6 +143,12 @@ export default function Login() {
         </div>
 
       </div>
+
+      {openModal && (
+        <AlterarSenhaModal
+            onClose={() => setOpenModal(false)}
+        />
+      )}
     </main>
   );
 }
