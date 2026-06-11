@@ -11,12 +11,12 @@ export default function ProductCard({
     id,
     name,
     description,
-    price
+    price,
 }: ProductCardProps) {
     return(
         <Link href={`/produto/${id}`}>
 
-            <article className="min-w-[228px] h-[280px] bg-white rounded-[28px] relative overflow-hidden flex items-center justify-center flex-col">
+            <article className="relative bg-white min-w-[228px] h-[280px] rounded-[28px] overflow-hidden flex items-center justify-center flex-col">
 
                 {/* {storeLogo && (
                     <img
