@@ -163,7 +163,7 @@ export default function EditProductModal({ isOpen, onClose, productId, initialDa
             <div className="relative w-full max-w-[750px] bg-[#EDEDED] rounded-3xl p-8 shadow-2xl flex flex-col max-h-[90vh] overflow-y-auto">
                 
                 {/* Botão Fechar */}
-                <button onClick={onClose} className="absolute top-6 right-6 text-black hover:text-gray-600 transition">
+                <button onClick={onClose} className="cursor-pointer absolute top-6 right-6 text-black hover:text-gray-600 transition">
                     <X size={32} />
                 </button>
 
@@ -286,7 +286,7 @@ export default function EditProductModal({ isOpen, onClose, productId, initialDa
                 {/* Botão Deletar */}
                 <button 
                     onClick={handleDelete}
-                    className="w-full bg-[#FF0000] text-white font-bold py-3 rounded-2xl mt-4 hover:bg-red-700 transition">
+                    className="w-full bg-[#FF0000] text-white font-bold py-3 rounded-2xl mt-4 hover:bg-red-700 transition cursor-pointer">
                     DELETAR
                 </button>
 
@@ -294,7 +294,7 @@ export default function EditProductModal({ isOpen, onClose, productId, initialDa
                 <div className="flex items-center justify-center gap-8 my-6">
                     <button 
                         onClick={() => setStock(Math.max(stock - 1, 0))}
-                        className="w-12 h-12 rounded-full border border-[#6A38F3] flex items-center justify-center text-[#6A38F3] hover:bg-purple-100 transition"
+                        className="cursor-pointer w-12 h-12 rounded-full border border-[#6A38F3] flex items-center justify-center text-[#6A38F3] hover:bg-purple-100 transition"
                     >
                         <Minus size={24} />
                     </button>
@@ -309,7 +309,7 @@ export default function EditProductModal({ isOpen, onClose, productId, initialDa
                         
                         // Impede que o botão + passe do limite máximo
                         onClick={() => setStock(Math.min(stock + 1, MAX_STOCK))}
-                        className="w-12 h-12 rounded-full border border-[#6A38F3] flex items-center justify-center text-[#6A38F3] hover:bg-purple-100 transition"
+                        className="cursor-pointer w-12 h-12 rounded-full border border-[#6A38F3] flex items-center justify-center text-[#6A38F3] hover:bg-purple-100 transition"
                     >
 
                         <Plus size={24} />
@@ -318,7 +318,7 @@ export default function EditProductModal({ isOpen, onClose, productId, initialDa
                 </div>
 
                 {/* Botão Salvar */}
-                <button className="bg-[#6B46C1] text-white font-medium py-3 px-16 rounded-full mx-auto hover:bg-purple-800 transition"
+                <button className="cursor-pointer bg-[#6B46C1] text-white font-medium py-3 px-16 rounded-full mx-auto hover:bg-purple-800 transition"
                  onClick={handleSave}
                 >
                     Salvar

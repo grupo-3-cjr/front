@@ -9,6 +9,7 @@ import api from "@/app/services/api";
 import { Pencil, Plus } from "lucide-react";
 import Link from "next/link";
 import EditarLoja from "@/components/loja/EditarLojaModal";
+import EditProductModal from "@/components/produtoEspecifico/editProductModal";
 
 // Tipos
 type Store = {
@@ -53,6 +54,7 @@ export default function LojaPage() {
   const [categoryName, setCategoryName] = useState<string>("");
   const [ownerName, setOwnerName] = useState<string>("");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editProduct, setEditProduct] = useState<any | null>(null);
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
@@ -272,8 +274,19 @@ export default function LojaPage() {
           {paginatedProducts.map((product) => (
             <article
               key={product.id}
-              className="bg-white rounded-[24px] p-4 flex flex-col items-center gap-2 shadow-sm"
+              className="relative bg-white rounded-[24px] p-4 flex flex-col items-center gap-2 shadow-sm"
             >
+
+              {isOwner && (
+                <button
+                  type="button"
+                  onClick={() => setEditProduct(product)}
+                  className="absolute top-3 right-3 bg-[#6A38F3] hover:bg-[#5a28e3] text-white rounded-full w-8 h-8 flex items-center justify-center z-20 cursor-pointer"
+                >
+                  ✎
+                </button>
+              )}
+
               <img
                 src={product.productImage?.[0]?.image_url ?? "/placeholder.png"}
                 alt={product.name}
@@ -343,6 +356,24 @@ export default function LojaPage() {
         }}
       />
     )};
+
+    {editProduct && (
+            <EditProductModal
+                isOpen={true}
+                onClose={() => setEditProduct(null)}
+                productId={editProduct.id}
+                parentCategoryId={editProduct.category?.parent_category_id}
+                initialData={{
+                  title: editProduct.name,
+                  category: editProduct.category?.name ?? "",
+                  description: editProduct.description,
+                  price: editProduct.price,
+                  stock: editProduct.stock,
+                }}
+            />
+          )}
+
+    
    </> 
   );
 }

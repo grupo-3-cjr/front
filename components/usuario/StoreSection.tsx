@@ -21,7 +21,7 @@ export default function StoreFunction({
     onAddStore,
 }: StoreSectionProps) {
     return (
-        <section className="mt-11 ml-16">
+        <section className="mt-10 ml-16">
             <section className="flex justify-between">
                 <div className="flex items-end justify-between mb-6 w-full">
                     <div className="flex items-baseline gap-2">
