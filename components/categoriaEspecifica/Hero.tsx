@@ -4,15 +4,20 @@ export default function Hero() {
 
             <div className="h-full max-w-[1218px] mx-auto flex items-center justify-between px-16">
 
-                <div className="w-[50%]">
-                    <h1 className="text-5xl font-bold leading-[1.05] text-right tracking-tight">
+                <div className="flex-1 flex justify-end pr-8">
+                    <h1 className="text-5xl font-bold leading-[1.05] tracking-tight text-right">
                         O universo da tecnologia <br />
                         em um só lugar
                     </h1>
                 </div>
 
-                <div className="w-[42%] flex justify-start items-end h-full">
-                    <img className="w-[430px] translate-y-60 -translate-x-30" src="/personagem2.jpe" alt="Logo hero" />
+                {/* Mantida a estrutura do mascote */}
+                <div className="w-[42%] flex justify-center items-start h-full">
+                    <img
+                        className="w-[100px]"
+                        src="/Mascote2.png"
+                        alt="Logo hero"
+                    />
                 </div>
 
             </div>
