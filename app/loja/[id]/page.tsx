@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import FeedNavbar from "@/components/feed/FeedNavbar";
-import RatingCard from "@/components/produtoEspecifico/RatingCard";
+import RatingCard from "@/components/loja/RatingCard";
 import CreateProductModal from '@/components/produtoEspecifico/createProductModal'
 import api from "@/app/services/api";
 import { Pencil, Plus } from "lucide-react";
@@ -20,6 +20,8 @@ type Store = {
   logo_url: string;
   banner_url: string;
   category_id: number;
+  sticker_url: string;
+  created_url: string;
 };
 
 type Product = {
@@ -240,7 +242,7 @@ export default function LojaPage() {
                 {Array.from({ length: 5 }).map((_, i) => (
                   <span
                     key={i}
-                    className={`text-5xl ${i < Math.round(Number(avgRating)) ? "text-yellow-400" : "text-gray-600"}`}
+                    className={`text-5xl ${i < Math.round(Number(avgRating)) ? "text-[#FFEB3A]" : "text-gray-600"}`}
                   >
                     ★
                   </span>
@@ -258,6 +260,8 @@ export default function LojaPage() {
                 text={rating.comment}
                 rating={rating.rating}
                 isOwner={userId === rating.user_id}
+                ratingId={rating.id}
+                storeId={storeId}
               />
             ))}
           </div>
