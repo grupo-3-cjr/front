@@ -197,19 +197,22 @@ export default function ProductDetailsSection({
                 </div>
 
             </div>
-                <EditProductModal 
-                isOpen={isEditModalOpen} 
+        {isEditModalOpen && produto && (
+            <EditProductModal
+                isOpen={isEditModalOpen}
                 onClose={() => setIsEditModalOpen(false)}
-                productId={id}
-                parentCategoryId={parentCategoryId}
+                productId={produto.id} 
+                parentCategoryId={produto.category?.parent_category_id}
                 initialData={{
-                    title: title,
-                    category: category,
-                    description: description.text, 
-                    price: price,
-                    stock: stock
+                  title: produto.name,
+                  category: produto.category?.name ?? "",
+                  description: produto.description,
+                  price: produto.price,
+                  stock: produto.stock,
+                  images: produto.productImage?.map((img: any) => img.image_url) || []
                 }}
             />
+          )}
         </>
 
         
