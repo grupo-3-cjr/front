@@ -7,6 +7,7 @@ import api from "@/app/services/api";
 import { Pencil } from "lucide-react";
 import { League_Spartan } from "next/font/google";
 
+
 const leagueSpartan = League_Spartan({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
@@ -47,6 +48,7 @@ export default function ComentariosPage() {
   const [loading, setLoading] = useState(true);
   const [novoComentario, setNovoComentario] = useState("");
   const [enviando, setEnviando] = useState(false);
+  const [modalEdicaoAberto, setModalEdicaoAberto] = useState(false);
 
   const isOwnerOfRating = userId !== null && rating !== null && userId === rating.user_id;
   const isStoreOwner = userId !== null && store !== null && userId === store.user_id;
@@ -134,7 +136,7 @@ export default function ComentariosPage() {
 
         {/* Canetinha — só aparece pro dono da avaliação */}
         {isOwnerOfRating && (
-          <button className="absolute top-6 right-8 text-white hover:opacity-70 transition-opacity">
+          <button className="absolute top-6 right-8 text-white hover:opacity-70 transition-opacity mr-9">
             <Pencil className="w-6 h-6" />
           </button>
         )}
@@ -145,7 +147,7 @@ export default function ComentariosPage() {
             <div className="flex items-center gap-4 mb-6">
               <button
                 onClick={() => router.back()}
-                className="text-[#F6F3E4] text-4xl hover:opacity-70 transition-opacity flex-shrink-0"
+                className="text-[#F6F3E4] text-5xl hover:opacity-70 transition-opacity flex-shrink-0"
               >
                 {"<"}
               </button>
@@ -163,7 +165,7 @@ export default function ComentariosPage() {
                 </span>
               </div>
               {/* Estrelas */}
-              <div className="flex gap-1 ml-auto">
+              <div className="flex gap-1 ml-auto mr-8">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <span key={i} className={i < rating.rating ? "text-3xl text-[#FFEB3A]" : "text-3xl text-gray-600"}>★</span>
                 ))}
@@ -171,7 +173,7 @@ export default function ComentariosPage() {
             </div>
 
             {/* Texto da avaliação */}
-            <p className={`${leagueSpartan.className} text-[#F6F3E4] font-normal text-[25px] leading-relaxed ml-8`}>
+            <p className={`${leagueSpartan.className} text-[#F6F3E4] font-extralight text-[25px] leading-relaxed ml-8`}>
               {rating.comment}
             </p>
           </>
@@ -182,7 +184,7 @@ export default function ComentariosPage() {
       <div className="px-16 py-8">
         <div className="border-l-2 border-gray-300 pl-8 flex flex-col gap-8">
           {comments.length === 0 ? (
-            <span className={`${leagueSpartan.className} text-gray-500 text-base`}>
+            <span className={`${leagueSpartan.className} text-black font-extralight text-base`}>
               Nenhum comentário ainda.
             </span>
           ) : (
@@ -195,19 +197,19 @@ export default function ComentariosPage() {
     />
     <div className="flex flex-col flex-1">
       <div className="flex items-center gap-2">
-        <span className={`${leagueSpartan.className} text-black font-bold text-lg`}>
+        <span className={`${leagueSpartan.className} text-black font-normal text-xl`}>
           {comment.user.name}
         </span>
-        <span className={`${leagueSpartan.className} text-gray-400 font-medium text-sm`}>
+        <span className={`${leagueSpartan.className} text-black font-extralight text-sm`}>
           {formatarTempo(comment.createdAt)}
         </span>
         {store && comment.user_id === store.user_id && (
-          <span className={`${leagueSpartan.className} text-[#6A38F3] text-xs font-semibold`}>
-            dona da loja
+          <span className={`${leagueSpartan.className} text-[#6A38F3] text-xs font-normal`}>
+            dono da loja
           </span>
         )}
       </div>
-      <span className={`${leagueSpartan.className} text-gray-600 font-normal text-base`}>
+      <span className={`${leagueSpartan.className} text-black font-extralight text-lg`}>
         {comment.content}
       </span>
     </div>
@@ -232,7 +234,7 @@ export default function ComentariosPage() {
               value={novoComentario}
               onChange={(e) => setNovoComentario(e.target.value)}
               placeholder="Adicionar comentário"
-              className={`${leagueSpartan.className} flex-1 h-12 px-6 rounded-full bg-white text-black outline-none placeholder:text-gray-400 border border-gray-200`}
+              className={`${leagueSpartan.className} flex-1 h-12 px-6 rounded-full bg-white text-black outline-none font-light placeholder:text-gray-400 border border-gray-200`}
               onKeyDown={(e) => e.key === "Enter" && handleEnviarComentario()}
             />
             <button
