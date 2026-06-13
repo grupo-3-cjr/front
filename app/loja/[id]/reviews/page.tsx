@@ -229,6 +229,7 @@ export default function ReviewsPage() {
                 rating={rating.rating}
                 isOwner={userId === rating.user_id}
                 ratingId={rating.id}
+                storeId={storeId}
               />
             ))
           )}

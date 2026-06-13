@@ -240,7 +240,7 @@ export default function LojaPage() {
                 {Array.from({ length: 5 }).map((_, i) => (
                   <span
                     key={i}
-                    className={`text-5xl ${i < Math.round(Number(avgRating)) ? "text-yellow-400" : "text-gray-600"}`}
+                    className={`text-5xl ${i < Math.round(Number(avgRating)) ? "text-[#FFEB3A]" : "text-gray-600"}`}
                   >
                     ★
                   </span>
