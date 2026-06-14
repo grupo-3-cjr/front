@@ -38,7 +38,9 @@ export default function PrincipaisLojas() {
 
         </div>
 
+        <div className="px-10 mt-10">
         <StoreSection stores={stores} />
+        </div>
   
       </div>
   )
