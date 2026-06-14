@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 type Product = {
   id: number;
@@ -13,41 +13,41 @@ type Product = {
 
 const ITEMS_PER_PAGE = 15;
 
-const mockProducts: Product[] = Array.from({ length: 50 }, (_, i) => ({
-  id: i + 1,
-  name: "Produto " + (i + 1),
-  price: 999.99,
-  available: i % 3 !== 1,
-  image_url: "",
-  store_logo: "",
-}));
-
 export default function ProductGrid() {
   const [currentPage, setCurrentPage] = useState(1);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [totalPages, setTotalPages] = useState(1);
 
-  const totalPages = Math.ceil(mockProducts.length / ITEMS_PER_PAGE);
-  const start = (currentPage - 1) * ITEMS_PER_PAGE;
-  const currentProducts = mockProducts.slice(start, start + ITEMS_PER_PAGE);
+  useEffect(() => {
+    async function loadProducts() {
+      const response = await fetch(`http://localhost:3001/produtos`);
+      if (!response.ok) {
+        setProducts([]);
+        return;
+      }
+      const data = await response.json();
+      setProducts(Array.isArray(data) ? data : []);
+    }
+    loadProducts();
+  }, [currentPage]);
 
   return (
     <div className="px-10 py-8">
-      {/* Grid */}
-      <div style={{display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '16px'}} className="px-10 py-8">
-        {currentProducts.map((product) => (
-            <div key={product.id} className="w-full h-[280px] bg-white rounded-[28px] relative overflow-hidden flex items-center justify-center flex-col">
+      <div style={{display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '16px', padding: '32px 40px'}}>
+        {products.map((product) => (
+          <div key={product.id} className="w-full h-[380px] bg-white rounded-[28px] relative overflow-hidden flex items-center justify-center flex-col">
             <div className="flex-1 flex items-center justify-center">
-                <img src={product.image_url} alt={product.name} className="max-h-[180px] object-contain" />
+              <img src={product.image_url} alt={product.name} className="max-h-[180px] object-contain" />
             </div>
             <p className="font-bold text-lg">{product.name}</p>
-            <p className="font-semibold">R${product.price.toFixed(2)}</p>
+            <p className="font-semibold">R${Number(product.price).toFixed(2)}</p>
             <p className={product.available ? "text-[#AACC00] text-sm font-semibold" : "text-red-500 text-sm font-semibold"}>
-                {product.available ? "DISPONÍVEL" : "INDISPONÍVEL"}
+              {product.available ? "DISPONÍVEL" : "INDISPONÍVEL"}
             </p>
-            </div>
+          </div>
         ))}
-        </div>
+      </div>
 
-      {/* Paginação */}
       <div className="flex items-center justify-center gap-4 mt-10 text-xl font-bold">
         <button
           onClick={() => setCurrentPage(p => Math.max(p - 1, 1))}
@@ -77,4 +77,4 @@ export default function ProductGrid() {
       </div>
     </div>
   );
-}
+} 
