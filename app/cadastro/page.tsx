@@ -56,7 +56,7 @@ onSubmit: async (values, { resetForm }) => {
     resetForm(); //limpar o formulário após ter dado certo
     setTimeout(() => {
           router.push("/login")
-    }, 1500);
+    }, 2500);
     
 
     } catch (error: any) {
@@ -92,7 +92,7 @@ onSubmit: async (values, { resetForm }) => {
           </h2>
 
           {/* Forms onde vão ser inseridas as informações  */}
-          <form  onSubmit={formik.handleSubmit} className="flex flex-col gap-3 w-full">
+          <form onSubmit={formik.handleSubmit} className="flex flex-col gap-3 w-full">
             
             {/* Input Nome  */}
             <div className="w-full">

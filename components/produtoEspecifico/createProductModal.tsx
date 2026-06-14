@@ -20,6 +20,8 @@ export default function AddProductModal({ isOpen, onClose, storeId, parentCatego
     const MAX_STOCK = 999;
 
     const [previews, setPreviews] = useState<string[]>(['', '', '', '']);
+    const [imageFiles, setImageFiles] = useState<(File | null)[]>([null, null, null, null]);
+
     const [isCategoryOpen, setIsCategoryOpen] = useState(false);
 
     //  para buscar as categorias do banco
@@ -32,10 +34,11 @@ export default function AddProductModal({ isOpen, onClose, storeId, parentCatego
                 if (response.ok) {
                     const data = await response.json();
 
-                const subcategoriasF = data.filter(
+                    const subcategoriasF = data.filter(
                         (cat: any) => Number(cat.parent_category_id) === Number(parentCategoryId)
                     );
                     
+                   console.log("CreateModal -> Subcategorias Filtradas:", subcategoriasF);
                     setSubcategorias(subcategoriasF);
                 }
             } catch (error) {
@@ -52,8 +55,7 @@ export default function AddProductModal({ isOpen, onClose, storeId, parentCatego
     const handleCreate = async () => {
         try {
             const token = localStorage.getItem("token");
-            const headers = {
-                "Content-Type": "application/json",
+            const headersBase = {
                 ...(token ? { Authorization: `Bearer ${token}` } : {})
             };
 
@@ -67,7 +69,30 @@ export default function AddProductModal({ isOpen, onClose, storeId, parentCatego
                 toast.warn("Por favor, selecione uma subcategoria válida.");
                 return; 
             }
+            const uploadedUrls: string[] = [];
+            const filesToUpload = imageFiles.filter(file => file !== null) as File[];
 
+            if (filesToUpload.length > 0) {
+                toast.info(`Enviando ${filesToUpload.length} imagem(ns)...`, { autoClose: 2000 });
+            }
+            for (const file of filesToUpload) {
+                const formData = new FormData();
+                formData.append('file', file);
+
+                const uploadResponse = await fetch('http://localhost:3001/upload', {
+                    method: 'POST',
+                    headers: headersBase, 
+                    body: formData
+                });
+
+                if (uploadResponse.ok) {
+                    const data = await uploadResponse.json();
+                    uploadedUrls.push(data.url); 
+                } else {
+                    toast.error("Falha ao fazer upload de uma das imagens.");
+                    return; 
+                }
+            }
             // Monta o payload 
             const payload = {
                 name: title,
@@ -75,11 +100,15 @@ export default function AddProductModal({ isOpen, onClose, storeId, parentCatego
                 price: parseFloat(precoLimpo),
                 stock: stock,
                 category_id: categoriaEscolhida.id,
-                store_id: storeId
+                store_id: storeId,
+                images: uploadedUrls
             };
             const response = await fetch(`http://localhost:3001/produtos`, {
                 method: 'POST', 
-                headers,
+                headers: {
+                    ...headersBase,
+                    "Content-Type": "application/json"
+                },
                 body: JSON.stringify(payload)
             });
 
@@ -120,9 +149,16 @@ export default function AddProductModal({ isOpen, onClose, storeId, parentCatego
         const file = e.target.files?.[0];
         if (file) {
             const tempUrl = URL.createObjectURL(file);
+            
+
             const newPreviews = [...previews];
             newPreviews[index] = tempUrl;
             setPreviews(newPreviews);
+
+
+            const newFiles = [...imageFiles];
+            newFiles[index] = file;
+            setImageFiles(newFiles);
         }
     };
 

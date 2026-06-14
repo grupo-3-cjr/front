@@ -17,6 +17,7 @@ type EditProductModalProps = {
         description: string;
         price: string;
         stock: number;
+        images: string[];
     };
 };
 
@@ -26,13 +27,26 @@ export default function EditProductModal({ isOpen, onClose, productId, initialDa
     const [category, setCategory] = useState(initialData.category);
     const [description, setDescription] = useState(initialData.description);
     const [price, setPrice] = useState(initialData.price);
+    
     //dados estoque
     const [stock, setStock] = useState(initialData.stock);
     const MAX_STOCK = 999;
     const router = useRouter();
+    //carrega as imagens
+    const safeImages = initialData.images || [];
+
+    const [previews, setPreviews] = useState<string[]>([
+        safeImages[0] || '',
+        safeImages[1] || '',
+        safeImages[2] || '',
+        safeImages[3] || ''
+    ]);
+
+    const [imageFiles, setImageFiles] = useState<(File | null)[]>([null, null, null, null]);
+
 
     const handleDelete = async () => {
-        // Pede confirmação antes de fazer qualquer coisa
+        // Pede confirmação antes de deletar
         const confirmacao = window.confirm("Tem certeza que deseja deletar este produto?");
         if (!confirmacao) return;
 
@@ -87,41 +101,74 @@ export default function EditProductModal({ isOpen, onClose, productId, initialDa
         }
     }, [isOpen, parentCategoryId]);
 
-    const handleSave = async () => {
+const handleSave = async () => {
         try {
             const token = localStorage.getItem("token");
-            const headers = {
-                "Content-Type": "application/json",
+            const headersBase = {
                 ...(token ? { Authorization: `Bearer ${token}` } : {})
             };
 
-            // Limpa os dados antes de enviar, ou seja, só manda numero para o back
-            const precoLimpo = price.toString().replace(/[^0-9.,]/g, '').replace(',', '.');
+            const finalUrls: string[] = [];
 
+            // Avisa o usuário se houver arquivos novos para upload
+            const filesToUpload = imageFiles.filter(file => file !== null);
+            if (filesToUpload.length > 0) {
+                toast.info(`Atualizando e enviando ${filesToUpload.length} imagem(ns)...`, { autoClose: 2000 });
+            }
+
+
+            //processa as 4 imagens
+            for (let i = 0; i < 4; i++) {
+                if (imageFiles[i]) {
+
+                    const formData = new FormData();
+                    formData.append('file', imageFiles[i] as File);
+
+                    const uploadResponse = await fetch('http://localhost:3001/upload', {
+                        method: 'POST',
+                        headers: headersBase,
+                        body: formData
+                    });
+
+                    if (uploadResponse.ok) {
+                        const data = await uploadResponse.json();
+                        finalUrls.push(data.url);
+                    } else {
+                        toast.error("Falha ao fazer upload de uma nova imagem.");
+                        return;
+                    }
+                } else if (previews[i] && previews[i].startsWith('http')) {
+
+                    finalUrls.push(previews[i]);
+                }
+            }
+
+            //monta o novo payload
+            const precoLimpo = price.toString().replace(/[^0-9.,]/g, '').replace(',', '.');
             const categoriaEscolhida = subcategorias.find(sub => sub.name === category);
-            // Monta o pacote com os dados
+
             const payload = {
                 name: title,
                 description: description,
                 price: parseFloat(precoLimpo),
                 stock: stock,
-               ...(categoriaEscolhida && { category_id: categoriaEscolhida.id })
-            
+                ...(categoriaEscolhida && { category_id: categoriaEscolhida.id }),
+                images: finalUrls
             };
-            // Faz a requisição de atualização
+
             const response = await fetch(`http://localhost:3001/produtos/${productId}`, {
                 method: 'PATCH', 
-                headers,
+                headers: {
+                    ...headersBase,
+                    "Content-Type": "application/json"
+                },
                 body: JSON.stringify(payload)
             });
 
             if (response.ok) {
-                toast.success("Produto atualizado com sucesso!");
+                toast.success("Produto atualizado com sucesso! ✨");
                 onClose(); 
-                setTimeout(() => {
-                    window.location.reload(); 
-                }, 2500);
-                
+                setTimeout(() => window.location.reload(), 1500);
             } else {
                 const erro = await response.text();
                 toast.error(`Erro ao salvar: ${erro}`);
@@ -133,10 +180,8 @@ export default function EditProductModal({ isOpen, onClose, productId, initialDa
         }
     };
 
-
     const [isCategoryOpen, setIsCategoryOpen] = useState(false);
 
-    const [previews, setPreviews] = useState<string[]>(['', '', '', '']);
 
     if (!isOpen) return null;
     // Função para lidar com a digitação no input de estoque
@@ -153,6 +198,10 @@ export default function EditProductModal({ isOpen, onClose, productId, initialDa
             const newPreviews = [...previews];
             newPreviews[index] = tempUrl; 
             setPreviews(newPreviews);
+
+            const newFiles = [...imageFiles];
+            newFiles[index] = file;
+            setImageFiles(newFiles);
         }
     };
     return (

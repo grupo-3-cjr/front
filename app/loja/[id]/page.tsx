@@ -373,6 +373,8 @@ export default function LojaPage() {
                   description: editProduct.description,
                   price: editProduct.price,
                   stock: editProduct.stock,
+
+                  images: editProduct.productImage?.map((img: any) => img.image_url) || []
                 }}
             />
           )}

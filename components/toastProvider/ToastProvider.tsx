@@ -1,4 +1,4 @@
-"use client"; // 👈 Isso força o Next.js a rodar o Toast no navegador
+"use client";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
