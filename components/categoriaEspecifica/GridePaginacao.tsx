@@ -13,14 +13,14 @@ type Product = {
 
 const ITEMS_PER_PAGE = 15;
 
-export default function ProductGrid() {
+export default function ProductGrid({ categoryId }: { categoryId: string }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [products, setProducts] = useState<Product[]>([]);
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     async function loadProducts() {
-      const response = await fetch(`http://localhost:3001/produtos`);
+      const response = await fetch(`http://localhost:3001/produtos?categoria_id=${categoryId}`);
       if (!response.ok) {
         setProducts([]);
         return;

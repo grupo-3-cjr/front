@@ -30,10 +30,11 @@ type Product = {
 }
 
 
-export default function categoryPage() {
+export default function categoryPage({ params }: { params: { id: string } }) {
 
     const [searchTerm, setSearchTerm] = useState("");
     const [products, setProducts] = useState<Product[]>([]);
+    const { id } = params;
 
     const produtosMelhoresAvaliados = [...products];
 
@@ -71,7 +72,7 @@ export default function categoryPage() {
                     <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
                 </div>
 
-                <GridePaginacao />
+                <GridePaginacao categoryId={params.id} />
                 
             </section>
 
