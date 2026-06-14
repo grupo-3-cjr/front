@@ -11,7 +11,7 @@ type Product = {
   store_logo: string;
 }
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 15;
 
 const mockProducts: Product[] = Array.from({ length: 50 }, (_, i) => ({
   id: i + 1,
@@ -32,9 +32,9 @@ export default function ProductGrid() {
   return (
     <div className="px-10 py-8">
       {/* Grid */}
-      <div className="grid grid-cols-5 gap-4">
+      <div style={{display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '16px'}} className="px-10 py-8">
         {currentProducts.map((product) => (
-            <div key={product.id} className="bg-white rounded-2xl p-4 flex flex-col gap-2 min-h-[280px]">
+            <div key={product.id} className="w-full h-[280px] bg-white rounded-[28px] relative overflow-hidden flex items-center justify-center flex-col">
             <div className="flex-1 flex items-center justify-center">
                 <img src={product.image_url} alt={product.name} className="max-h-[180px] object-contain" />
             </div>
