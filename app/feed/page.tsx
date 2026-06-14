@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 import FeedNavbar from "@/components/feed/FeedNavbar";
 import Hero from "@/components/feed/Hero";
-import SearchBar from "@/components/feed/SearchBar"
+import SearchBar from "@/components/feed/SearchBar" 
 import CategoryList from "@/components/feed/CategoryList"
 import ProductsSection from "@/components/feed/ProductsSection"
 import StoreSection from "@/components/feed/StoreSection"
