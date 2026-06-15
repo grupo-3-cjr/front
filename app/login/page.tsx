@@ -24,14 +24,25 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const id = toast.loading("Verificando credenciais...");
+
     try {
       const response = await axios.post("http://localhost:3001/login", { email, password });
       toast.update(id, { render: "Login realizado com sucesso!", type: "success", isLoading: false, autoClose: 3000 });
       localStorage.setItem("token", response.data.access_token);
       router.push("/feed");
     } catch (err: any) {
-      const msg = err.response?.data?.message || "Erro ao fazer login";
-      toast.update(id, { render: msg, type: "error", isLoading: false, autoClose: 3000 });
+      const message = err.response?.data?.message;
+     
+      const errorMessage = Array.isArray(message)
+        ? message[0]
+        : message || "Erro ao fazer login";
+
+      toast.update(id, {
+        render: errorMessage,
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+      });
     }
   };
 
@@ -82,6 +93,7 @@ export default function Login() {
             {/* EMAIL */}
             <input
               type="email"
+              value={email}
               onChange={(e) => setEmail(e.target.value)} 
               placeholder="Email"
               className="w-full h-11.25 px-6 rounded-full bg-[#EBE9D4] text-black outline-none"
@@ -92,6 +104,7 @@ export default function Login() {
 
               <input
                 type={showPassword ? "text" : "password"}
+                value={password}
                 placeholder="Senha"
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full h-11.25 px-6 pr-14 rounded-full bg-[#EBE9D4] text-black outline-none"

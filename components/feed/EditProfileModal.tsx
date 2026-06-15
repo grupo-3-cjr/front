@@ -108,7 +108,7 @@ export default function EditProfileModal({
         {/* BOTÃO FECHAR */}
         <button
           onClick={onClose}
-          className="absolute top-10 right-6 hover:opacity-60 transition-opacity"
+          className="cursor-pointer absolute top-10 right-6 hover:opacity-60 transition-opacity"
           
         ><img src="/xmodal.png" alt="Fechar" 
         className="w-6 h-6" />
@@ -170,21 +170,21 @@ export default function EditProfileModal({
         <div className="flex flex-col items-center w-full gap-2 mt-8">
           <button
             onClick={handleDeletarConta}
-            className={`${leagueSpartan.className} w-72 h-10 rounded-full border border-[#AF052A] text-[#AF052A] text-lg font-normal hover:bg-red-50 transition-colors`}
+            className={`${leagueSpartan.className} cursor-pointer w-72 h-10 rounded-full border border-[#AF052A] text-[#AF052A] text-lg font-normal hover:bg-red-50 transition-colors`}
           >
             Deletar conta
           </button>
 
           <button
             onClick={onChangePassword}
-            className={`${leagueSpartan.className} w-72 h-10 rounded-full border border-[#6A38F3] text-[#6A38F3] text-lg font-normal hover:bg-purple-50 transition-colors`}
+            className={`${leagueSpartan.className} cursor-pointer w-72 h-10 rounded-full border border-[#6A38F3] text-[#6A38F3] text-lg font-normal hover:bg-purple-50 transition-colors`}
           >
             Alterar senha
           </button>
 
           <button
             onClick={handleSalvar}
-            className={`${leagueSpartan.className} w-72 h-10 rounded-full bg-[#6A38F3] text-white text-lg font-normal hover:opacity-90 transition-opacity`}
+            className={`${leagueSpartan.className} cursor-pointer w-72 h-10 rounded-full bg-[#6A38F3] text-white text-lg font-normal hover:opacity-90 transition-opacity`}
           >
             Salvar
           </button>

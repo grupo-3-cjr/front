@@ -99,7 +99,7 @@ export default function ProductDetailsSection({
                 {/* Botão para voltar */}
                 <button 
                     onClick={() => router.back()}
-                    className="absolute -left-10 top-2 text-7xl font-bold text-black hover:text-gray-600 transition"
+                    className="cursor-pointer absolute -left-10 top-2 text-7xl font-bold text-black hover:text-gray-600 transition"
                 >
                     &lt;
                 </button>
@@ -141,7 +141,7 @@ export default function ProductDetailsSection({
                         {isLoggedIn && isOwner && (
                             <button
                                 onClick={() => setIsEditModalOpen(true)} 
-                                className="w-10 h-10 bg-[#6A38F3] rounded-full flex items-center justify-center text-white hover:bg-purple-800 transition-colors shadow-sm" 
+                                className="cursor-pointer w-10 h-10 bg-[#6A38F3] rounded-full flex items-center justify-center text-white hover:bg-purple-800 transition-colors shadow-sm" 
                                 title="Editar Produto"
                                 > 
                                     <Pen className="w-6 h-6" />
@@ -151,7 +151,7 @@ export default function ProductDetailsSection({
                         {/* Renderiza o botão de Avaliar se estiver logado mas não for o dono */}
                         {isLoggedIn && !isOwner && (
                             <>
-                            <button onClick={() => setModalAberto(true)} className="w-10 h-10 bg-[#C6E700] rounded-full flex items-center justify-center text-white hover:bg-[#a2cf18] transition-colors shadow-sm" title="Avaliar Produto">
+                            <button onClick={() => setModalAberto(true)} className="cursor-pointer w-10 h-10 bg-[#C6E700] rounded-full flex items-center justify-center text-white hover:bg-[#a2cf18] transition-colors shadow-sm" title="Avaliar Produto">
                                     <Star className="w-7 h-7" fill="currentColor" />
                             </button>
                         {modalAberto && (
