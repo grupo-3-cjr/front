@@ -6,6 +6,10 @@ type Product = {
     description: string;
     price: string;
     stock: number;
+    productImage: { image_url: string }[];
+    store: {
+        logo_url: string; 
+    };
 }
 
 type ProductSectionProps = {
@@ -27,15 +31,20 @@ export default function ProductusSection({subtitle, products = []}: ProductSecti
 
             <div className="flex gap-8 overflow-x-auto pb-4">
 
-                {products.map((product) => (
-                    <ProductCard
-                        key={product.id}
-                        id={product.id}
-                        name={product.name}
-                        description={product.description}
-                        price={product.price}
-                    />
-                ))}
+                {products.map((product) => {
+                    const primeiraImagem = product.productImage?.[0]?.image_url;
+                    return(
+                        <ProductCard
+                            key={product.id}
+                            id={product.id}
+                            name={product.name}
+                            description={product.description}
+                            price={product.price}
+                            image_url={primeiraImagem}
+                            storeLogo={product.store?.logo_url}
+                        />
+                    )
+                })}
 
             </div>
         </section>

@@ -14,8 +14,8 @@ export default function StoreCard({id, logo_url, name, description}: StoreCardPr
             <article className="flex flex-col justify-center items-center">
             <div className="bg-white rounded-full w-[150px] h-[150px] flex items-center justify-center gap-6">
                 <img
-                    src={logo_url}
-                    alt="Logo da loja"
+                    src={logo_url || "/brownie.jpg"} 
+                    alt={`Logo da loja ${name}`}
                     className="w-24 h-[150px] object-contain"
                 />
             </div>

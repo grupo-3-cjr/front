@@ -23,6 +23,7 @@ type Product = {
     description: string;
     price: string;
     stock: number;
+    productImage: { image_url: string }[];
     createdAt: string;
     updatedAt: string;
 }
@@ -67,7 +68,7 @@ export default function FeedPage() {
             }
 
             const data = await response.json();
-
+            console.log("DADOS DOS PRODUTOS DA API:", data);
             setProducts(Array.isArray(data) ? data : []);
         }
 
