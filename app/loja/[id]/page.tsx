@@ -160,13 +160,13 @@ export default function LojaPage() {
               <div className="absolute top-16 right-16 flex flex-col gap-3 z-20">
               <button
               onClick={() => setIsEditModalOpen(true)}
-              className="w-12 h-12 bg-[#6A38F3] rounded-full flex items-center justify-center text-white hover:opacity-90 transition-opacity shadow-lg"
+              className="cursor-pointer w-12 h-12 bg-[#6A38F3] rounded-full flex items-center justify-center text-white hover:opacity-90 transition-opacity shadow-lg"
             >
               <Pencil className="w-8 h-8" />
             </button>
               <button
               onClick={() => setIsCreateModalOpen(true)}
-              className="w-12 h-12 bg-[#6A38F3] rounded-full flex items-center justify-center text-white hover:opacity-90 transition-opacity shadow-lg"
+              className="cursor-pointer w-12 h-12 bg-[#6A38F3] rounded-full flex items-center justify-center text-white hover:opacity-90 transition-opacity shadow-lg"
               >
               <Plus className="w-8 h-8" />
             </button>
@@ -208,10 +208,11 @@ export default function LojaPage() {
 
         <div className="flex gap-4 overflow-x-auto pb-4">
           {products.slice(0, 5).map((product) => (
-            <article
-              key={product.id}
-              className="min-w-[200px] bg-white rounded-[24px] p-4 flex flex-col items-center gap-2 shadow-sm"
-            >
+            <Link href={`/produto/${product.id}`} key={product.id}>
+              <article
+                key={product.id}
+                className="min-w-[200px] bg-white rounded-[24px] p-4 flex flex-col items-center gap-2 shadow-sm"
+              >
               <img
                 src={product.productImage?.[0]?.image_url ?? "/placeholder.png"}
                 alt={product.name}
@@ -219,6 +220,7 @@ export default function LojaPage() {
               />
               <span className="font-semibold text-black text-base text-center">{product.name}</span>
             </article>
+            </Link>
           ))}
         </div>
       </div>
@@ -276,10 +278,11 @@ export default function LojaPage() {
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
           {paginatedProducts.map((product) => (
-            <article
-              key={product.id}
-              className="relative bg-white rounded-[24px] p-4 flex flex-col items-center gap-2 shadow-sm"
-            >
+            <Link href={`/produto/${product.id}`} key={product.id}>
+              <article
+                key={product.id}
+                className="relative bg-white rounded-[24px] p-4 flex flex-col items-center gap-2 shadow-sm"
+              >
 
               {isOwner && (
                 <button
@@ -302,6 +305,7 @@ export default function LojaPage() {
                 {product.stock > 0 ? "DISPONÍVEL" : "INDISPONÍVEL"}
               </span>
             </article>
+            </Link>
           ))}
         </div>
 

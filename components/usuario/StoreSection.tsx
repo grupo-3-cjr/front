@@ -1,6 +1,7 @@
 import { useState } from "react";
 import StoreCard from "./StoreCard"; 
 import CriarLojaModal from "@/components/loja/CriarLojaModal";
+import Link from "next/link";
 
 type Store = {
     id: number;
@@ -39,12 +40,14 @@ export default function StoreFunction({
 
             <div className="flex gap-8px overflow-x-auto pb-4 gap-16">
                 {stores.map((store) => (
-                    <StoreCard
+                    <Link href={`/loja/${store.id}`} key={store.id}>
+                        <StoreCard
                         key={store.name}
                         logo_url={store.logo_url}
                         name={store.name}
                         description={store.description}
                     />
+                    </Link>
                ))}
             </div>
         </section>

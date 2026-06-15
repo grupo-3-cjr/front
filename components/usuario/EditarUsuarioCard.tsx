@@ -12,7 +12,7 @@ export default function EditarUsuarioCard() {
         <>
             <button
                 onClick={() => setOpenEdit(true)}
-                className= "bg-[#6c3cff] text-white rounded-full h-10 w-[150px] text-[15px] leading-none cursor-pointer"
+                className= "cursor-pointer bg-[#6c3cff] text-white rounded-full h-10 w-[150px] text-[15px] leading-none cursor-pointer"
             >
                 Editar Perfil
             </button>

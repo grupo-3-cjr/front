@@ -27,23 +27,30 @@ export default function AlterarSenhaModal({ onClose }: CriarLojaModalProps) {
             return;
         }
         
-        const response = await fetch("http://localhost:3001/user/recover-password", {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password,
-            }),
+        try {
+            const response = await fetch("http://localhost:3001/user/recover-password", {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password,
+                }),
 
-        });
+            });
 
-        const data = await response.json();
-        console.log(data);
+            const data = await response.json();
 
-        if (response.ok) {
+            if (!response.ok) {
+                alert(data.message || "Erro ao atualizar senha");
+                return;
+            }
+
+            alert(data.message || "Senha atualizada com sucesso!");
             onClose();
+        } catch (error) {
+            alert("Não foi possível conectar ao servidor.")
         }
     }
 

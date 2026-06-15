@@ -167,7 +167,7 @@ export default function AddProductModal({ isOpen, onClose, storeId, parentCatego
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
             <div className="relative w-full max-w-187.5 bg-[#EDEDED] rounded-3xl p-8 shadow-2xl flex flex-col max-h-[90vh] overflow-y-auto">
 
-                <button onClick={onClose} className="absolute top-6 right-6 text-black hover:text-gray-600 transition">
+                <button onClick={onClose} className="cursor-pointer absolute top-6 right-6 text-black hover:text-gray-600 transition">
                     <X size={32} />
                 </button>
 
@@ -228,7 +228,7 @@ export default function AddProductModal({ isOpen, onClose, storeId, parentCatego
                         <button
                             type="button"
                             onClick={() => setIsCategoryOpen(!isCategoryOpen)}
-                            className="w-full flex justify-between items-center px-5 py-3 outline-none rounded-2xl"
+                            className="cursor-pointer w-full flex justify-between items-center px-5 py-3 outline-none rounded-2xl"
                         >
                             <span className={category ? "text-gray-800" : "text-gray-500"}>
                                 {isCategoryOpen ? "Subcategoria" : (category || "Subcategoria")}
@@ -246,7 +246,7 @@ export default function AddProductModal({ isOpen, onClose, storeId, parentCatego
                                             setCategory(sub.name); 
                                             setIsCategoryOpen(false); 
                                         }}
-                                        className="flex items-center gap-2 text-[#6A38F3] hover:opacity-80 transition-opacity text-left"
+                                        className="cursor-pointer flex items-center gap-2 text-[#6A38F3] hover:opacity-80 transition-opacity text-left"
                                     >
                                         <div className="w-4 h-4 rounded-full border border-[#6A38F3] flex items-center justify-center">
                                             {category === sub.name && (
@@ -279,7 +279,7 @@ export default function AddProductModal({ isOpen, onClose, storeId, parentCatego
                 <div className="flex items-center justify-center gap-8 my-6">
                     <button 
                         onClick={() => setStock(Math.max(stock - 1, 0))}
-                        className="w-12 h-12 rounded-full border border-[#6A38F3] flex items-center justify-center text-[#6A38F3] hover:bg-purple-100 transition"
+                        className="cursor-pointer w-12 h-12 rounded-full border border-[#6A38F3] flex items-center justify-center text-[#6A38F3] hover:bg-purple-100 transition"
                     >
                         <Minus size={24} />
                     </button>
@@ -293,7 +293,7 @@ export default function AddProductModal({ isOpen, onClose, storeId, parentCatego
                     
                     <button 
                         onClick={() => setStock(Math.min(stock + 1, MAX_STOCK))}
-                        className="w-12 h-12 rounded-full border border-[#6A38F3] flex items-center justify-center text-[#6A38F3] hover:bg-purple-100 transition"
+                        className="cursor-pointer w-12 h-12 rounded-full border border-[#6A38F3] flex items-center justify-center text-[#6A38F3] hover:bg-purple-100 transition"
                     >
                         <Plus size={24} />
                     </button>
@@ -302,7 +302,7 @@ export default function AddProductModal({ isOpen, onClose, storeId, parentCatego
                 {/* Botão Adicionar  */}
                 <button 
                     onClick={handleCreate} 
-                    className="bg-[#6A38F3] shadow-md shadow-[#6A38F3]/30 text-white font-medium py-3 px-16 rounded-full mx-auto hover:bg-[#5a2ed1] transition"
+                    className="cursor-pointer bg-[#6A38F3] shadow-md shadow-[#6A38F3]/30 text-white font-medium py-3 px-16 rounded-full mx-auto hover:bg-[#5a2ed1] transition"
                 >
                     Adicionar
                 </button>
