@@ -6,6 +6,8 @@ import FeedNavbar from "@/components/feed/FeedNavbar";
 import api from "@/app/services/api";
 import { Pencil } from "lucide-react";
 import { League_Spartan } from "next/font/google";
+import EditarAvaliacaoLoja from "@/app/modais/EditarAvaliacaoLoja";
+import EditarComentarioModal from "@/components/comentario/EditarComentarioModal";
 
 
 const leagueSpartan = League_Spartan({
@@ -49,6 +51,7 @@ export default function ComentariosPage() {
   const [novoComentario, setNovoComentario] = useState("");
   const [enviando, setEnviando] = useState(false);
   const [modalEdicaoAberto, setModalEdicaoAberto] = useState(false);
+  const [comentarioEditando, setComentarioEditando] = useState<number | null>(null);
 
   const isOwnerOfRating = userId !== null && rating !== null && userId === rating.user_id;
   const isStoreOwner = userId !== null && store !== null && userId === store.user_id;
@@ -136,10 +139,38 @@ export default function ComentariosPage() {
 
         {/* Canetinha — só aparece pro dono da avaliação */}
         {isOwnerOfRating && (
-          <button className="absolute top-6 right-8 text-white hover:opacity-70 transition-opacity mr-9">
-            <Pencil className="w-6 h-6" />
-          </button>
-        )}
+  <>
+    <button
+      onClick={() => setModalEdicaoAberto(true)}
+      className="absolute top-6 right-16 text-white hover:opacity-70 transition-opacity"
+    >
+      <Pencil className="w-6 h-6" />
+    </button>
+    {modalEdicaoAberto && (
+      <EditarAvaliacaoLoja
+        storeName={store?.name ?? ""}
+        onClose={() => setModalEdicaoAberto(false)}
+        onSubmit={async (rating, texto) => {
+          const token = localStorage.getItem("token");
+          await api.patch(`/store-ratings/${ratingId}`,
+            { rating, comment: texto },
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+          setModalEdicaoAberto(false);
+          const ratingRes = await api.get(`/store-ratings/${ratingId}`);
+          setRating(ratingRes.data);
+        }}
+        onDelete={async () => {
+          const token = localStorage.getItem("token");
+          await api.delete(`/store-ratings/${ratingId}`,
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+          router.back();
+        }}
+      />
+    )}
+  </>
+)}
 
         {rating && (
           <>
@@ -181,7 +212,7 @@ export default function ComentariosPage() {
       </div>
 
       {/* COMENTÁRIOS */}
-      <div className="px-16 py-8">
+      <div className="px-16 py-8 mb-32">
         <div className="border-l-2 border-gray-300 pl-8 flex flex-col gap-8">
           {comments.length === 0 ? (
             <span className={`${leagueSpartan.className} text-black font-extralight text-base`}>
@@ -215,10 +246,20 @@ export default function ComentariosPage() {
     </div>
     {/* Canetinha — só aparece pro dono do comentário */}
     {userId === comment.user_id && (
-      <button className="text-black hover:opacity-70 transition-opacity flex-shrink-0">
-        <Pencil className="w-4 h-4" />
-      </button>
+  <>
+    <button
+      onClick={() => setComentarioEditando(comment.id)}
+      className="text-black hover:opacity-70 transition-opacity flex-shrink-0"
+    >
+      <Pencil className="w-4 h-4" />
+    </button>
+    {comentarioEditando === comment.id && (
+      <EditarComentarioModal
+        onClose={() => setComentarioEditando(null)}
+      />
     )}
+  </>
+)}
   </div>
 ))
           )}
