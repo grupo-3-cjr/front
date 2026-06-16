@@ -1,3 +1,4 @@
+import Link from "next/link"; 
 import {
   ShoppingBasket,
   Pill,
@@ -42,13 +43,16 @@ export default function CategoryList({
                     const Icon = iconMap[category.name] || ShoppingBasket;
 
                     return (
-                        <button key={category.id} className="p-2 min-w-[115px] h-[115px] bg-white rounded-2xl flex flex-col items-center justify-center">
-
+                        <Link 
+                            key={category.id} 
+                            href={`/categoria/${category.id}`} 
+                            className="p-2 min-w-[115px] h-[115px] bg-white rounded-2xl flex flex-col items-center justify-center hover:bg-gray-50 transition-colors"
+                        >
                             <Icon size={30} className="text-[#6C3BFF]" />
-                            <span className="text-black text-sm font-medium">
+                            <span className="text-black text-sm font-medium mt-2">
                                 {category.name}
                             </span>
-                        </button>
+                        </Link>
                     );
                 })}
             </div>
