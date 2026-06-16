@@ -1,6 +1,7 @@
 import { Pencil } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import EditarAvaliacaoProduto from "@/app/modais/EditarAvaliacaoProduto"
+import { toast } from 'react-toastify';
 
 
 type RatingCardProps = {
@@ -20,29 +21,41 @@ export default function RatingCard({avatar_url, name, text, rating = 5, isOwner 
         const token = localStorage.getItem("token");
         const payload = JSON.parse(atob(token!.split('.')[1]));
         const userId = payload.sub; 
-        await fetch(`http://localhost:3001/product-ratings/${ratingId}`, {
+        const responseAvaliar = await fetch(`http://localhost:3001/product-ratings/${ratingId}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({comment: texto, rating}),
-        });
-        setModalAberto(false);
+        })
+            if (responseAvaliar.ok) {
+                toast.success("Comentario realizado com sucesso! ✨");
+                setModalAberto(false);
+                setTimeout(() => window.location.reload(), 1500);
+            } else{
+                toast.error("Erro ao realizar comentário.");
+            }
     };
 
     const deleteAvaliar = async () => {
         const token = localStorage.getItem("token");
         const payload = JSON.parse(atob(token!.split('.')[1]));
         const userId = payload.sub;
-        await fetch(`http://localhost:3001/product-ratings/${ratingId}`, {
+        const responseDeletar = await fetch(`http://localhost:3001/product-ratings/${ratingId}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
         })
-        setModalAberto(false);
+        if (responseDeletar.ok) {
+               toast.success("Comentario deletado com sucesso! ✨");
+                setModalAberto(false);
+                setTimeout(() => window.location.reload(), 1500);
+            } else{
+                toast.error("Erro ao realizar comentário.");
+            }
     }
 
     return(
