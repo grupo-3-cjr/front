@@ -170,8 +170,8 @@ export default function ReviewModal({
         }
 
         .star-btn.filled svg path {
-          fill: #7c5cbf;
-          stroke: #7c5cbf;
+          fill: #ffd900;
+          stroke: #ffd900;
         }
 
         .review-textarea {
