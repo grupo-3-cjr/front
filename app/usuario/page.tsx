@@ -29,7 +29,7 @@ export default function Usuario() {
   async function loadStores() {
     const token = localStorage.getItem("token");
 
-    const response = await fetch(`http://localhost:3001/store`, {
+    const response = await fetch(`http://localhost:3001/store/`, {
       headers: { Authorization: `Bearer ${token}` }
     });
 
@@ -52,13 +52,13 @@ export default function Usuario() {
       fetch(`http://localhost:3001/user/${userIdNumber}`, {
         headers: { Authorization: `Bearer ${token}` }
       }).then(res => res.json()),
-      fetch(`http://localhost:3001/produtos`, {
+      fetch(`http://localhost:3001/produtos/${userIdNumber}`, {
         headers: { Authorization: `Bearer ${token}` }
       }).then(res => res.json()),
-      fetch(`http://localhost:3001/store`, {
+      fetch(`http://localhost:3001/store/${userIdNumber}`, {
         headers: { Authorization: `Bearer ${token}` }
       }).then(res => res.json()),
-      fetch(`http://localhost:3001/comments`, {
+      fetch(`http://localhost:3001/comments/${userIdNumber}`, {
         headers: { Authorization: `Bearer ${token}` }
       }).then(res => res.json()),
 ]).then(([userData, productsData, storesData, commentsData]) => {
