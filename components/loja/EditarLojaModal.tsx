@@ -80,7 +80,7 @@ export default function EditarLoja({
   }
 
   return (
-    <section className="fixed inset-0 z-50 flex items-center justify-center">
+    <section className="fixed inset-0 z-50 flex items-center justify-center  bg-black/40 backdrop-blur-sm">
         <div className="relative flex flex-col items-center z-50 bg-[#EDEDED] w-[550px] max-w-[90vw] min-h-[650px] gap-4 rounded-xl">
             <h1 className="text-black font-League Spartan font-bold text-2xl pt-4">Editar Loja</h1>
 
