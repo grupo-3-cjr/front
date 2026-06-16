@@ -6,10 +6,11 @@ import { useState } from "react";
 type UploadFieldProps = {
     label: string;
     onFileSelect: (file: File) => void;
+    initialPreview?: string; 
 };
 
-export default function UploadField({ label, onFileSelect }: UploadFieldProps) {
-    const [preview, setPreview] = useState<string | null>(null);
+export default function UploadField({ label, onFileSelect, initialPreview }: UploadFieldProps) {
+   const [preview, setPreview] = useState<string | null>(initialPreview || null);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
