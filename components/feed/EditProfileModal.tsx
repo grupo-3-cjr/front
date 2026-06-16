@@ -27,6 +27,7 @@ export default function EditProfileModal({
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const [avatarFile, setAvatarFile] = useState<File | null>(null); 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [userId, setUserId] = useState< number | null> (null);
   const router = useRouter();
@@ -43,10 +44,13 @@ export default function EditProfileModal({
       setNome(res.data.name);
       setUsername(res.data.username);
       setEmail(res.data.email);
-    }).catch(() => {
-      toast.error("Erro ao carregar dados do perfil");
-    });
-  }
+      if (res.data.profile_picture_url) {
+          setAvatarPreview(res.data.profile_picture_url);
+        }
+      }).catch(() => {
+        toast.error("Erro ao carregar dados do perfil");
+      });
+    }
 }, []);
   
 
@@ -55,27 +59,69 @@ export default function EditProfileModal({
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = () => setAvatarPreview(reader.result as string);
-      reader.readAsDataURL(file);
+      setAvatarFile(file);
+      const tempUrl = URL.createObjectURL(file);
+      setAvatarPreview(tempUrl); 
     }
   };
 
-  const handleSalvar = async () => {
-  if (!userId) return;
-  try {
-    const token = localStorage.getItem("token");
-    await api.patch(`/user/${userId}`, 
-      { name: nome, username, email },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    toast.success("Perfil atualizado com sucesso!");
-    onClose();
-  } catch (error: any) {
-    const msg = error.response?.data?.message || "Erro ao atualizar perfil";
-    toast.error(msg);
-  }
-};
+const handleSalvar = async () => {
+    if (!userId) return;
+    try {
+      const token = localStorage.getItem("token");
+      const headersBase = {
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
+      };
+
+      let finalAvatarUrl = avatarPreview;
+
+      if (avatarFile) {
+        toast.info("Fazendo upload da foto...", { autoClose: 2000 });
+        const formData = new FormData();
+        formData.append('file', avatarFile);
+
+        const uploadResponse = await fetch('http://localhost:3001/upload', {
+          method: 'POST',
+          headers: headersBase, 
+          body: formData
+        });
+
+        if (uploadResponse.ok) {
+          const data = await uploadResponse.json();
+          finalAvatarUrl = data.url; 
+        } else {
+          toast.error("Falha ao fazer upload da imagem.");
+          return; 
+        }
+      }
+      const payload: any = {
+        name: nome,
+        username: username,
+        email: email,
+      };
+
+      if (finalAvatarUrl && finalAvatarUrl.startsWith('http')) {
+        payload.profile_picture_url = finalAvatarUrl;
+      }
+
+      await api.patch(`/user/${userId}`, payload, {
+        headers: { Authorization: `Bearer ${token}` } 
+      });
+
+      toast.success("Perfil atualizado com sucesso! ✨");
+      onClose();
+      
+    
+      setTimeout(() => {
+        window.location.reload(); 
+      }, 1500);
+
+    } catch (error: any) {
+      console.error(error);
+      const msg = error.response?.data?.message || "Erro ao atualizar perfil";
+      toast.error(msg);
+    }
+  };
     
   
 
@@ -97,7 +143,7 @@ export default function EditProfileModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+      className="fixed inset-0 z-50 flex items-center justify-center  bg-black/40 backdrop-blur-sm"
       onClick={onClose}
     >
      <ToastContainer theme="colored"/>
