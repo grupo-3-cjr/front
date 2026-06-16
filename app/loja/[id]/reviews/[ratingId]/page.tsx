@@ -56,6 +56,15 @@ export default function ComentariosPage() {
   const isOwnerOfRating = userId !== null && rating !== null && userId === rating.user_id;
   const isStoreOwner = userId !== null && store !== null && userId === store.user_id;
 
+  const loadComments = async () => {
+    try {
+      const commentsRes = await api.get(`/comments?store_rating_id=${ratingId}`);
+      setComments(commentsRes.data);
+    } catch (error) {
+      console.error("Erro ao carregar comentários", error);
+    }
+  }
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -76,8 +85,7 @@ export default function ComentariosPage() {
         const storeRes = await api.get(`/store/${storeId}`);
         setStore(storeRes.data);
 
-        const commentsRes = await api.get(`/comments?store_rating_id=${ratingId}`);
-        setComments(commentsRes.data);
+        await loadComments();
       } catch (error) {
         console.error("Erro ao carregar dados", error);
       } finally {
@@ -178,7 +186,7 @@ export default function ComentariosPage() {
             <div className="flex items-center gap-4 mb-6">
               <button
                 onClick={() => router.back()}
-                className="text-[#F6F3E4] text-5xl hover:opacity-70 transition-opacity flex-shrink-0"
+                className="cursor-pointer text-[#F6F3E4] text-5xl hover:opacity-70 transition-opacity flex-shrink-0"
               >
                 {"<"}
               </button>
@@ -246,22 +254,25 @@ export default function ComentariosPage() {
     </div>
     {/* Canetinha — só aparece pro dono do comentário */}
     {userId === comment.user_id && (
-  <>
-    <button
-      onClick={() => setComentarioEditando(comment.id)}
-      className="text-black hover:opacity-70 transition-opacity flex-shrink-0"
-    >
-      <Pencil className="w-4 h-4" />
-    </button>
-    {comentarioEditando === comment.id && (
-      <EditarComentarioModal
-        onClose={() => setComentarioEditando(null)}
-      />
-    )}
-  </>
-)}
-  </div>
-))
+    <>
+      <button
+        onClick={() => setComentarioEditando(comment.id)}
+        className="cursor-pointer text-black hover:opacity-70 transition-opacity flex-shrink-0"
+      >
+        <Pencil className="w-4 h-4" />
+      </button>
+      {comentarioEditando === comment.id && (
+        <EditarComentarioModal
+          commentId={comment.id}
+          initialContent={comment.content}
+          onClose={() => setComentarioEditando(null)}
+          onUpdated={loadComments}
+        />
+      )}
+    </>
+  )}
+    </div>
+  ))
           )}
         </div>
       </div>
@@ -281,7 +292,7 @@ export default function ComentariosPage() {
             <button
               onClick={handleEnviarComentario}
               disabled={enviando || !novoComentario.trim()}
-              className="text-[#6A38F3] disabled:opacity-40 hover:opacity-70 transition-opacity"
+              className="cursor-pointer text-[#6A38F3] disabled:opacity-40 hover:opacity-70 transition-opacity"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
