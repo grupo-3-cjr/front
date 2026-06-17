@@ -100,7 +100,7 @@ export default function Usuario() {
           {user && (
             <div className="absolute -bottom-25 left-45 w-50 h-50 rounded-full border-4 border-[#F6F3E4] overflow-hidden">
               <img 
-                src={user.profile_picture_url || "/usuario.jpeg"}
+                src={user.profile_picture_url || "/semFotoPerfil.jpg"}
                 alt={user.name} 
                 className="w-full h-full object-cover" 
               />
