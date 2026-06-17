@@ -11,12 +11,22 @@ type Product = {
   store_logo: string;
 }
 
+type GridePaginacaoProps = {
+  categoryId: string;
+  searchTerm: string;
+};
+
 const ITEMS_PER_PAGE = 15;
 
-export default function ProductGrid({ categoryId }: { categoryId: string }) {
+export default function ProductGrid({
+  categoryId, searchTerm
+}: GridePaginacaoProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [products, setProducts] = useState<Product[]>([]);
   const [totalPages, setTotalPages] = useState(1);
+  const filteredProducts = products.filter((products) => 
+    products.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   useEffect(() => {
     async function loadProducts() {
@@ -34,7 +44,7 @@ export default function ProductGrid({ categoryId }: { categoryId: string }) {
   return (
     <div className="px-10 py-8">
       <div style={{display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '16px', padding: '32px 40px'}}>
-        {products.map((product) => (
+        {filteredProducts.map((product) => (
           <div key={product.id} className="w-full h-[380px] bg-white rounded-[28px] relative overflow-hidden flex items-center justify-center flex-col">
             <div className="flex-1 flex items-center justify-center">
               <img src={product.image_url} alt={product.name} className="max-h-[180px] object-contain" />

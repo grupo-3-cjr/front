@@ -43,8 +43,7 @@ export default function categoryPage({ params }: { params: { id: string } }) {
     );
 
     useEffect(() => {
-
-    async function loadProducts() {
+        async function loadProducts() {
             const response = await fetch(
                 `http://localhost:3001/produtos?search=${searchTerm}`
             );
@@ -72,7 +71,7 @@ export default function categoryPage({ params }: { params: { id: string } }) {
                     <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
                 </div>
 
-                <GridePaginacao categoryId={params.id} />
+                <GridePaginacao searchTerm={searchTerm} categoryId={params.id} />
                 
             </section>
 
