@@ -29,6 +29,9 @@ export default function FeedNavbar() {
             </Link>
 
             <div className="flex items-center gap-6 font-semibold text-sm">
+                <Link href="" className="transition-colors hover:text-purple-600">
+                    <img src="/category.svg" className="h-6 w-auto invert transition duration-200 hover:opacity-70"></img>
+                </Link>
                 {mounted && (
                     isLoggedIn ? (              
                         <>

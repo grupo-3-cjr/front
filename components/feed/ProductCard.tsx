@@ -20,7 +20,7 @@ export default function ProductCard({
     return(
         <Link href={`/produto/${id}`}>
 
-            <article className="relative bg-white min-w-[228px] h-[280px] rounded-[28px] overflow-hidden flex items-center justify-center flex-col">
+            <article className="relative bg-white w-[228px] h-[280px] rounded-[28px] overflow-hidden flex items-center justify-center flex-col">
 
                 {/* {storeLogo && (
                     <img
@@ -42,7 +42,7 @@ export default function ProductCard({
                 />
                 <span className="font-semibold text-black text-lg -translate-y-8">{name}</span>
 
-                <span className="font-semibold text-black text-lg -translate-y-7 truncate w-full text-center px-4">{description}</span>
+                <span className="font-semibold text-black text-lg -translate-y-7 truncate w-full text-center px-4 text-ellipsis">{description}</span>
 
                 <span className="font-bold text-[#6A38F3] text-xl -translate-y-6">R$ {price}</span>
             </article>
