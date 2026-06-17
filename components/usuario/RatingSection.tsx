@@ -1,9 +1,18 @@
 import RatingCard from "./RatingCard"; 
 
 type Rating = {
-    avatar_url: string;
-    name: string;
-    text: string;
+    id: number;
+    user_id: number;
+    store_id: number;
+    rating: number;
+    comment: string;
+}
+
+type RatingCommentsProps  = {
+    ratingComments: Rating[];
+    userId: number;
+    userName: string;
+    userAvatar: string;
 }
 
 {/*const Ratings: Rating[] = [
@@ -14,7 +23,7 @@ type Rating = {
     },
 ];*/}
 
-export default function RatingFunction({ ratings }: { ratings: Rating[] }) {
+export default function RatingFunction({ratingComments, userId, userName, userAvatar}: RatingCommentsProps) {
     return (
         <section className="mt-11 ml-16">
             <section className="flex justify-between">
@@ -27,12 +36,13 @@ export default function RatingFunction({ ratings }: { ratings: Rating[] }) {
 
 
             <div className="flex gap-8px overflow-x-auto pb-4 gap-16">
-                {ratings.map((rating) => (
+                {ratingComments.map((rating) => (
                     <RatingCard
-                        key={rating.name}
-                        avatar_url={rating.avatar_url}
-                        name={rating.name}
-                        text={rating.text}
+                        key={rating.id}
+                        avatar_url={userAvatar}
+                        name={userName}
+                        text={rating.comment}
+                        rating={rating.rating}
                     />
                ))}
             </div>
