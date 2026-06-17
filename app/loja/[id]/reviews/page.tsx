@@ -180,21 +180,25 @@ export default function ReviewsPage() {
         </h1>
 
         {/* Média e estrelas */}
-        {avgRating && (
-          <div className="flex flex-col items-center mb-8">
-            <span className="text-white text-6xl font-bold">{avgRating}</span>
-            <div className="flex gap-1 mt-2">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <span
-                  key={i}
-                  className={`text-5xl ${i < Math.round(Number(avgRating)) ? "text-yellow-400" : "text-gray-600"}`}
-                >
-                  ★
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
+{avgRating ? (
+  <div className="flex flex-col items-center mb-8">
+    <span className="text-white text-6xl font-bold">{avgRating}</span>
+    <div className="flex gap-1 mt-2">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <span
+          key={i}
+          className={`text-5xl ${i < Math.round(Number(avgRating)) ? "text-yellow-400" : "text-gray-600"}`}
+        >
+          ★
+        </span>
+      ))}
+    </div>
+  </div>
+) : (
+  <p className="text-white text-xl text-center mb-8">
+    Ainda não há avaliações para esta loja.
+  </p>
+)}
 
         {/* Botão Adicionar Review — só aparece se logado */}
         {isLoggedIn && (

@@ -31,6 +31,7 @@ type Product = {
   price: string;
   stock: number;
   productImage: { image_url: string }[];
+  productRating: {rating: number }[];
 };
 
 type Rating = {
@@ -122,6 +123,18 @@ export default function LojaPage() {
       ? (ratings.reduce((sum, r) => sum + r.rating, 0) / ratings.length).toFixed(2)
       : null;
 
+      // Calcula a média de rating de cada produto e ordena
+    const produtosComMedia = [...products].map((p) => {
+    const productRatings = p.productRating || [];
+    const media = productRatings.length > 0
+    ? productRatings.reduce((sum, r) => sum + r.rating, 0) / productRatings.length
+    : 0;
+    return { ...p, mediaRating: media };
+  });
+    const produtosMelhorAvaliados = [...produtosComMedia]
+    .sort((a, b) => b.mediaRating - a.mediaRating)
+    .slice(0, 5);
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#F6F3E4]">
@@ -207,7 +220,7 @@ export default function LojaPage() {
         </h2>
 
         <div className="flex gap-4 overflow-x-auto pb-4">
-          {products.slice(0, 5).map((product) => (
+          {produtosMelhorAvaliados.map((product) => (
             <Link href={`/produto/${product.id}`} key={product.id}>
               <article
                 key={product.id}
@@ -225,50 +238,55 @@ export default function LojaPage() {
         </div>
       </div>
 
+      
       {/* REVIEWS */}
-      {ratings.length > 0 && (
-        <div className="bg-black py-12 px-10">
-          <div className="relative flex items-center justify-center mb-2">
-        <h2 className="text-5xl font-bold text-white">
-         Reviews e Comentários
-        </h2>
-         <Link href={`/loja/${storeId}/reviews`} className="absolute right-0 mt-80 text-[#6A38F3] text-base font-semibold hover:underline">
-         ver mais
-         </Link>
-        </div>
+  <div className="bg-black py-12 px-10">
+  <div className="relative flex items-center justify-center mb-2">
+    <h2 className="text-5xl font-bold text-white">
+     Reviews e Comentários
+    </h2>
+     <Link href={`/loja/${storeId}/reviews`} className="absolute right-0 mt-80 text-[#6A38F3] text-base font-semibold hover:underline">
+     ver mais
+     </Link>
+  </div>
 
-          {avgRating && (
-            <div className="flex flex-col items-center mb-8">
-              <span className="text-white text-6xl font-bold">{avgRating}</span>
-              <div className="flex gap-1 mt-2">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <span
-                    key={i}
-                    className={`text-5xl ${i < Math.round(Number(avgRating)) ? "text-[#FFEB3A]" : "text-gray-600"}`}
-                  >
-                    ★
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
+  {avgRating ? (
+    <div className="flex flex-col items-center mb-8">
+      <span className="text-white text-6xl font-bold">{avgRating}</span>
+      <div className="flex gap-1 mt-2">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <span
+            key={i}
+            className={`text-5xl ${i < Math.round(Number(avgRating)) ? "text-[#FFEB3A]" : "text-gray-600"}`}
+          >
+            ★
+          </span>
+        ))}
+      </div>
+    </div>
+  ) : (
+    <p className="text-white text-xl text-center mb-8">
+      Ainda não há avaliações para esta loja.
+    </p>
+  )}
 
-          <div className="flex gap-6 overflow-x-auto pb-4">
-            {ratings.map((rating) => (
-              <RatingCard
-                key={rating.id}
-                avatar_url={rating.user.profile_picture_url || "/avatar-placeholder.png"}
-                name={rating.user.name}
-                text={rating.comment}
-                rating={rating.rating}
-                isOwner={userId === rating.user_id}
-                ratingId={rating.id}
-                storeId={storeId}
-              />
-            ))}
-          </div>
-        </div>
-      )}
+  {ratings.length > 0 && (
+    <div className="flex gap-6 overflow-x-auto pb-4">
+      {ratings.map((rating) => (
+        <RatingCard
+          key={rating.id}
+          avatar_url={rating.user.profile_picture_url || "/avatar-placeholder.png"}
+          name={rating.user.name}
+          text={rating.comment}
+          rating={rating.rating}
+          isOwner={userId === rating.user_id}
+          ratingId={rating.id}
+          storeId={storeId}
+        />
+      ))}
+    </div>
+  )}
+</div>
 
       {/* TODOS OS PRODUTOS */}
       <div className="bg-[#F6F3E4] px-10 py-10">
