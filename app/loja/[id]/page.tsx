@@ -31,6 +31,7 @@ type Product = {
   price: string;
   stock: number;
   productImage: { image_url: string }[];
+  productRating: {rating: number }[];
 };
 
 type Rating = {
@@ -122,6 +123,18 @@ export default function LojaPage() {
       ? (ratings.reduce((sum, r) => sum + r.rating, 0) / ratings.length).toFixed(2)
       : null;
 
+      // Calcula a média de rating de cada produto e ordena
+    const produtosComMedia = [...products].map((p) => {
+    const productRatings = p.productRating || [];
+    const media = productRatings.length > 0
+    ? productRatings.reduce((sum, r) => sum + r.rating, 0) / productRatings.length
+    : 0;
+    return { ...p, mediaRating: media };
+  });
+    const produtosMelhorAvaliados = [...produtosComMedia]
+    .sort((a, b) => b.mediaRating - a.mediaRating)
+    .slice(0, 5);
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#F6F3E4]">
@@ -207,7 +220,7 @@ export default function LojaPage() {
         </h2>
 
         <div className="flex gap-4 overflow-x-auto pb-4">
-          {products.slice(0, 5).map((product) => (
+          {produtosMelhorAvaliados.map((product) => (
             <Link href={`/produto/${product.id}`} key={product.id}>
               <article
                 key={product.id}
