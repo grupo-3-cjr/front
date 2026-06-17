@@ -31,12 +31,12 @@ export default function ProductCard({
                 )} */}
 
                 <img
-                    src={image_url || "/brownie.jpg"}
+                    src={image_url || "/semImagemProduto.jpg"}
                     alt={name}
                     className="w-[150px] h-[170px] pt-8 object-contain -translate-y-12 z-5"
                 />
                 <img
-                    src={storeLogo || "/brownie.jpg"}
+                    src={storeLogo || "/globe.svg"}
                     alt="Logo da loja"
                     className="absolute top-2 right-4 w-14 h-14 rounded-full object-cover z-10"
                 />
