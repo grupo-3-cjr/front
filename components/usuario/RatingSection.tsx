@@ -36,15 +36,19 @@ export default function RatingFunction({ratingComments, userId, userName, userAv
 
 
             <div className="flex gap-8px overflow-x-auto pb-4 gap-16">
-                {ratingComments.map((rating) => (
-                    <RatingCard
-                        key={rating.id}
-                        avatar_url={userAvatar}
-                        name={userName}
-                        text={rating.comment}
-                        rating={rating.rating}
-                    />
-               ))}
+            {ratingComments.length === 0 ? (
+                <p style={{ color: '#737272' }}>Nenhuma avaliação encontrada.</p>
+            ) : (
+                ratingComments.map((rating) => (
+                <RatingCard
+                    key={rating.id}
+                    avatar_url={userAvatar}
+                    name={userName}
+                    text={rating.comment}
+                    rating={rating.rating}
+                />
+                ))
+            )}
             </div>
         </section>
     );

@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from "react";
-import ProductsSection from "@/components/feed/ProductsSection";
+import ProductsSection from "@/components/usuario/ProductsSection";
 import StoreSection from "@/components/usuario/StoreSection";
 import RatingSection from "@/components/usuario/RatingSection";
 import FeedNavbar from "@/components/feed/FeedNavbar";

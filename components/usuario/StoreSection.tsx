@@ -39,16 +39,19 @@ export default function StoreFunction({
 
 
             <div className="flex gap-8px overflow-x-auto pb-4 gap-16">
-                {stores.map((store) => (
+                {stores.length === 0 ? (
+                    <p style={{ color: '#737272' }}>Nenhuma loja cadastrada.</p>
+                ) : (
+                    stores.map((store) => (
                     <Link href={`/loja/${store.id}`} key={store.id}>
                         <StoreCard
-                        key={store.name}
                         logo_url={store.logo_url}
                         name={store.name}
                         description={store.description}
-                    />
+                        />
                     </Link>
-               ))}
+                    ))
+                )}
             </div>
         </section>
     );
