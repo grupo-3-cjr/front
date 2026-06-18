@@ -31,6 +31,7 @@ export default function ProductusSection({subtitle, products}: ProductSectionPro
                         description={product.description}
                         price={product.price} 
                         image={product.image}
+                        available={product.stock > 0}
                     />
                 ))}
             </div>

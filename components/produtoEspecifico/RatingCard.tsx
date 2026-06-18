@@ -63,7 +63,7 @@ export default function RatingCard({avatar_url, name, text, rating = 5, isOwner 
             
             {/* Foto à esquerda */}
             <img
-                src={avatar_url || "/avatar-placeholder.png"}
+                src={avatar_url || "/semFotoPerfil.jpg"}
                 alt="foto do usuario"
                 className="w-24 h-24 object-cover rounded-full flex-shrink-0"
             />
