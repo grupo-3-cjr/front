@@ -137,7 +137,7 @@ export default function Usuario() {
             ratingComments={ratingComments} 
             userId={user?.id}
             userName={user.name}
-            userAvatar={user.profile_picture_url || "/usuario.jpeg"}/> }
+            userAvatar={user.profile_picture_url || "/semFotoPerfil.jpg"}/> }
           </section>
 
         </div>

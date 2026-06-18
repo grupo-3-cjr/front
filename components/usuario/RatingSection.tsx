@@ -15,13 +15,6 @@ type RatingCommentsProps  = {
     userAvatar: string;
 }
 
-{/*const Ratings: Rating[] = [
-    {
-        avatar_url: "/usuario.jpeg",
-        name: "Endrick",
-        text: "Endrick Moreira"
-    },
-];*/}
 
 export default function RatingFunction({ratingComments, userId, userName, userAvatar}: RatingCommentsProps) {
     return (
