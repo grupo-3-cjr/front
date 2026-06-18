@@ -4,7 +4,7 @@ type RatingCardProps = {
     avatar_url: string;
     name: string;
     text: string;
-    rating?: number; // de 1 a 5
+    rating?: number;
     isOwner?: boolean;
     ratingId?: number;
     storeId?: number;

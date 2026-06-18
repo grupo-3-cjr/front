@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from "react";
-import ProductsSection from "@/components/feed/ProductsSection";
+import ProductsSection from "@/components/usuario/ProductsSection";
 import StoreSection from "@/components/usuario/StoreSection";
 import RatingSection from "@/components/usuario/RatingSection";
 import FeedNavbar from "@/components/feed/FeedNavbar";
@@ -28,16 +28,14 @@ export default function Usuario() {
 
   async function loadStores() {
     const token = localStorage.getItem("token");
+    const payload = JSON.parse(atob(token!.split('.')[1]));
+    const userIdNumber = payload.sub;
 
-    const response = await fetch(`http://localhost:3001/store/`, {
+    const response = await fetch(`http://localhost:3001/store?user_id=${userIdNumber}`, {
       headers: { Authorization: `Bearer ${token}` }
     });
 
-    if (!response.ok) {
-      setStores([]);
-      return;
-    }
-
+    if (!response.ok) { setStores([]); return; }
     const data = await response.json();
     setStores(Array.isArray(data) ? data : []);
   }
@@ -52,23 +50,28 @@ export default function Usuario() {
       fetch(`http://localhost:3001/user/${userIdNumber}`, {
         headers: { Authorization: `Bearer ${token}` }
       }).then(res => res.json()),
-      fetch(`http://localhost:3001/produtos/${userIdNumber}`, {
+      fetch(`http://localhost:3001/produtos?user_id=${userIdNumber}`, {
         headers: { Authorization: `Bearer ${token}` }
       }).then(res => res.json()),
-      fetch(`http://localhost:3001/store/${userIdNumber}`, {
+      fetch(`http://localhost:3001/store?user_id=${userIdNumber}`, {
         headers: { Authorization: `Bearer ${token}` }
       }).then(res => res.json()),
-      fetch(`http://localhost:3001/comments/${userIdNumber}`, {
+      fetch(`http://localhost:3001/store-ratings?user_id=${userIdNumber}`, {
         headers: { Authorization: `Bearer ${token}` }
       }).then(res => res.json()),
-]).then(([userData, productsData, storesData, commentsData]) => {
-
-      setUser(userData);
-      setProducts(Array.isArray(productsData) ? productsData : []);
-      setStores(Array.isArray(storesData) ? storesData : []);
-      setRatingComments(Array.isArray(commentsData) ? commentsData : []);
-    });
-  }, []);
+      fetch(`http://localhost:3001/product-ratings?user_id=${userIdNumber}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      }).then(res => res.json()),
+]).then(([userData, productsData, storesData, storeRatings, productRatings]) => {
+  setUser(userData);
+  setProducts(Array.isArray(productsData) ? productsData : []);
+  setStores(Array.isArray(storesData) ? storesData : []);
+  setRatingComments([
+    ...(Array.isArray(storeRatings) ? storeRatings : []),
+    ...(Array.isArray(productRatings) ? productRatings : []),
+  ]);
+});        
+}, []); 
 
   return (
     <>
@@ -130,7 +133,11 @@ export default function Usuario() {
               showAddButton
               onAddStore={() => setOpenModal(true)}
             />
-            {/*<RatingSection ratingComments={ratingComments}/>*/}
+            {user && <RatingSection 
+            ratingComments={ratingComments} 
+            userId={user?.id}
+            userName={user.name}
+            userAvatar={user.profile_picture_url || "/usuario.jpeg"}/> }
           </section>
 
         </div>
