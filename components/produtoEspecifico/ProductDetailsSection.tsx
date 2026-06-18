@@ -184,13 +184,7 @@ export default function ProductDetailsSection({
                         
                         <div className="text-base space-y-4 text-gray-800 leading-relaxed">
                             <p>{description.text}</p>
-                            <p className=" text-lg font-semibold text-gray-500 mb-2 uppercase">Ingredientes</p>
-                            <p>{description.ingredients}</p>
-                            <div className="pt-2 text-sm text-gray-500">
-                                {description.allergens.map((allergen, index) => (
-                                    <p key={index}>{allergen}</p>
-                                ))}
-                            </div>
+
                         </div>
                     </div>
 
