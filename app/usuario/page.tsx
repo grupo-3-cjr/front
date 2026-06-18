@@ -59,16 +59,19 @@ export default function Usuario() {
       fetch(`http://localhost:3001/store-ratings?user_id=${userIdNumber}`, {
         headers: { Authorization: `Bearer ${token}` }
       }).then(res => res.json()),
-]).then(([userData, productsData, storesData, commentsData]) => {
-
-      console.log(commentsData);
-
-      setUser(userData);
-      setProducts(Array.isArray(productsData) ? productsData : []);
-      setStores(Array.isArray(storesData) ? storesData : []);
-      setRatingComments(Array.isArray(commentsData) ? commentsData : []);
-    });
-  }, []);
+      fetch(`http://localhost:3001/product-ratings?user_id=${userIdNumber}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      }).then(res => res.json()),
+]).then(([userData, productsData, storesData, storeRatings, productRatings]) => {
+  setUser(userData);
+  setProducts(Array.isArray(productsData) ? productsData : []);
+  setStores(Array.isArray(storesData) ? storesData : []);
+  setRatingComments([
+    ...(Array.isArray(storeRatings) ? storeRatings : []),
+    ...(Array.isArray(productRatings) ? productRatings : []),
+  ]);
+});        
+}, []); 
 
   return (
     <>
