@@ -9,11 +9,25 @@ export default function FeedNavbar() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [mounted, setMounted] = useState(false); 
     const router = useRouter();
+    const [showCategories, setShowCategories] = useState(false);
+    const [categories, Setcategories] = useState([]);
 
     useEffect(() => {
         setMounted(true);
+
         const token = localStorage.getItem("token")
         setIsLoggedIn(!!token);
+
+        async function loadCategories() {
+            const response = await fetch("http://localhost:3001/category");
+
+            if (!response.ok) return;
+
+            const data = await response.json();
+            Setcategories(data);
+        }
+
+        loadCategories();
     }, []);
 
     const handleLogout = () => {
@@ -29,9 +43,25 @@ export default function FeedNavbar() {
             </Link>
 
             <div className="flex items-center gap-6 font-semibold text-sm">
-                <Link href="" className="transition-colors hover:text-purple-600">
+                <button
+                    onClick={() => setShowCategories(!showCategories)}
+                    className="cursor-pointer">
                     <img src="/category.svg" className="h-6 w-auto invert transition duration-200 hover:opacity-70"></img>
-                </Link>
+                </button>
+                {showCategories && (
+                    <div className="absolute right-40 top-10 bg-white rounded-lg shadow-lg min-w-[220px] z-50 max-h-[200px] overflow-y-auto">
+                        {categories.map((category: any) => (
+                            <Link
+                                key={category.id}
+                                href={`/categoria/${category.id}`}
+                                className="block px-4 py-3 hover:bg-gray-100 text-[#6A38F3]"
+                                onClick={() => setShowCategories(false)}
+                            >
+                                {category.name}
+                            </Link>
+                        ))}
+                    </div>
+                )}
                 {mounted && (
                     isLoggedIn ? (              
                         <>
