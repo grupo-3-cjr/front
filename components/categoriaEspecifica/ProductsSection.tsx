@@ -35,6 +35,7 @@ export default function ProductsSection({subtitle, products = []}: ProductSectio
                         name={product.name}
                         description={product.description}
                         price={product.price}
+                        available={product.stock > 0}
                     />
                 ))}
 

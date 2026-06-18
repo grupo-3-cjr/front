@@ -16,7 +16,7 @@ export default function StoreCard({id, logo_url, name, description}: StoreCardPr
                 <img
                     src={logo_url || "/semImagemProduto.jpg"} 
                     alt={`Logo da loja ${name}`}
-                    className="w-24 h-[150px] object-contain"
+                    className="w-full h-full object-cover rounded-full"
                 />
             </div>
 

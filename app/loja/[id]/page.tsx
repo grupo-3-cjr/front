@@ -219,19 +219,29 @@ export default function LojaPage() {
           Produtos <span className="text-base font-normal text-black">melhor avaliados</span>
         </h2>
 
-        <div className="flex gap-4 overflow-x-auto pb-4">
+        <div className="flex gap-4 overflow-x-auto pb-4 ">
           {produtosMelhorAvaliados.map((product) => (
             <Link href={`/produto/${product.id}`} key={product.id}>
               <article
                 key={product.id}
-                className="min-w-[200px] bg-white rounded-[24px] p-4 flex flex-col items-center gap-2 shadow-sm"
+                className="w-[228px] h-[300px] bg-white rounded-[24px] p-4 flex flex-col items-center gap-2 shadow-sm"
               >
+
               <img
                 src={product.productImage?.[0]?.image_url ?? "/placeholder.png"}
                 alt={product.name}
-                className="w-32 h-32 object-contain"
+                className="w-[150px] h-[170px] object-contain z-5"
               />
-              <span className="font-semibold text-black text-base text-center">{product.name}</span>
+
+              <div className="flex flex-col items-start gap-1">
+                <span className="font-semibold text-black text-base">{product.name}</span>
+
+                <span className="font-semibold text-black text-xl">R$ {product.price}</span>
+
+                <p className={product.stock > 0 ? "pb-2 text-[#AACC00] text-sm font-semibold" : "text-red-500 text-sm font-semibold pb-2"}>
+                  {product.stock > 0 ? "DISPONÍVEL" : "INDISPONÍVEL"}
+                </p>
+              </div>
             </article>
             </Link>
           ))}
@@ -299,7 +309,7 @@ export default function LojaPage() {
             <Link href={`/produto/${product.id}`} key={product.id}>
               <article
                 key={product.id}
-                className="relative bg-white rounded-[24px] p-4 flex flex-col items-center gap-2 shadow-sm"
+                className="relative bg-white rounded-[24px] p-4 flex flex-col items-center gap-2 shadow-sm w-[228px] h-[300px]"
               >
 
               {isOwner && (
@@ -315,13 +325,19 @@ export default function LojaPage() {
               <img
                 src={product.productImage?.[0]?.image_url ?? "/placeholder.png"}
                 alt={product.name}
-                className="w-32 h-32 object-contain"
+                className="w-[150px] h-[170px] object-contain z-5"
               />
-              <span className="font-semibold text-black text-base text-center">{product.name}</span>
-              <span className="font-bold text-[#6A38F3] text-lg">R$ {product.price}</span>
-              <span className={`text-xs font-semibold ${product.stock > 0 ? "text-green-500" : "text-red-500"}`}>
-                {product.stock > 0 ? "DISPONÍVEL" : "INDISPONÍVEL"}
-              </span>
+
+              <div className="flex flex-col items-start gap-1">
+                <span className="font-semibold text-black text-base">{product.name}</span>
+
+                <span className="font-semibold text-black text-lg">R$ {product.price}</span>
+
+                <span className={`pb-2 text-sm font-semibold ${product.stock > 0 ? "text-green-500" : "text-red-500"}`}>
+                  {product.stock > 0 ? "DISPONÍVEL" : "INDISPONÍVEL"}
+                </span>
+              </div>
+              
             </article>
             </Link>
           ))}
