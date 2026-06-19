@@ -1,5 +1,17 @@
 import StoreCard from "./StoreCard"; 
 
+import {
+  ShoppingBasket,
+  Pill,
+  Brush,
+  Shirt,
+  Laptop,
+  Gamepad2,
+  ToyBrick,
+  House,
+  Gpu,
+} from "lucide-react";
+
 type Store = {
     id: number;
     logo_url: string;
@@ -11,6 +23,17 @@ type StoreSectionProps = {
     stores: Store[];
 }
 
+const iconMap: Record<string, any> = {
+  Mercado: ShoppingBasket,
+  Farmácia: Pill,
+  Beleza: Brush,
+  Moda: Shirt,
+  Eletrônicos: Laptop,
+  Jogos: Gamepad2,
+  Brinquedos: ToyBrick,
+  Casa: House,
+  Tecnologia: Gpu,
+}
 export default function StoreSection({
     stores,
 }:StoreSectionProps) {
