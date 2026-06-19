@@ -46,7 +46,7 @@ export default function EditarComentarioModal({
                     <img src="/x.png" alt="Fechar modal" className="text-black w-6 h-6"></img>
                 </button>
 
-                <textarea placeholder="Comentário" value={content} onChange={(e) => setContent(e.target.value)} className="flex bg-white p-2 rounded-2xl h-[450px] w-[1100px] outline-none mt-20"></textarea>
+                <textarea placeholder="Comentário" value={content} onChange={(e) => setContent(e.target.value)} className="flex bg-white p-2 rounded-2xl h-[450px] w-[1100px] outline-none mt-20 text-black"></textarea>
 
                 <button onClick={handleUpdate} className="bg-[#6A38F3] hover:bg-[#5a28e3] text-white rounded-full w-md h-8 mt-2 mb-4 outline-none cursor-pointer">
                     Avaliar

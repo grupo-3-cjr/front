@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import FeedNavbar from "@/components/feed/FeedNavbar";
 import api from "@/app/services/api";
-import { Pencil } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import { League_Spartan } from "next/font/google";
 import EditarAvaliacaoLoja from "@/app/modais/EditarAvaliacaoLoja";
 import EditarComentarioModal from "@/components/comentario/EditarComentarioModal";
@@ -252,25 +252,37 @@ export default function ComentariosPage() {
         {comment.content}
       </span>
     </div>
-    {/* Canetinha — só aparece pro dono do comentário */}
-    {userId === comment.user_id && (
-    <>
-      <button
-        onClick={() => setComentarioEditando(comment.id)}
-        className="cursor-pointer text-black hover:opacity-70 transition-opacity flex-shrink-0"
-      >
-        <Pencil className="w-4 h-4" />
-      </button>
-      {comentarioEditando === comment.id && (
-        <EditarComentarioModal
-          commentId={comment.id}
-          initialContent={comment.content}
-          onClose={() => setComentarioEditando(null)}
-          onUpdated={loadComments}
-        />
-      )}
-    </>
+    {/* Canetinha e lixeira — só aparece pro dono do comentário */}
+{userId === comment.user_id && (
+<div className="flex gap-2 flex-shrink-0">
+  <button
+    onClick={() => setComentarioEditando(comment.id)}
+    className="cursor-pointer text-black hover:opacity-70 transition-opacity"
+  >
+    <Pencil className="w-4 h-4" />
+  </button>
+  <button
+    onClick={async () => {
+      const token = localStorage.getItem("token");
+      await api.delete(`/comments/${comment.id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      await loadComments();
+    }}
+    className="cursor-pointer text-red-500 hover:opacity-70 transition-opacity"
+  >
+    <Trash2 className="w-4 h-4" />
+  </button>
+  {comentarioEditando === comment.id && (
+    <EditarComentarioModal
+      commentId={comment.id}
+      initialContent={comment.content}
+      onClose={() => setComentarioEditando(null)}
+      onUpdated={loadComments}
+    />
   )}
+</div>
+)}
     </div>
   ))
           )}
