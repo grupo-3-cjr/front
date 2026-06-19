@@ -54,7 +54,11 @@ export default function FeedPage() {
 
             const data = await response.json();
 
-            setCategories(Array.isArray(data) ? data : []);
+            const categoriasPrincipais = Array.isArray(data)
+                ? data.filter((category: Category) => category.parent_category_id === null)
+                : [];
+
+            setCategories(categoriasPrincipais);
         }
       
         async function loadProducts() {
