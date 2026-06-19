@@ -24,8 +24,14 @@ export default function ReviewModal({
   const [hovered, setHovered] = useState(0);
   const [rating, setRating] = useState(avaliacaoExistente?.rating ?? 0);
   const [review, setReview] = useState(avaliacaoExistente?.texto ?? "");
+  const [erro, setErro] = useState("");
 
   const handleSubmit = () => {
+    if (rating === 0) {
+      setErro("Por favor, selecione ao menos uma estrela.");
+      return;
+    }
+    setErro("");
     onSubmit?.(rating, review);
   };
 
@@ -66,6 +72,7 @@ export default function ReviewModal({
             </button>
           ))}
         </div>
+        {erro && <p className="erro-msg">{erro}</p>}
 
         {/* Textarea */}
         <textarea
@@ -240,6 +247,13 @@ export default function ReviewModal({
 
         .submit-btn:active {
           background: #4a28a0;
+        }
+
+        .erro-msg {
+          margin: -10px 0 0;
+          color: #c0392b;
+          font-size: 13px;
+          text-align: center;
         }
       `}</style>
     </div>
