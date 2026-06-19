@@ -5,12 +5,18 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
+type Category = {
+    id: number;
+    name: string;
+    parent_category_id: number | null;
+}
+
 export default function FeedNavbar() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [mounted, setMounted] = useState(false); 
     const router = useRouter();
     const [showCategories, setShowCategories] = useState(false);
-    const [categories, Setcategories] = useState([]);
+    const [categories, setCategories] = useState<Category[]>([]);
 
     useEffect(() => {
         setMounted(true);
@@ -25,7 +31,12 @@ export default function FeedNavbar() {
             if (!response.ok) return;
 
             const data = await response.json();
-            Setcategories(data);
+
+            const categoriasPrincipais = Array.isArray(data)
+                ? data.filter((category: Category) => category.parent_category_id === null)
+                : [];
+
+            setCategories(categoriasPrincipais);
         }
 
         loadCategories();

@@ -35,7 +35,7 @@ export default function ProductCard({
                     />
                 </div>
 
-                <div className="mt-2 flex flex-col items-start p-3 w-full">
+                <div className="mt-2 flex flex-col items-start p-3">
                     <span className="font-semibold text-black text-lg">{name}</span>
                     <span className="font-semibold text-black text-xl">R$ {price}</span>
                     <p className={available ? "text-[#AACC00] text-sm font-semibold pb-2" : "text-red-500 text-sm font-semibold pb-2"}>

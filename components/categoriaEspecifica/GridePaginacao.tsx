@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
+import ProductCard from "@/components/categoriaEspecifica/ProductCard";
 
 type Product = {
   id: number;
@@ -9,26 +9,49 @@ type Product = {
   price: number;
   stock: number;
   image_url: string;
-  store_logo: string;
+  category_id: number;
+  createdAt: string;
+  storeLogo: string;
 }
 
 type GridePaginacaoProps = {
   categoryId: string;
   searchTerm: string;
+  selectedSubcategoryId: string | null;
+  sortBy: "default" | "price" | "rating" | "recent";
 };
 
 const ITEMS_PER_PAGE = 15;
 
-export default function ProductGrid({ categoryId, searchTerm }: GridePaginacaoProps) {
+export default function ProductGrid({ categoryId, searchTerm, selectedSubcategoryId, sortBy }: GridePaginacaoProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [products, setProducts] = useState<Product[]>([]);
   const [totalPages, setTotalPages] = useState(1);
 
-  const filteredProducts = products.filter(p =>
-    p.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredProducts = products
+    .filter((p) =>
+      p.name.toLowerCase().includes(searchTerm.toLowerCase())
+    )
 
-  const paginatedProducts = filteredProducts.slice(
+    .filter((p) =>
+    selectedSubcategoryId
+      ? p.category_id === Number(selectedSubcategoryId)
+      : true
+    );
+
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    if (sortBy === "price") {
+      return Number(a.price) - Number(b.price);
+    }
+
+    if (sortBy === "recent") {
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    }
+
+    return 0;
+  });
+
+  const paginatedProducts = sortedProducts.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
@@ -47,7 +70,8 @@ export default function ProductGrid({ categoryId, searchTerm }: GridePaginacaoPr
             .then(r => r.ok ? r.json() : [])
             .then(d => Array.isArray(d) ? d.map((p: any) => ({
               ...p,
-              image_url: p.productImage?.[0]?.image_url || null
+              image_url: p.productImage?.[0]?.image_url || null,
+              storeLogo: p.store?.logo_url || "/globe.svg"
             })) : [])
         )
       );
@@ -61,30 +85,24 @@ export default function ProductGrid({ categoryId, searchTerm }: GridePaginacaoPr
   }, [categoryId]);
 
   useEffect(() => {
-    setTotalPages(Math.ceil(filteredProducts.length / ITEMS_PER_PAGE));
+    setTotalPages(Math.ceil(sortedProducts.length / ITEMS_PER_PAGE));
     setCurrentPage(1);
-  }, [searchTerm]);
+  }, [searchTerm, selectedSubcategoryId, sortBy, products]);
 
   return (
     <div className="px-10 py-8">
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '16px', padding: '32px 40px' }}>
         {paginatedProducts.map((product) => (
-          <Link href={`/produto/${product.id}`} key={product.id}>
-            <div className="w-full h-[380px] bg-white rounded-[28px] relative overflow-hidden flex items-center justify-center flex-col">
-              <div className="h-[100px] flex items-center justify-center">
-                <img 
-                  src={product.image_url} 
-                  alt={product.name} 
-                  style={{ width: '250px', height: '250px', objectFit: 'contain' }} 
-                />
-              </div>
-              <p className="font-bold text-lg">{product.name}</p>
-              <p className="font-semibold">R${Number(product.price).toFixed(2)}</p>
-              <p style={{ color: Number(product.stock) > 0 ? '#4ecc00' : '#ee0e0e' }}>
-                {Number(product.stock) > 0 ? "DISPONÍVEL" : "INDISPONÍVEL"}
-              </p>
-            </div>
-          </Link>
+          <ProductCard
+            key={product.id}
+            id={product.id}
+            name={product.name}
+            description=""
+            price={String(product.price)}
+            image_url={product.image_url}
+            storeLogo={product.storeLogo}
+            available={Number(product.stock) > 0}
+          />
         ))}
       </div>
 

@@ -15,7 +15,8 @@ export default function StoreCard({ id, logo_url, name, description }: StoreCard
                     <img 
                     src={logo_url} 
                     alt="Logo da loja" 
-                    style={{ width: '96px', height: '150px', objectFit: 'contain' }} />*
+                    className="w-full h-full object-cover"
+                    />
                 </div>
 
                 <span style={{ color: '#ffffff', fontWeight: 200, fontSize: '1.5rem' }}>{name}</span>
