@@ -1,12 +1,11 @@
 "use client"
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 
 import FeedNavbar from "@/components/feed/FeedNavbar";
 import Hero from "@/components/categoriaEspecifica/Hero";
 import SearchBar from "@/components/categoriaEspecifica/SearchBar" 
 import PrincipaisLojas from "@/components/categoriaEspecifica/PrincipaisLojas"
-import StoreSection from "@/components/categoriaEspecifica/StoreSection"
 import GridePaginacao from "@/components/categoriaEspecifica/GridePaginacao"
 import ProductsSection from "@/components/categoriaEspecifica/ProductsSection"
 
@@ -27,14 +26,17 @@ type Product = {
     stock: number;
     createdAt: string;
     updatedAt: string;
+    image_url: string;
+    store: { logo_url: string };
 }
 
+export default function categoryPage({ params }: { params: Promise<{ id: string }> }) {
 
-export default function categoryPage({ params }: { params: { id: string } }) {
+    const { id } = use(params);
 
     const [searchTerm, setSearchTerm] = useState("");
     const [products, setProducts] = useState<Product[]>([]);
-    const { id } = params;
+    const [stores, setStores] = useState<Store[]>([]);
 
     const produtosMelhoresAvaliados = [...products];
 
@@ -43,55 +45,58 @@ export default function categoryPage({ params }: { params: { id: string } }) {
     );
 
     useEffect(() => {
-        async function loadProducts() {
-            const response = await fetch(
-                `http://localhost:3001/produtos?search=${searchTerm}`
+        if (!id) return;
+
+        async function loadData() {
+            const lojasRes = await fetch(`http://localhost:3001/store?categoria_id=${id}`);
+            if (!lojasRes.ok) { setStores([]); setProducts([]); return; }
+
+            const lojasData: Store[] = await lojasRes.json();
+            setStores(Array.isArray(lojasData) ? lojasData : []);
+
+            const produtosResults = await Promise.all(
+                lojasData.map(loja =>
+                    fetch(`http://localhost:3001/produtos?store_id=${loja.id}&search=${searchTerm}`)
+                        .then(r => r.ok ? r.json() : [])
+                        .then(d => Array.isArray(d) ? d.map((p: any) => ({
+                            ...p,
+                            image_url: p.productImage?.[0]?.image_url || null
+                        })) : [])
+                )
             );
 
-            if (!response.ok) {
-                setProducts([]);
-                return;
-            }
-
-            const data = await response.json();
-
-            setProducts(Array.isArray(data) ? data : []);
+            setProducts(produtosResults.flat());
         }
 
-        loadProducts();
-    }, [searchTerm]);
+        loadData();
+    }, [id, searchTerm]);
 
     return (
         <main>
             <FeedNavbar />
             <Hero />
 
-            <section className="block w-full bg-[#F6F3E4] min-h-screen py-4 ">
+            <section className="block w-full bg-[#F6F3E4] min-h-screen py-4">
                 <div>
                     <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
                 </div>
 
-                <GridePaginacao searchTerm={searchTerm} categoryId={params.id} />
-                
+                <GridePaginacao searchTerm={searchTerm} categoryId={id} />
             </section>
 
-            <PrincipaisLojas />
+            <PrincipaisLojas stores={stores}/>
 
             <section className="bg-[#F6F3E4] min-h-screen py-8 pr-24">
-
                 <ProductsSection
-                    subtitle="melhores avaliados"
+                    subtitle="Mais Populares"
                     products={produtosMelhoresAvaliados}
                 />
 
                 <ProductsSection
-                    subtitle="recém adicionados"
+                    subtitle="Recém adicionados"
                     products={produtosRecemAdicionados}
                 />
-
             </section>
-            
         </main>
     )
-
 }
