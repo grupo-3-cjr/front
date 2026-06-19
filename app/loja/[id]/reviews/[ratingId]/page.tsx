@@ -105,7 +105,7 @@ export default function ComentariosPage() {
       await api.post(`/comments`, {
         user_id: userId,
         store_rating_id: ratingId,
-        product_rating_id: 1,
+        product_rating_id: 1509,
         content: novoComentario,
       }, {
         headers: { Authorization: `Bearer ${token}` }
