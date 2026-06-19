@@ -7,6 +7,7 @@ export type Rating = {
     text: string;
     rating?: number; 
     isOwner?: boolean;
+    userId: number;
 }
 type RatingSectionProps = {
     ratingComments: Rating[];
@@ -36,8 +37,8 @@ export default function RatingSection({ ratingComments, productId }: RatingSecti
                             text={rating.text}
                             rating={rating.rating}
                             isOwner={rating.isOwner}
-                            productId={productId}
-                            ratingId={rating.id} 
+                            ratingId={rating.id as number} 
+                            userId={rating.userId}
                         />
                     ))
                 ) : (

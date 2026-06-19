@@ -82,7 +82,8 @@ export default function ProdutoEspecifico(){
                         name: avaliacao.user?.name || "Usuário",
                         text: avaliacao.comment, 
                         rating: avaliacao.rating,
-                       isOwner: loggedUserId === avaliacao.user_id
+                       isOwner: loggedUserId === avaliacao.user_id,
+                       userId: avaliacao.user_id
                     })) || []
                     };
 

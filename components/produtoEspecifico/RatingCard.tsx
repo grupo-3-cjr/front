@@ -2,7 +2,7 @@ import { Pencil } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import EditarAvaliacaoProduto from "@/app/modais/EditarAvaliacaoProduto"
 import { toast } from 'react-toastify';
-
+import Link from 'next/link'
 
 type RatingCardProps = {
     avatar_url: string;
@@ -11,9 +11,10 @@ type RatingCardProps = {
     rating?: number;
     isOwner?: boolean; 
     ratingId?: number;
+    userId: number;
 }
 
-export default function RatingCard({avatar_url, name, text, rating = 5, isOwner = false, ratingId}: RatingCardProps) {
+export default function RatingCard({avatar_url, name, text, rating = 5, isOwner = false, ratingId, userId}: RatingCardProps) {
 
     const [modalAberto, setModalAberto] = useState(false);
 
@@ -59,15 +60,16 @@ export default function RatingCard({avatar_url, name, text, rating = 5, isOwner 
     }
 
     return(
-        <article className="bg-[#FFFF] rounded-[28px] w-[700px] h-[220px] flex items-start px-8 gap-6 relative pt-8">
+        <article className="bg-white rounded-[28px] w-[400px] md:w-[600px] lg:w-[700px] shrink-0 min-h-[220px] flex items-start px-6 md:px-8 gap-4 md:gap-6 relative py-8 overflow-hidden">
             
-            {/* Foto à esquerda */}
-            <img
-                src={avatar_url || "/semFotoPerfil.jpg"}
-                alt="foto do usuario"
-                className="w-24 h-24 object-cover rounded-full flex-shrink-0"
-            />
-
+            {/* Foto à esquerda ${userId */}
+            <Link href={`/usuario/}`} className="flex-shrink-0 transition-transform ">
+                <img
+                    src={avatar_url || "/semFotoPerfil.jpg"}
+                    alt="foto do usuario"
+                    className="w-24 h-24 object-cover rounded-full flex-shrink-0"
+                />
+          </Link>
             {/* Nome e texto no meio */}
              <div className="flex flex-col gap-1 flex-1 items-start pt-2">
                 <div className="flex items-center gap-3">

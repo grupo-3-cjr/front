@@ -211,7 +211,7 @@ export default function LojaPage() {
       <div className="absolute bottom-4 right-16 text-white text-sm z-10">
         by{" "}
         <Link 
-          href={`/usuario/${store.user_id}`}
+          href={`/usuario`}
           className="underline cursor-pointer hover:text-purple-400 transition-colors"
         >
           {ownerName}
