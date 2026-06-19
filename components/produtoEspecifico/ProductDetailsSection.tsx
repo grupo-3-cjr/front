@@ -17,6 +17,7 @@ type DescriptionData = {
 type ProductDetailsProps = {
     id: number;
     title: string;
+    storeId: number;
     rating: number;
     reviewsCount: number;
     category: string;
@@ -42,6 +43,7 @@ export default function ProductDetailsSection({
     price,
     images = [],
     storeLogo,
+    storeId,
     description,
     isLoggedIn,
     isOwner,
@@ -123,7 +125,7 @@ export default function ProductDetailsSection({
 
                             <img src={mainImage} alt={title} className="w-full max-w-sm object-contain" />
                         <a 
-                             href={`/loja/${id}`}
+                             href={`/loja/${storeId}`}
                              target="_blank"
                              rel="noopener noreferrer"
                             title="Visitar loja"

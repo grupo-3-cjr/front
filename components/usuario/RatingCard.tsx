@@ -12,7 +12,7 @@ type RatingCardProps = {
 
 export default function RatingCard({avatar_url, name, text, rating = 5, isOwner = false, ratingId, storeId}: RatingCardProps) {
     return(
-        <article className="bg-white rounded-[28px] w-[700px] h-[220px] flex items-start px-8 gap-6 relative pt-8">
+        <article className="bg-white rounded-[28px] w-[400px] md:w-[600px] lg:w-[700px] shrink-0 min-h-[220px] flex items-start px-6 md:px-8 gap-4 md:gap-6 relative py-8 overflow-hidden">
             
             <img
                 src={avatar_url || "/avatar-placeholder.png"}

@@ -8,6 +8,7 @@ import {
   Gamepad2,
   ToyBrick,
   House,
+  Gpu,
 } from "lucide-react";
 
 type Category = {
@@ -29,6 +30,7 @@ const iconMap: Record<string, any> = {
   Jogos: Gamepad2,
   Brinquedos: ToyBrick,
   Casa: House,
+  Tecnologia: Gpu,
 }
 
 export default function CategoryList({

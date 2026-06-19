@@ -121,8 +121,8 @@ export default function Usuario() {
             <div className="ml-16 pt-20 pb-4 pl-30 flex justify-between">
               <div>
                 <h1 className="text-3xl font-bold text-black">{user.name}</h1>
-                <p className="text-gray-500 text-sm mt-1">@ {user.username}</p>
-                <p className="text-gray-500 text-sm mt-1">✉ {user.email}</p>
+                <p className="text-gray-500 text-base mt-1">@ {user.username}</p>
+                <p className="text-gray-500 text-base mt-1">✉ {user.email}</p>
               </div>
               {isOwner && <EditarUsuarioCard />}
             </div>
