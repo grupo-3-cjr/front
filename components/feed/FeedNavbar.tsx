@@ -18,6 +18,7 @@ export default function FeedNavbar() {
         const token = localStorage.getItem("token")
         setIsLoggedIn(!!token);
 
+
         async function loadCategories() {
             const response = await fetch("http://localhost:3001/category");
 
@@ -35,7 +36,21 @@ export default function FeedNavbar() {
         setIsLoggedIn(false);
         router.push("/feed");
     };
+    const handleIrParaMeuPerfil = () => {
+        const token = localStorage.getItem("token");
 
+        if (token) {
+            try {
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                const meuId = payload.sub; 
+                router.push(`/usuario/${meuId}`);
+            } catch (error) {
+                handleLogout(); 
+            }
+        } else {
+            router.push("/login");
+        }
+    };
     return (
         <nav className="bg-black text-white flex items-center justify-between px-6 py-4">
             <Link href="/feed">
@@ -65,9 +80,12 @@ export default function FeedNavbar() {
                 {mounted && (
                     isLoggedIn ? (              
                         <>
-                            <Link href="/usuario" className="transition-colors hover:text-purple-600">
+                            <button 
+                                onClick={handleIrParaMeuPerfil} 
+                                className="cursor-pointer transition-colors hover:text-purple-600"
+                            >
                                 <User />
-                            </Link>
+                            </button>
                             <button
                                 className="group cursor-pointer transition-colors hover:text-red-600"
                                 onClick={handleLogout}

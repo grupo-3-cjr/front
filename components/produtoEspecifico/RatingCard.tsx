@@ -63,7 +63,7 @@ export default function RatingCard({avatar_url, name, text, rating = 5, isOwner 
         <article className="bg-white rounded-[28px] w-[400px] md:w-[600px] lg:w-[700px] shrink-0 min-h-[220px] flex items-start px-6 md:px-8 gap-4 md:gap-6 relative py-8 overflow-hidden">
             
             {/* Foto à esquerda ${userId */}
-            <Link href={`/usuario/}`} className="flex-shrink-0 transition-transform ">
+            <Link href={`/usuario/${userId}`} className="flex-shrink-0 transition-transform ">
                 <img
                     src={avatar_url || "/semFotoPerfil.jpg"}
                     alt="foto do usuario"
