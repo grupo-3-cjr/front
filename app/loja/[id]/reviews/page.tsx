@@ -227,7 +227,7 @@ export default function ReviewsPage() {
             ratings.map((rating) => (
               <RatingCard
                 key={rating.id}
-                avatar_url={rating.user.profile_picture_url || "/avatar-placeholder.png"}
+                avatar_url={rating.user.profile_picture_url || "/semFotoPerfil.jpg"}
                 name={rating.user.name}
                 text={rating.comment}
                 rating={rating.rating}

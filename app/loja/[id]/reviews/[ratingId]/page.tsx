@@ -191,7 +191,7 @@ export default function ComentariosPage() {
                 {"<"}
               </button>
               <img
-                src={rating.user.profile_picture_url || "/avatar-placeholder.png"}
+                src={rating.user.profile_picture_url || "/semFotoPerfil.jpg"}
                 alt={rating.user.name}
                 className="w-20 h-20 rounded-full object-cover"
               />

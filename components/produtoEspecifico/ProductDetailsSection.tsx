@@ -120,14 +120,21 @@ export default function ProductDetailsSection({
                     </div>
                     {/* Imagem maior*/}
                     <div className="bg-white rounded-3xl flex-1 min-h-150 flex items-center justify-center p-8 relative shadow-sm">
-                        
-                        <img src={mainImage} alt={title} className="w-full max-w-sm object-contain" />
-                        {/*miniatura da logo */}
-                        <img 
-                            src={storeLogo} 
-                            alt="Logo da Loja" 
-                            className="absolute top-6 right-6 w-16 h-16 rounded-full object-cover shadow-md z-10 bg-white"
-                        />
+
+                            <img src={mainImage} alt={title} className="w-full max-w-sm object-contain" />
+                        <a 
+                             href={`/loja/${id}`}
+                             target="_blank"
+                             rel="noopener noreferrer"
+                            title="Visitar loja"
+                        >
+                            {/*miniatura da logo */}
+                            <img 
+                                src={storeLogo} 
+                                alt="Logo da Loja" 
+                                className="absolute top-6 right-6 w-16 h-16 rounded-full object-cover shadow-md z-10 bg-white"
+                            />
+                        </a>
                     </div>
                 </div>
 
@@ -184,13 +191,7 @@ export default function ProductDetailsSection({
                         
                         <div className="text-base space-y-4 text-gray-800 leading-relaxed">
                             <p>{description.text}</p>
-                            <p className=" text-lg font-semibold text-gray-500 mb-2 uppercase">Ingredientes</p>
-                            <p>{description.ingredients}</p>
-                            <div className="pt-2 text-sm text-gray-500">
-                                {description.allergens.map((allergen, index) => (
-                                    <p key={index}>{allergen}</p>
-                                ))}
-                            </div>
+
                         </div>
                     </div>
 

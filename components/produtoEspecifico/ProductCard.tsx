@@ -7,9 +7,10 @@ type ProductCardProps = {
     description?: string; 
     price?: string;   
     storeLogo?: string;
+    available: boolean;
 }
 
-export default function ProductCard({id, name, image, description, price, storeLogo}: ProductCardProps) {
+export default function ProductCard({id, name, image, description, price, storeLogo,available}: ProductCardProps) {
     console.log(`Card do ${name} recebeu o preço:`, price);
 
     return(
@@ -37,10 +38,13 @@ export default function ProductCard({id, name, image, description, price, storeL
                 
                 {/* Renderiza o preço se ele existir */}
                 {price && (
-                    <span className="font-bold text-[#6A38F3] text-base mt-1">
+                    <span className="font-semibold text-black  text-base mt-1">
                         {price}
                     </span>
                 )}
+                 <p className={available ? "text-[#AACC00] text-sm font-semibold pb-2" : "text-red-500 text-sm font-semibold pb-2"}>
+                        {available ? "DISPONÍVEL" : "INDISPONÍVEL"}
+                    </p>
             </div>
             
         </article>

@@ -78,11 +78,12 @@ export default function ProdutoEspecifico(){
                         ratings: produtoPrisma.productRating?.map((avaliacao) => ({
                         id: avaliacao.id,
                         // Navega até o usuário para pegar a foto e o nome
-                        avatar_url: avaliacao.user?.profile_picture_url || "/globe.svg", 
+                        avatar_url: avaliacao.user?.profile_picture_url || "/semFotoPerfil.jpg", 
                         name: avaliacao.user?.name || "Usuário",
                         text: avaliacao.comment, 
                         rating: avaliacao.rating,
-                       isOwner: loggedUserId === avaliacao.user_id
+                       isOwner: loggedUserId === avaliacao.user_id,
+                       userId: avaliacao.user_id
                     })) || []
                     };
 

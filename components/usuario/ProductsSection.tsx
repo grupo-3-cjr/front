@@ -44,6 +44,7 @@ export default function ProductusSection({subtitle, products = []}: ProductSecti
                         price={product.price}
                         image_url={primeiraImagem}
                         storeLogo={product.store?.logo_url}
+                        available={product.stock > 0}
                         />
                     );
                     })

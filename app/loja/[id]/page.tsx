@@ -208,9 +208,15 @@ export default function LojaPage() {
         
 
         {/* Nome do dono */}
-        <div className="absolute bottom-4 right-16 text-white text-sm z-10">
-        by <span className="underline cursor-pointer">{ownerName}</span>
-        </div>
+      <div className="absolute bottom-4 right-16 text-white text-sm z-10">
+        by{" "}
+        <Link 
+          href={`/usuario/${store.user_id}`}
+          className="underline cursor-pointer hover:text-purple-400 transition-colors"
+        >
+          {ownerName}
+        </Link>
+      </div>
       </div>
 
       {/* PRODUTOS MELHOR AVALIADOS */}
