@@ -7,23 +7,20 @@ type StoreCardProps = {
     description: string;
 }
 
-export default function StoreCard({id, logo_url, name, description}: StoreCardProps) {
-    return(
-        <Link href={`/loja/${id}`} key={id}>
+export default function StoreCard({ id, logo_url, name, description }: StoreCardProps) {
+    return (
+        <Link href={`/loja/${id}`}>
+            <article style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                <div style={{ background: 'white', borderRadius: '9999px', width: '150px', height: '150px', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+                    <img 
+                    src={logo_url} 
+                    alt="Logo da loja" 
+                    style={{ width: '96px', height: '150px', objectFit: 'contain' }} />*
+                </div>
 
-            <article className="flex flex-col justify-center items-center">
-            <div className="bg-white rounded-full w-[150px] h-[150px] flex items-center justify-center gap-6">
-                {/*<img
-                    src={logo_url}
-                    alt="Logo da loja"
-                    className="w-24 h-[150px] object-contain"
-                />*/}
-            </div>
-
-            <span className="text-[#000000] font-light text-2xl">{name}</span>
-            <span className="text-[#6A38F3]">{description}</span>
-        </article>
-
+                <span style={{ color: '#ffffff', fontWeight: 200, fontSize: '1.5rem' }}>{name}</span>
+                <span style={{ color: '#6A38F3' }}>{description}</span>
+            </article>
         </Link>
     );
 }
