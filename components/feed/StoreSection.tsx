@@ -1,42 +1,38 @@
-import StoreCard from "./StoreCard"; 
+"use client"
 
-import {
-  ShoppingBasket,
-  Pill,
-  Brush,
-  Shirt,
-  Laptop,
-  Gamepad2,
-  ToyBrick,
-  House,
-  Gpu,
-} from "lucide-react";
+import { useState } from "react";
+import StoreCard from "./StoreCard";
+import StoreFilter from "./StoreFilter";
+
 
 type Store = {
     id: number;
     logo_url: string;
     name: string;
     description: string;
+    category_id: number;    // n
+}
+
+type Category = {
+    id: number;
+    name: string;
+    parent_category_id: number | null;
 }
 
 type StoreSectionProps = {
     stores: Store[];
+    categories: Category[]; // n
 }
 
-const iconMap: Record<string, any> = {
-  Mercado: ShoppingBasket,
-  Farmácia: Pill,
-  Beleza: Brush,
-  Moda: Shirt,
-  Eletrônicos: Laptop,
-  Jogos: Gamepad2,
-  Brinquedos: ToyBrick,
-  Casa: House,
-  Tecnologia: Gpu,
-}
 export default function StoreSection({
     stores,
+    categories 
 }:StoreSectionProps) {
+const [selectedCategoryIds, setSelectedCategoryIds] = useState<number[]>([]);
+   const filteredStores = selectedCategoryIds.length
+        ? stores.filter((store) => selectedCategoryIds.includes(store.category_id))
+        : stores;
+
     return (
         <section className="mt-11 ml-16">
             <section className="flex justify-between items-center mb-6">
@@ -46,18 +42,18 @@ export default function StoreSection({
                     </div>
                 </div>
 
-                <div className="flex justify-end">
-                    <div className="w-[520px] h-9 flex bg-white rounded-full px-4 items-center">
-                        <input type="text" placeholder="filtros" className="flex-1 outline-none text-m text-[#6A38F380]" />
-
-                        <select className="text-purple-400 size={16}"/>
-                    </div> 
+            <div className="flex justify-end">
+                    <StoreFilter
+                        categories={categories}
+                        selectedCategoryIds={selectedCategoryIds}
+                        setSelectedCategoryIds={setSelectedCategoryIds}
+                    />
                 </div>
             </section>
 
 
             <div className="flex overflow-x-auto pb-4 gap-16">
-                {stores.map((store) => (
+                {filteredStores.map((store) => (  
                     <StoreCard
                         key={store.id}
                         id={store.id}

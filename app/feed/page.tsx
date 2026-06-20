@@ -33,6 +33,7 @@ type Store = {
     logo_url: string;
     name: string;
     description: string;
+    
 }
 
 export default function FeedPage() {
@@ -145,7 +146,7 @@ export default function FeedPage() {
                     products={produtosRecemAdicionados}
                 />
 
-                <StoreSection stores={stores} />
+                <StoreSection stores={stores} categories={categories} /> {/* n */}
 
             </section>
         </main>
