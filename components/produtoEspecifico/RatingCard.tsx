@@ -31,7 +31,7 @@ export default function RatingCard({avatar_url, name, text, rating = 5, isOwner 
             body: JSON.stringify({comment: texto, rating}),
         })
             if (responseAvaliar.ok) {
-                toast.success("Comentario realizado com sucesso! ✨");
+                toast.success("Comentario realizado com sucesso! ");
                 setModalAberto(false);
                 setTimeout(() => window.location.reload(), 1500);
             } else{
@@ -51,7 +51,7 @@ export default function RatingCard({avatar_url, name, text, rating = 5, isOwner 
             },
         })
         if (responseDeletar.ok) {
-               toast.success("Comentario deletado com sucesso! ✨");
+               toast.success("Comentario deletado com sucesso! ");
                 setModalAberto(false);
                 setTimeout(() => window.location.reload(), 1500);
             } else{
