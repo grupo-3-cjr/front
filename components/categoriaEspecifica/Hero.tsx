@@ -14,7 +14,7 @@ export default function Hero() {
                 {/* Mantida a estrutura do mascote */}
                 <div className="w-[42%] flex justify-center items-start h-full">
                     <img
-                        className="w-[100px]"
+                        className="w-[250px]"
                         src="/Mascote2.png"
                         alt="Logo hero"
                     />
