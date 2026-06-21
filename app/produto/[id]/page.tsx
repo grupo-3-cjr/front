@@ -123,42 +123,55 @@ export default function ProdutoEspecifico(){
         }
     }, [productId]);
 
-    if (isLoading) return <p>Carregando...</p>;
-    if (!produtoAtual) return <p>Produto não encontrado.</p>;
-    
-     return (
-         <main>
-             <FeedNavbar />
-             <section className="bg-[#F6F3E4] min-h-screen py-8 pr-24">
+    if (isLoading) {
+    return (
+        <p className="min-h-screen bg-[#F6F3E4] text-black dark:bg-[#050505] dark:text-white">
+        Carregando...
+        </p>
+    );
+    }
 
-            <ProductDetailsSection 
-                    id ={produtoAtual.id}
-                    storeId={produtoAtual.storeId}
-                    title={produtoAtual.title} 
-                    rating={produtoAtual.rating}
-                    reviewsCount={produtoAtual.reviewsCount}
-                    category={produtoAtual.category}
-                    parentCategoryId={produtoAtual.parentCategoryId}
-                    stock={produtoAtual.stock}
-                    price={produtoAtual.price}
-                    images={produtoAtual.images}
-                    storeLogo={produtoAtual.storeLogo}
-                    description={produtoAtual.description}
-                    isOwner={produtoAtual.isOwner} 
-                    isLoggedIn={isLoggedIn}
-                    productId={productId}
-                />
-                
-                <RatingSection 
-                ratingComments={produtoAtual.ratings} 
-                productId={productId}
-                />
+    if (!produtoAtual) {
+    return (
+        <p className="min-h-screen bg-[#F6F3E4] text-black dark:bg-[#050505] dark:text-white">
+        Produto não encontrado.
+        </p>
+    );
+    }
 
-                <ProductusSection
-                    subtitle="Da mesma loja"
-                    products={produtosLoja}
-                />
-             </section>
-         </main>
-     );
+    return (
+    <main className="bg-[#F6F3E4] text-black dark:bg-[#050505] dark:text-white">
+        <FeedNavbar />
+
+        <section className="bg-[#F6F3E4] min-h-screen py-8 pr-24 dark:bg-[#050505]">
+        <ProductDetailsSection
+            id={produtoAtual.id}
+            storeId={produtoAtual.storeId}
+            title={produtoAtual.title}
+            rating={produtoAtual.rating}
+            reviewsCount={produtoAtual.reviewsCount}
+            category={produtoAtual.category}
+            parentCategoryId={produtoAtual.parentCategoryId}
+            stock={produtoAtual.stock}
+            price={produtoAtual.price}
+            images={produtoAtual.images}
+            storeLogo={produtoAtual.storeLogo}
+            description={produtoAtual.description}
+            isOwner={produtoAtual.isOwner}
+            isLoggedIn={isLoggedIn}
+            productId={productId}
+        />
+
+        <RatingSection
+            ratingComments={produtoAtual.ratings}
+            productId={productId}
+        />
+
+        <ProductusSection
+            subtitle="Da mesma loja"
+            products={produtosLoja}
+        />
+        </section>
+    </main>
+    );
  }

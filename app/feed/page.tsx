@@ -120,12 +120,12 @@ export default function FeedPage() {
     );
 
     return (
-        <main>
+        <main className="bg-[#F6F3E4] dark:bg-zinc-950 min-h-screen">
             <FeedNavbar/>
 
             <Hero />
 
-            <section className="bg-[#F6F3E4] min-h-screen py-8 pr-24">
+            <section className="bg-[#F6F3E4] dark:bg-zinc-950 min-h-screen py-8 pr-24">
                 
                 <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
