@@ -90,8 +90,8 @@ export default function ProductGrid({ categoryId, searchTerm, selectedSubcategor
   }, [searchTerm, selectedSubcategoryId, sortBy, products]);
 
   return (
-    <div className="px-10 py-8">
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '16px', padding: '32px 40px' }}>
+    <div className="w-full overflow-hidden py-8">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 px-4 sm:px-8 lg:px-10">
         {paginatedProducts.map((product) => (
           <ProductCard
             key={product.id}
@@ -106,7 +106,7 @@ export default function ProductGrid({ categoryId, searchTerm, selectedSubcategor
         ))}
       </div>
 
-      <div className="flex items-center justify-center gap-10 mt-10 text-4xl font-bold">
+      <div className="flex items-center justify-center gap-6 sm:gap-10 mt-10 text-3xl sm:text-4xl font-bold">
         <button
           onClick={() => setCurrentPage(p => Math.max(p - 1, 1))}
           disabled={currentPage === 1}

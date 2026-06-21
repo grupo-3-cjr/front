@@ -37,10 +37,10 @@ export default function CategoryList({
     categories,
 }: CategoryListProps) {
     return (
-        <section className="mt-8 ml-16">
+        <section className="mt-8 px-4 sm:px-8 lg:ml-16">
             <h2 className="text-3xl text-black font-bold mb-8">Categoria</h2>
 
-            <div className="flex gap-15 overflow-x-auto pb-4">
+            <div className="flex gap-10 overflow-x-auto pb-4">
                 {categories.map((category) => {
                     const Icon = iconMap[category.name] || ShoppingBasket;
 

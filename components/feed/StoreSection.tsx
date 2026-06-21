@@ -34,14 +34,21 @@ const [selectedCategoryIds, setSelectedCategoryIds] = useState<number[]>([]);
         : stores;
 
     return (
-        <section className="mt-11 ml-16">
-            <section className="flex justify-between items-center mb-6">
-                <div className="flex items-end gap-4">
-                    <div className="flex items-baseline gap-2">
-                        <h2 className="text-3xl text-black font-bold mb-8">Lojas</h2>
-                    </div>
-                </div>
+        <section className="mt-11 px-4 sm:px-8 lg:px-16">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
 
+                <h2 className="text-3xl sm:text-4xl text-black font-bold">
+                    Lojas
+                </h2>
+
+                <div className="w-full sm:max-w-[520px] h-10 flex bg-white rounded-full px-4 items-center">
+                    <input
+                        type="text"
+                        placeholder="filtros"
+                        className="flex-1 outline-none text-sm sm:text-base text-[#6A38F380]"
+                    />
+
+                    <select className="outline-none text-sm sm:text-base text-purple-400 bg-transparent" />
             <div className="flex justify-end">
                     <StoreFilter
                         categories={categories}
@@ -49,8 +56,8 @@ const [selectedCategoryIds, setSelectedCategoryIds] = useState<number[]>([]);
                         setSelectedCategoryIds={setSelectedCategoryIds}
                     />
                 </div>
-            </section>
 
+            </div>
 
             <div className="flex overflow-x-auto pb-4 gap-16">
                 {filteredStores.map((store) => (  
