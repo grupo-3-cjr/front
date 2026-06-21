@@ -1,4 +1,4 @@
-import Link from "next/link"; 
+import Link from "next/link";
 import {
   ShoppingBasket,
   Pill,
@@ -12,14 +12,14 @@ import {
 } from "lucide-react";
 
 type Category = {
-    id: number;
-    name: string;
-    parent_category_id: number | null;
-}
+  id: number;
+  name: string;
+  parent_category_id: number | null;
+};
 
 type CategoryListProps = {
-    categories: Category[];
-}
+  categories: Category[];
+};
 
 const iconMap: Record<string, any> = {
   Mercado: ShoppingBasket,
@@ -31,33 +31,36 @@ const iconMap: Record<string, any> = {
   Brinquedos: ToyBrick,
   Casa: House,
   Tecnologia: Gpu,
-}
+};
 
 export default function CategoryList({
-    categories,
+  categories,
 }: CategoryListProps) {
-    return (
-        <section className="mt-8 px-4 sm:px-8 lg:ml-16">
-            <h2 className="text-3xl text-black font-bold mb-8">Categoria</h2>
+  return (
+    <section className="mt-8 ml-16">
+      <h2 className="text-3xl font-bold text-black dark:text-white mb-8">
+        Categoria
+      </h2>
 
-            <div className="flex gap-10 overflow-x-auto pb-4">
-                {categories.map((category) => {
-                    const Icon = iconMap[category.name] || ShoppingBasket;
+      <div className="flex gap-15 overflow-x-auto pb-4">
+        {categories.map((category) => {
+          const Icon = iconMap[category.name] || ShoppingBasket;
 
-                    return (
-                        <Link 
-                            key={category.id} 
-                            href={`/categoria/${category.id}`} 
-                            className="p-2 min-w-[115px] h-[115px] bg-white rounded-2xl flex flex-col items-center justify-center hover:bg-gray-50 transition-colors"
-                        >
-                            <Icon size={30} className="text-[#6C3BFF]" />
-                            <span className="text-black text-sm font-medium mt-2">
-                                {category.name}
-                            </span>
-                        </Link>
-                    );
-                })}
-            </div>
-        </section>
-    );
+          return (
+            <Link
+              key={category.id}
+              href={`/categoria/${category.id}`}
+              className="p-2 min-w-[115px] h-[115px] bg-white dark:bg-[#151515] rounded-2xl flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-[#202020] transition-colors"
+            >
+              <Icon size={30} className="text-[#6C3BFF]" />
+
+              <span className="text-black dark:text-white text-sm font-medium mt-2">
+                {category.name}
+              </span>
+            </Link>
+          );
+        })}
+      </div>
+    </section>
+  );
 }

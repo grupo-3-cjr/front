@@ -1,52 +1,57 @@
-import RatingCard from "./RatingCard"; 
+import RatingCard from "./RatingCard";
 
 export type Rating = {
-    id?: string | number; 
-    avatar_url: string;
-    name: string;
-    text: string;
-    rating?: number; 
-    isOwner?: boolean;
-    userId: number;
-}
+  id?: string | number;
+  avatar_url: string;
+  name: string;
+  text: string;
+  rating?: number;
+  isOwner?: boolean;
+  userId: number;
+};
+
 type RatingSectionProps = {
-    ratingComments: Rating[];
-    productId: number,
-    ratingId?: number,
-}
+  ratingComments: Rating[];
+  productId: number;
+  ratingId?: number;
+};
 
-export default function RatingSection({ ratingComments, productId }: RatingSectionProps) {
-    return (
-        <section className="mt-11 ml-16">
-            <section className="flex justify-between">
-                <div className="flex items-end justify-between mb-6">
-                    <div className="flex items-baseline gap-2">
-                        <h2 className="text-3xl text-black font-bold mb-8">Avaliações</h2>
-                    </div>
-                </div>
-            </section>
+export default function RatingSection({
+  ratingComments,
+  productId,
+}: RatingSectionProps) {
+  return (
+    <section className="mt-11 ml-16">
+      <section className="flex justify-between">
+        <div className="flex items-end justify-between mb-6">
+          <div className="flex items-baseline gap-2">
+            <h2 className="text-3xl font-bold text-black dark:text-white mb-8">
+              Avaliações
+            </h2>
+          </div>
+        </div>
+      </section>
 
-
-            <div className="flex gap-8px overflow-x-auto pb-4 gap-16">
-                {ratingComments && ratingComments.length > 0 ? (
-                    ratingComments.map((rating, index) => (
-                        <RatingCard
-                            key={rating.id || index} 
-                            avatar_url={rating.avatar_url}
-                            name={rating.name}
-                            text={rating.text}
-                            rating={rating.rating}
-                            isOwner={rating.isOwner}
-                            ratingId={rating.id as number} 
-                            userId={rating.userId}
-                        />
-                    ))
-                ) : (
-                    <p className="text-gray-500 font-light text-lg">
-                        Nenhuma avaliação para este produto ainda.
-                    </p>
-                )}
-            </div>
-        </section>
-    );
+      <div className="flex overflow-x-auto pb-4 gap-16">
+        {ratingComments && ratingComments.length > 0 ? (
+          ratingComments.map((rating, index) => (
+            <RatingCard
+              key={rating.id || index}
+              avatar_url={rating.avatar_url}
+              name={rating.name}
+              text={rating.text}
+              rating={rating.rating}
+              isOwner={rating.isOwner}
+              ratingId={rating.id as number}
+              userId={rating.userId}
+            />
+          ))
+        ) : (
+          <p className="text-gray-500 dark:text-gray-300 font-light text-lg">
+            Nenhuma avaliação para este produto ainda.
+          </p>
+        )}
+      </div>
+    </section>
+  );
 }
