@@ -1,5 +1,5 @@
 "use client"
-
+import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 
 type CriarLojaModalProps = {
@@ -13,17 +13,17 @@ export default function AlterarSenhaModal({ onClose }: CriarLojaModalProps) {
 
     async function handleUpdatePassword() {
         if (!email) {
-            console.log("E-mail não informado!");
+            toast.error("E-mail não informado!");
             return;
         }
 
         if (!password) {
-            console.log("Senha não informada!");
+            toast.error("Senha não informada!");
             return;
         }
 
         if (password !== confirmPassword) {
-            console.log("As senhas não coincidem!");
+            toast.error("As senhas não coincidem!");
             return;
         }
         
@@ -43,11 +43,11 @@ export default function AlterarSenhaModal({ onClose }: CriarLojaModalProps) {
             const data = await response.json();
 
             if (!response.ok) {
-                alert(data.message || "Erro ao atualizar senha");
+                toast.error(data.message || "Erro ao atualizar senha");
                 return;
             }
 
-            alert(data.message || "Senha atualizada com sucesso!");
+            toast.success(data.message || "Senha atualizada com sucesso!");
             onClose();
         } catch (error) {
             alert("Não foi possível conectar ao servidor.")
