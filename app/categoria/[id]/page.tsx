@@ -127,8 +127,8 @@ export default function categoryPage({ params }: { params: Promise<{ id: string 
             <FeedNavbar />
             <Hero />
 
-            <section className="bg-[#F6F3E4] px-20 pt-10">
-                <h1 className="font-bold text-black text-5xl text-center">
+            <section className="bg-[#F6F3E4] px-4 sm:px-10 lg:px-20 pt-10">
+                <h1 className="font-bold text-black text-4xl sm:text-5xl text-center">
                     {nameCategory|| "Categoria"}
                 </h1>
             </section>
@@ -137,43 +137,45 @@ export default function categoryPage({ params }: { params: Promise<{ id: string 
                 <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
             </div>
 
-            <section className="bg-[#F6F3E4] px-20 pt-8 flex items-center gap-6">
-                {subcategories.slice(0, 4).map((subcategory) => (
-                    <button
-                    key={subcategory.id}
-                    onClick={() => setSelectedSubcategoryId(String(subcategory.id))}
-                    className={`cursor-pointer px-6 py-2 rounded-full text-xl ${
-                        selectedSubcategoryId === String(subcategory.id)
-                        ? "bg-[#6A38F3] text-white"
-                        : "bg-white text-[#B99CFF]"
-                    }`}
-                    >
-                    {subcategory.name}
-                    </button>
-                ))}
+            <section className="bg-[#F6F3E4] px-4 sm:px-10 lg:px-20 pt-8 overflow-hidden">
+                <div className="flex flex-col lg:flex-row gap-4 lg:items-center">
+                    {subcategories.slice(0, 4).map((subcategory) => (
+                        <button
+                        key={subcategory.id}
+                        onClick={() => setSelectedSubcategoryId(String(subcategory.id))}
+                        className={`shrink-0 px-8 py-2 cursor-pointer rounded-full text-base sm:text-xl ${
+                            selectedSubcategoryId === String(subcategory.id)
+                            ? "bg-[#6A38F3] text-white"
+                            : "bg-white text-[#B99CFF]"
+                        }`}
+                        >
+                        {subcategory.name}
+                        </button>
+                    ))}
 
-                {subcategories.length > 4 && (
-                    <button
-                        onClick={() => setSelectedSubcategoryId(null)}
-                        className="cursor-pointer px-6 py-2 rounded-full text-xl bg-white text-[#B99CFF]"
-                    >
-                        Outros
-                    </button>
-                )}
+                    {subcategories.length > 4 && (
+                        <button
+                            onClick={() => setSelectedSubcategoryId(null)}
+                            className="cursor-pointer px-6 py-2 rounded-full text-xl bg-white text-[#B99CFF]"
+                        >
+                            Outros
+                        </button>
+                    )}
 
-                <select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value as any)}
-                    className="cursor-pointer bg-white rounded-full py-2 px-30 text-[#B99CFF] ml-auto text-xl outline-none"
-                >
-                    <option value="" disabled>
-                        Ordenar por
-                    </option>
-                    <option value="default">Padrão</option>
-                    <option value="price">Preço</option>
-                    <option value="rating">Avaliação</option>
-                    <option value="recent">Mais recente</option>
-                </select>
+                    <select
+                        value={sortBy}
+                        onChange={(e) => setSortBy(e.target.value as any)}
+                        className="cursor-pointer bg-white rounded-full py-2 px-30 text-[#B99CFF] ml-auto text-xl outline-none"
+                    >
+                        <option value="" disabled>
+                            Ordenar por
+                        </option>
+                        <option value="default">Padrão</option>
+                        <option value="price">Preço</option>
+                        <option value="rating">Avaliação</option>
+                        <option value="recent">Mais recente</option>
+                    </select>
+                </div>
             </section>
 
             <section className="block w-full bg-[#F6F3E4] min-h-screen py-4">
