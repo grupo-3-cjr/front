@@ -123,7 +123,7 @@ export default function ProductGrid({
         ))}
       </div>
 
-      <div className="flex items-center justify-center gap-10 mt-10 text-4xl font-bold">
+      <div className="flex items-center justify-center gap-6 sm:gap-10 mt-10 text-3xl sm:text-4xl font-bold">
         <button
           onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
           disabled={currentPage === 1}
